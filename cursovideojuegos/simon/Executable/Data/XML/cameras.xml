@@ -1,0 +1,5 @@
+<CameraManager>
+	<EsferaCamera name="debug_esferica" posx="0" posy="0" posz="0" zoom="20"/>
+	<THPSCamera name="debug_thps" posx="0" posy="2" posz="0" dist2player="5"/>
+	<FPSCamera name="debug_fps" posx="0" posy="2" posz="0"/>
+<CameraManager/>

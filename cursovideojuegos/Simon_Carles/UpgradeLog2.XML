@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="UAB Videojocs">
+</Property><Property Name="Solution File" Value="D:\UAB_Videojocs_Sessio2_TODO\UAB_Videojocs_Sessio2_TODO\UAB Videojocs.sln">
+</Property><Property Name="User Options File" Value="D:\UAB_Videojocs_Sessio2_TODO\UAB_Videojocs_Sessio2_TODO\UAB Videojocs.suo">
+</Property><Property Name="Date" Value="martes, 06 de abril de 2010">
+</Property><Property Name="Time" Value="20:16">
+</Property><Property Name="Log Number" Value="2">
+</Property></Properties><Event ErrorLevel="2" Project="" Source="UAB Videojocs.sln" Description="Error creating backup file: D:\UAB_Videojocs_Sessio2_TODO\UAB_Videojocs_Sessio2_TODO\UAB Videojocs.sln.old">
+</Event><Event ErrorLevel="0" Project="" Source="UAB Videojocs.suo" Description="File successfully backed up as D:\UAB_Videojocs_Sessio2_TODO\UAB_Videojocs_Sessio2_TODO\UAB Videojocs.suo.old">
+</Event><Event ErrorLevel="0" Project="UAB Videojocs" Source="UAB Videojocs.vcproj" Description="Web deployment to the local IIS server is no longer supported. The Web Deployment build tool has been removed from your project settings.">
+</Event><Event ErrorLevel="1" Project="UAB Videojocs" Source="UAB Videojocs.vcproj" Description="This application has been updated to include settings related to the User Account Control (UAC) feature of Windows Vista. By default, when run on Windows Vista with UAC enabled, this application is marked to run with the same privileges as the process that launched it. This marking also disables the application from running with virtualization. You can change UAC related settings from the Property Pages of the project.">
+</Event><Event ErrorLevel="0" Project="UAB Videojocs" Source="UAB Videojocs.vcproj" Description="Project file successfully backed up as 'D:\UAB_Videojocs_Sessio2_TODO\UAB_Videojocs_Sessio2_TODO\UAB Videojocs.vcproj.8.00.old'.">
+</Event><Event ErrorLevel="0" Project="UAB Videojocs" Source="UAB Videojocs.vcproj" Description="Project upgraded successfully.">
+</Event><Event ErrorLevel="3" Project="UAB Videojocs" Source="UAB Videojocs.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="UAB Videojocs.sln" Description="The solution file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="" Source="UAB Videojocs.sln" Description="No Conversion Required">
+</Event></UpgradeLog>
