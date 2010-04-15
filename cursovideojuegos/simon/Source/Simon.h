@@ -22,13 +22,17 @@ private:
 
 	ESTATE		m_State;
 	CBoard		m_board;
-	float		m_Time;
-	bool		m_CheckOk;
+	float		m_Time,m_TimeNextSymbol;
+	ESymbols	m_SymbolPlayer;
 
 	void RenderStateStart(CDebugPrintText2D& printText2d);
 	void UpdateStateStart(float dt);
 	void RenderStateShow(CDebugPrintText2D& printText2d);
 	void UpdateStateShow(float dt);
+	void RenderStateCheck(CDebugPrintText2D& printText2d);
+	void UpdateStateCheck(float dt);
+	void RenderStateEndGame(CDebugPrintText2D& printText2d);
+	void UpdateStateEndGame(float dt);
 
 	void Print(CDebugPrintText2D& pt2d, ESymbols e);
 };

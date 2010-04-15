@@ -2,13 +2,23 @@
 
 CBoard::CBoard()
 {
-	ResetCount();
-	m_isFinished=false;
+	Init();
 }
 
 CBoard::~CBoard()
 {
 
+}
+
+void CBoard::Init()
+{
+	ResetCount();
+	m_isFinished=false;
+}
+
+void CBoard::ResetSymbols()
+{
+	m_Symbols.clear();
 }
 
 void CBoard::ResetCount()
@@ -29,14 +39,14 @@ void CBoard::Generate()
 {
 	ESymbols symbol;
 
-	symbol=(ESymbols) (rand()%SYSMBOL_LAST);
+	symbol=(ESymbols) (rand()%SYMBOL_LAST);
 
 	m_Symbols.push_back(symbol);
 }
 
-ESYMBOLS CBoard::Show()
+ESymbols CBoard::Show()
 {
-	return m_Symbols[m_Count];		
+	return m_Symbols[m_Count  % m_Symbols.size() ];		
 }
 
 bool CBoard::Check(ESymbols symbol)

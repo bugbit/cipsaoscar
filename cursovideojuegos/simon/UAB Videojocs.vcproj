@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\tmp\simon\ThirdParty\expat&quot;;&quot;C:\Archivos de programa\Microsoft DirectX SDK (August 2009)\Include&quot;"
+				AdditionalIncludeDirectories="C:\cipsaoscar\cursovideojuegos\simon\ThirdParty\expat;&quot;C:\Archivos de programa\Microsoft DirectX SDK (August 2009)\Include&quot;"
 				PreprocessorDefinitions="/D_USE_MATH_DEFINES"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="0"
@@ -125,7 +125,7 @@
 				Optimization="2"
 				InlineFunctionExpansion="1"
 				OmitFramePointers="true"
-				AdditionalIncludeDirectories="&quot;C:\proyectos\curso videojuegos cipsa\simon\ThirdParty\expat&quot;;&quot;C:\Archivos de programa\Microsoft DirectX SDK (August 2009)\Include&quot;"
+				AdditionalIncludeDirectories="C:\cipsaoscar\cursovideojuegos\simon\ThirdParty\expat;&quot;C:\Archivos de programa\Microsoft DirectX SDK (August 2009)\Include&quot;"
 				PreprocessorDefinitions="/D_USE_MATH_DEFINES"
 				StringPooling="true"
 				RuntimeLibrary="0"

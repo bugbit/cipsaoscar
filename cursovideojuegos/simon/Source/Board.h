@@ -4,7 +4,7 @@
 #include "DebugPrintText2D.h"
 #include <vector>
 
-typedef enum ESymbols {SYSMBOL_A, SYSMBOL_B, SYSMBOL_C, SYSMBOL_D, SYSMBOL_LAST};
+typedef enum ESymbols {SYMBOL_A, SYMBOL_B, SYMBOL_C, SYMBOL_D, SYMBOL_LAST};
 
 class CBoard
 {
@@ -12,9 +12,10 @@ public:
 	CBoard();
 	~CBoard();
 
-	
+	void		Init();
+	void		ResetSymbols();
 	void		Generate		();
-	ESYMBOLS	Show				();
+	ESymbols	Show				();
 	bool		Check				(ESymbols symbol);
 	bool		IsFinished	();
 
