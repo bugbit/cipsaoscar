@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="UAB Videojocs">
+</Property><Property Name="Archivo de la solución" Value="C:\UAB_Videojocs_Sessio2_TODO\UAB Videojocs.sln">
+</Property><Property Name="Archivo de opciones de usuario" Value="C:\UAB_Videojocs_Sessio2_TODO\UAB Videojocs.suo">
+</Property><Property Name="Date" Value="martes, 06 de abril de 2010">
+</Property><Property Name="Time" Value="18:52">
+</Property><Property Name="Número de registro" Value="2">
+</Property></Properties><Event ErrorLevel="2" Project="" Source="UAB Videojocs.sln" Description="Error al crear el archivo de copia de seguridad: C:\UAB_Videojocs_Sessio2_TODO\UAB Videojocs.sln.old">
+</Event><Event ErrorLevel="0" Project="" Source="UAB Videojocs.suo" Description="La copia C:\UAB_Videojocs_Sessio2_TODO\UAB Videojocs.suo.old del archivo se ha realizado correctamente">
+</Event><Event ErrorLevel="0" Project="UAB Videojocs" Source="UAB Videojocs.vcproj" Description="Ya no se permite la implementación web en el servidor de IIS local. La herramienta de generación de implementación web se ha quitado de la configuración del proyecto.">
+</Event><Event ErrorLevel="1" Project="UAB Videojocs" Source="UAB Videojocs.vcproj" Description="Esta aplicación se ha actualizado para incluir la configuración relacionada con la característica Control de cuentas de usuario (UAC) de Windows Vista. De manera predeterminada, cuando se ejecuta en Windows Vista con el Control de cuentas de usuario habilitado, la aplicación está marcada para que se ejecute con los mismos privilegios que el proceso que la inició y para que no pueda ejecutarse con virtualización. Puede cambiar la configuración relativa al Control de cuentas de usuario desde las páginas de propiedades del proyecto.">
+</Event><Event ErrorLevel="0" Project="UAB Videojocs" Source="UAB Videojocs.vcproj" Description="Se realizó correctamente la copia de seguridad del archivo de proyecto 'C:\UAB_Videojocs_Sessio2_TODO\UAB Videojocs.vcproj.8.00.old'.">
+</Event><Event ErrorLevel="0" Project="UAB Videojocs" Source="UAB Videojocs.vcproj" Description="Proyecto actualizado correctamente.">
+</Event><Event ErrorLevel="3" Project="UAB Videojocs" Source="UAB Videojocs.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="UAB Videojocs.sln" Description="El archivo de soluciones no requiere conversión.">
+</Event><Event ErrorLevel="3" Project="" Source="UAB Videojocs.sln" Description="No requiere conversión">
+</Event></UpgradeLog>
