@@ -1,0 +1,49 @@
+<InputManager>
+
+	<Debug_mode value="yes"/> 
+
+	<KEYBOARD name_action="move_left"		name_input="DIK_A"		debug="not"/>	
+	<KEYBOARD name_action="move_right"		name_input="DIK_D"		debug="not"/>
+	<KEYBOARD name_action="use"			name_input="DIK_E"		debug="not"/>
+	<KEYBOARD name_action="move_down"		name_input="DIK_S"		debug="not"/>
+	<KEYBOARD name_action="move_up"			name_input="DIK_W"		debug="not"/>
+	<KEYBOARD name_action="speed"			name_input="DIK_LSHIFT"		debug="not"/>
+
+  <KEYBOARD name_action="teclaA"		name_input="DIK_A"		debug="yes"/>
+  <KEYBOARD name_action="teclaB"		name_input="DIK_B"		debug="yes"/>
+  <KEYBOARD name_action="teclaC"		name_input="DIK_C"		debug="yes"/>
+  <KEYBOARD name_action="teclaD"		name_input="DIK_D"		debug="yes"/>
+
+	<KEYBOARD name_action="changeControl"		name_input="DIK_C"		debug="yes"/>
+	<KEYBOARD name_action="changeVision"		name_input="DIK_TAB"		debug="yes"/>
+	<KEYBOARD name_action="changeFrustum"		name_input="DIK_F"		debug="yes"/>
+
+	<KEYBOARD name_action="changeDepth-"		name_input="DIK_B"		debug="yes"/>
+	<KEYBOARD name_action="changeDepth+"		name_input="DIK_G"		debug="yes"/>
+	<KEYBOARD name_action="changeImpactCollision"	name_input="DIK_I"		debug="yes"/>
+	<KEYBOARD name_action="paintAxisAndGrid"	name_input="DIK_J"		debug="yes"/>
+	<KEYBOARD name_action="paintScenary"		name_input="DIK_K"		debug="yes"/>
+	<KEYBOARD name_action="changeSolidWire"		name_input="DIK_L"		debug="yes"/>
+	<KEYBOARD name_action="paintCameras"		name_input="DIK_P"		debug="yes"/>
+	<KEYBOARD name_action="changeModeCollision"	name_input="DIK_X"		debug="yes"/>
+	<KEYBOARD name_action="paintInfoInput"		name_input="DIK_F1"		debug="yes"/>
+	<KEYBOARD name_action="paintInfoGame"		name_input="DIK_F2"		debug="yes"/>
+	<KEYBOARD name_action="camViewDist-"		name_input="DIK_0" 		debug="yes"/>	
+	<KEYBOARD name_action="camViewDist+"		name_input="DIK_9"		debug="yes"/>
+
+  <KEYBOARD name_action="Simon1"		name_input="DIK_1"		debug="yes"/>
+  <KEYBOARD name_action="Simon2"		name_input="DIK_LSHIFT"		debug="yes"/>
+  
+  <KEYBOARD name_action="TresEnRaya1"		name_input="DIK_2"		debug="yes"/>
+  <KEYBOARD name_action="TresEnRaya2"		name_input="DIK_LSHIFT"		debug="yes"/>
+
+  <KEYBOARD name_action="Snake1"		name_input="DIK_3"		debug="yes"/>
+  <KEYBOARD name_action="Snake2"		name_input="DIK_LSHIFT"		debug="yes"/>
+
+	<MOUSE name_action="move_yaw"			name_input="MOUSE_X"		debug="not"/>
+	<MOUSE name_action="move_pitch"			name_input="MOUSE_Y"		debug="not"/>
+	<MOUSE name_action="shoot"			name_input="MOUSE_BR"		debug="not"/>
+	<MOUSE name_action="changeGun"			name_input="MOUSE_BL"		debug="not"/>
+	<MOUSE name_action="zoom"			name_input="MOUSE_Z"		debug="yes"/>
+
+<InputManager/>
