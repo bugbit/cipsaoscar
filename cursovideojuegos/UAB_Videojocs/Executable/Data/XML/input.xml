@@ -40,6 +40,11 @@
   <KEYBOARD name_action="Snake1"		name_input="DIK_3"		debug="yes"/>
   <KEYBOARD name_action="Snake2"		name_input="DIK_LSHIFT"		debug="yes"/>
 
+  <KEYBOARD name_action="snake_left"		name_input="DIK_A"		debug="not"/>
+  <KEYBOARD name_action="snake_right"		name_input="DIK_D"		debug="not"/>
+  <KEYBOARD name_action="snake_down"		name_input="DIK_S"		debug="not"/>
+  <KEYBOARD name_action="snake_up"			name_input="DIK_W"		debug="not"/>
+
 	<MOUSE name_action="move_yaw"			name_input="MOUSE_X"		debug="not"/>
 	<MOUSE name_action="move_pitch"			name_input="MOUSE_Y"		debug="not"/>
 	<MOUSE name_action="shoot"			name_input="MOUSE_BR"		debug="not"/>
