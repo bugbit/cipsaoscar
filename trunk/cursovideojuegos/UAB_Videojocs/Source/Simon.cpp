@@ -20,5 +20,5 @@ void CSimon::Render		(CDebugPrintText2D& printText2d)
 
 void CSimon::Update		(float dt)
 {
-
+	
 }
