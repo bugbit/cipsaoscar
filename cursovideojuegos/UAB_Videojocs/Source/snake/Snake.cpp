@@ -1,121 +1,71 @@
 #include "Snake.h"
 
-#include "../InputManager.h"
+#define BODY_SIZE 10.f
 
-int CSnake::PIXELBODY=8;
-
-CSnake::CSnake():m_MaxX(800),m_MaxY(600)
+CSnake::CSnake(void)
+: m_Direction(DIR_RIGHT)
+, m_bMove(false)
+, m_bGrow(false)
 {
-	Init();
+	SBody body;
+	body.m_fPosX = 400;
+	body.m_fPosY = 400;
+	m_Snake.push_back(body);
 }
 
-CSnake::~CSnake()
-{	
-
-}
-
-void CSnake::Init()
-{
-	m_PosX=m_MaxX/2;
-	m_PosY=m_MaxY/2;
-	m_Bodies.clear();
-	m_Bodies.push_back(new CBodySnake(m_PosX,m_PosY));
-	m_Direction=EDIRECTIONS::RIGHT;
-	m_IsEnd=m_IsGrown=false;
-	m_Speed=10;
-	m_Time=0;
-	m_PosXGrown=m_PosYGrown=0;
-}
-
-void CSnake::DeInit()
+CSnake::~CSnake(void)
 {
 }
 
-void CSnake::Render		(CDebugPrintText2D& printText2d)
+void CSnake::Render(CDebugPrintText2D& printText2d)
 {
-	if (m_IsEnd)
-		printText2d.PrintText(m_MaxX/2,m_MaxY/2,0xffffffff,"END GAME");
-	for (int i=0;i<m_Bodies.size();i++)
-		printText2d.PrintText((int)m_Bodies[i]->GetPosX(), (int)m_Bodies[i]->GetPosY(),0xffffffff,"X");			
-}
-
-void CSnake::UpdateSnake(float dt)
-{
-	switch (m_Direction)
+	for(int cont = 0; cont < m_Snake.size(); cont++)
 	{
-		case EDIRECTIONS::RIGHT:
-			m_PosX += dt*m_Speed;
-			if (m_PosX>m_MaxX)
-				m_IsEnd=true;
-			break;
-		case EDIRECTIONS::LEFT:
-			m_PosX -= dt*m_Speed;
-			if (m_PosX<0)
-				m_IsEnd=true;
-			break;
-		case EDIRECTIONS::UP:
-			m_PosY -= dt*m_Speed;
-			if (m_PosY<0)
-				m_IsEnd=true;
-			break;
-		case EDIRECTIONS::DOWN:
-			m_PosY += dt*m_Speed;
-			if (m_PosY>m_MaxY)
-				m_IsEnd=true;
-			break;
+		printText2d.PrintText(m_Snake[cont].m_fPosX,m_Snake[cont].m_fPosY,0xffffffff,"X");	
 	}
-	if (m_IsGrown)
-	{
-		CBodySnake *body=m_Bodies[m_Bodies.size()-1];
-		if (abs(body->GetPosX()-m_PosXGrown)>=PIXELBODY || abs(body->GetPosY()-m_PosYGrown)>=PIXELBODY)
-		{
-			m_Bodies.push_back(new CBodySnake(m_PosXGrown,m_PosYGrown));
-			m_IsGrown=false;
-		}
-	}
-	for (int i=m_Bodies.size()-1;i>=1;i--)
-	{
-		m_Bodies[i]->Set(*m_Bodies[i-1]);
-	}
-	m_Bodies[0]->Set(m_PosX,m_PosY);
 }
 
-void CSnake::GrownSnake()
+void CSnake::Update(float dt)
 {
-	m_IsGrown=true;
-	m_Time=0;
-	CBodySnake *body=m_Bodies[m_Bodies.size()-1];
-	m_PosXGrown=body->GetPosX();
-	m_PosYGrown=body->GetPosY();
-}
+	UpdateInputActions( dt );
 
-void CSnake::Update		(float dt)
-{
-	CInputManager * input = CInputManager::GetInstance();
-
-	m_Time += dt;
-	if (!m_IsEnd)
+	if (m_bMove)
 	{
-		if (input->DoAction("snake_right"))
+		m_bMove = false;
+
+		if (m_bGrow)
 		{
-			m_Direction=EDIRECTIONS::RIGHT;
+			m_bGrow = false;
+			m_Snake.push_back(m_Snake[0]);
 		}
-		if (input->DoAction("snake_left"))
+
+		for( int cont = m_Snake.size()-1; cont > 0; cont--)
 		{
-			m_Direction=EDIRECTIONS::LEFT;
+			m_Snake[cont] = m_Snake[cont-1];
 		}
-		if (input->DoAction("snake_up"))
+		switch (m_Direction)
 		{
-			m_Direction=EDIRECTIONS::UP;
+		case DIR_RIGHT:
+			m_Snake[0].m_fPosX += BODY_SIZE;
+			break;
+
+		case DIR_LEFT:
+			m_Snake[0].m_fPosX -= BODY_SIZE;
+			break;
+
+		case DIR_UP:
+			m_Snake[0].m_fPosY -= BODY_SIZE;
+			break;
+
+		case DIR_DOWN:
+			m_Snake[0].m_fPosY += BODY_SIZE;
+			break;
+
+		default:
+			break;
+			//ERROR!!!
 		}
-		if (input->DoAction("snake_down"))
-		{
-			m_Direction=EDIRECTIONS::DOWN;
-		}
-		if (m_Time>5)
-		{
-			GrownSnake();
-		}
-		UpdateSnake(dt);		
+
+		
 	}
 }
