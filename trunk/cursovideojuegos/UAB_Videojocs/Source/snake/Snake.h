@@ -1,39 +1,48 @@
 #ifndef _SNAKE_H
 #define _SNAKE_H
 
-#include "../BaseGame.h"
+#include <vector>
 
-#include <Vector>
+#include "../DebugPrintText2D.h"
 
-#include "BodySnake.h"
+struct SBody
+{
+	float	m_fPosX;
+	float	m_fPosY;
+};
+typedef enum Direction {DIR_RIGHT, DIR_LEFT, DIR_UP, DIR_DOWN, DIR_NOTHING};
 
-class CSnake: public CBaseGame
+class CSnake
 {
 public:
+	CSnake(void);
+	~CSnake(void);
 
-	enum EDIRECTIONS
+	void		Render							(CDebugPrintText2D& printText2d);
+	void		Update							(float dt);
+
+	inline SBody		GetBodyHead() const
 	{
-			NONE,UP,DOWN,LEFT,RIGHT
-	};
+		return m_Snake[0];
+	}
 
-	CSnake();
-	~CSnake();
+	inline void     SetDirection(Direction direction)
+	{
+		m_Direction=direction;
+	}
 
-	void		Render		(CDebugPrintText2D& printText2d);
-	void		Update		(float dt);
-
-	void		Init		();
-	void		DeInit		();
+	inline void		Move() { m_bMove=true; }
+	inline void		Grow() { m_bGrow=true; }
 
 private:
 
-	float m_PosX,m_PosY,m_MaxX,m_MaxY,m_Speed,m_Time,m_PosXGrown,m_PosYGrown;
-	static int PIXELBODY;
-	EDIRECTIONS m_Direction;
-	bool m_IsEnd,m_IsGrown;
-	std::vector <CBodySnake *> m_Bodies;
-	void UpdateSnake(float dt);
-	void GrownSnake();
+	std::vector<SBody>	m_Snake;
+
+	void		UpdateInputActions	(float dt);
+	Direction						m_Direction;
+	bool								m_bMove;
+	bool								m_bGrow;
+	
 };
 
-#endif //_SIMON_H
+#endif
