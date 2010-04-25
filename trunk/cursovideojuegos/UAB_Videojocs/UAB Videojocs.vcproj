@@ -408,6 +408,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\Source\snake\Items.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Source\snake\Items.h"
+			>
+		</File>
+		<File
 			RelativePath=".\Source\UAB Videojocs.cpp"
 			>
 		</File>

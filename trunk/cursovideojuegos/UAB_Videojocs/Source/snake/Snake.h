@@ -5,6 +5,8 @@
 
 #include "../DebugPrintText2D.h"
 
+#define BODY_SIZE 10.f
+
 struct SBody
 {
 	float	m_fPosX;
@@ -33,12 +35,12 @@ public:
 
 	inline void		Move() { m_bMove=true; }
 	inline void		Grow() { m_bGrow=true; }
+	bool		IsCollision						(float posx,float posy);
 
 private:
 
 	std::vector<SBody>	m_Snake;
 
-	void		UpdateInputActions	(float dt);
 	Direction						m_Direction;
 	bool								m_bMove;
 	bool								m_bGrow;
