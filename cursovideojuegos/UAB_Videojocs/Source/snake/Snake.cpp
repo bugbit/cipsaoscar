@@ -1,7 +1,5 @@
 #include "Snake.h"
 
-#define BODY_SIZE 10.f
-
 CSnake::CSnake(void)
 : m_Direction(DIR_RIGHT)
 , m_bMove(false)
@@ -27,8 +25,6 @@ void CSnake::Render(CDebugPrintText2D& printText2d)
 
 void CSnake::Update(float dt)
 {
-	UpdateInputActions( dt );
-
 	if (m_bMove)
 	{
 		m_bMove = false;
@@ -68,4 +64,18 @@ void CSnake::Update(float dt)
 
 		
 	}
+}
+
+bool CSnake::IsCollision(float posx,float posy)
+{
+	//	en la collision no se mira la cabeza que es la posicion 0
+	for (int i=1;i<m_Snake.size();i++)
+	{
+		float dx=posx-m_Snake[i].m_fPosX;
+		float dy=posy-m_Snake[i].m_fPosY;
+		if ((dx>0 && dx<BODY_SIZE) && (dy>0 && dy<BODY_SIZE))
+			return true;
+	}
+
+	return false;
 }

@@ -2,8 +2,10 @@
 #define _SNAKEGAME_H
 
 #include "../BaseGame.h"
-
 #include "Snake.h"
+#include "Items.h"
+
+#include <vector>
 
 class CSnakeGame: public CBaseGame
 {
@@ -29,7 +31,13 @@ private:
 
 	CSnake								*m_Snake;
 
+	std::vector	<CItems *>				m_Items;
+	int									m_Nivel;
+	int									m_CoutBonus;
+
 	void		UpdateInputActions	(float dt);
+	void		Collision(float posx,float posy);
+	void		BuildScreenNivel();
 private:
 
 	
