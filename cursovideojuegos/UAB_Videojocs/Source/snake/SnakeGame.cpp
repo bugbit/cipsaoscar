@@ -3,7 +3,6 @@
 
 #include <time.h>
 
-#define MOVE_TIME 0.1f
 #define XI	  40
 #define YI	  40
 #define XF	  750
@@ -11,14 +10,13 @@
 
 CSnakeGame::CSnakeGame()
 : m_bIsEnd(false) 
-, m_fMoveTime(MOVE_TIME)
 , m_fSpeed(100.f)
 , m_fGrowTime(5.f)
 , m_Nivel(1)
 , m_CoutBonus(0)
 {
 	srand(unsigned(time(0)));
-	m_Snake= new CSnake();
+	m_Snake= new CSnake(400,400);
 	BuildScreenNivel();
 }
 
@@ -67,14 +65,7 @@ void CSnakeGame::Update		(float dt)
 		m_fGrowTime = 5.f;
 		m_Snake->Grow();
 	}
-	**/
-
-	m_fMoveTime -= dt;
-	if (m_fMoveTime <= 0 )
-	{
-		m_Snake->Move();
-		m_fMoveTime = MOVE_TIME;
-	}
+	**/	
 }
 
 void CSnakeGame::UpdateInputActions( float dt )

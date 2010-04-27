@@ -6,6 +6,7 @@
 #include "../DebugPrintText2D.h"
 
 #define BODY_SIZE 10.f
+#define MOVE_TIME 0.1f
 
 struct SBody
 {
@@ -17,7 +18,7 @@ typedef enum Direction {DIR_RIGHT, DIR_LEFT, DIR_UP, DIR_DOWN, DIR_NOTHING};
 class CSnake
 {
 public:
-	CSnake(void);
+	CSnake(float posx,float posy);
 	~CSnake(void);
 
 	void		Render							(CDebugPrintText2D& printText2d);
@@ -44,6 +45,7 @@ private:
 	Direction						m_Direction;
 	bool								m_bMove;
 	bool								m_bGrow;
+	float								m_fMoveTime;
 	
 };
 

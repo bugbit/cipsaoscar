@@ -23,7 +23,6 @@ private:
 	bool								m_bIsEnd;
 	
 	float								m_fSpeed;
-	float								m_fMoveTime;
 	
 
 	float								m_fGrowTime;
