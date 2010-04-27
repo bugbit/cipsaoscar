@@ -3,6 +3,7 @@
 
 #include "../BaseGame.h"
 #include "Snake.h"
+#include "PlayerInput.h"
 #include "Items.h"
 
 #include <vector>
@@ -30,6 +31,8 @@ private:
 
 	CSnake								*m_Snake;
 
+	std::vector <CSnake *>				m_Snakes;
+	std::vector <CPlayerInput *>		m_InputManagers;
 	std::vector	<CItems *>				m_Items;
 	int									m_Nivel;
 	int									m_CoutBonus;
