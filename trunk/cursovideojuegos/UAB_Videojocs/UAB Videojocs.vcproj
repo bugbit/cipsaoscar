@@ -346,6 +346,22 @@
 				Name="SnakeGame"
 				>
 				<File
+					RelativePath=".\Source\snake\KeyboardPlayerInput.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Source\snake\KeyboardPlayerInput.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Source\snake\PlayerInput.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Source\snake\PlayerInput.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Source\snake\Snake.cpp"
 					>
 				</File>
