@@ -1,13 +1,14 @@
 #include "Snake.h"
 
-CSnake::CSnake(void)
+CSnake::CSnake(float posx,float posy)
 : m_Direction(DIR_RIGHT)
 , m_bMove(false)
 , m_bGrow(false)
+, m_fMoveTime(MOVE_TIME)
 {
 	SBody body;
-	body.m_fPosX = 400;
-	body.m_fPosY = 400;
+	body.m_fPosX = posx;
+	body.m_fPosY = posy;
 	m_Snake.push_back(body);
 }
 
@@ -25,6 +26,12 @@ void CSnake::Render(CDebugPrintText2D& printText2d)
 
 void CSnake::Update(float dt)
 {
+	m_fMoveTime -= dt;
+	if (m_fMoveTime <= 0 )
+	{
+		m_bMove=true;
+		m_fMoveTime = MOVE_TIME;
+	}
 	if (m_bMove)
 	{
 		m_bMove = false;
