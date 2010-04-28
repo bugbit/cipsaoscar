@@ -11,6 +11,7 @@ enum ETYPEITEMS
 class CItems
 {
 public:
+	inline CItems() {} // Borrar cuando separe en clases los Items
 	CItems(float posx,float posy,ETYPEITEMS type);
 	~CItems(void);
 

@@ -1,5 +1,5 @@
 #include "SnakeGame.h"
-#include "../InputManager.h"
+#include "KeyboardPlayerInput.h"
 
 #include <time.h>
 
@@ -15,8 +15,21 @@ CSnakeGame::CSnakeGame()
 , m_Nivel(1)
 , m_CoutBonus(0)
 {
+	CSnake *s1= new CSnake(400,400);
+	CSnake *s2= new CSnake(200,200);
+	CKeyboardPlayerInput *pi1=new CKeyboardPlayerInput();
+	CKeyboardPlayerInput *pi2=new CKeyboardPlayerInput();
+	pi1->SetSnake(s1);
+	pi2->SetSnake(s2);
+	pi2->SetMoveUp("snake2_up");
+	pi2->SetMoveDown("snake2_down");
+	pi2->SetMoveRight("snake2_right");
+	pi2->SetMoveLeft("snake2_left");
+	m_Snakes.push_back(s1);
+	m_Snakes.push_back(s2);
+	m_PlayerInputs.push_back(pi1);
+	m_PlayerInputs.push_back(pi2);
 	srand(unsigned(time(0)));
-	m_Snake= new CSnake(400,400);
 	BuildScreenNivel();
 }
 
@@ -32,7 +45,8 @@ void CSnakeGame::Render		(CDebugPrintText2D& printText2d)
 		int dy = 400;
 		dy += printText2d.PrintText(400,dy,0xffffffff,"GAME OVER");	
 	}
-	m_Snake->Render(printText2d);
+	for (int i=0;i<m_Snakes.size();i++)
+		m_Snakes[i]->Render(printText2d);
 	for (int i=0;i<m_Items.size();i++)
 		m_Items[i]->Render(printText2d);
 }
@@ -43,7 +57,10 @@ void CSnakeGame::Update		(float dt)
 		return;
 	UpdateInputActions(dt);
 
-	
+	for (int i=0;i<m_PlayerInputs.size();i++)
+	{
+		m_PlayerInputs[i]->UpdateInputAction(dt);
+	}
 	/*
 	if (	bodyHead.m_fPosX > 800 || bodyHead.m_fPosX < 0 ||
 				bodyHead.m_fPosY > 600 || bodyHead.m_fPosY < 0 )
@@ -52,10 +69,13 @@ void CSnakeGame::Update		(float dt)
 	}
 	**/
 
-	m_Snake->Update(dt);
-
-	SBody bodyHead=m_Snake->GetBodyHead();
-	Collision(bodyHead.m_fPosX,bodyHead.m_fPosY);
+	for (int i=0;i<m_Snakes.size();i++)
+	{
+		CSnake &snake=*m_Snakes[i];
+		snake.Update(dt);
+		SBody bodyHead=snake.GetBodyHead();
+		Collision(bodyHead.m_fPosX,bodyHead.m_fPosY);
+	}
 
 	//Update Logic Game:
 	/*
@@ -70,35 +90,25 @@ void CSnakeGame::Update		(float dt)
 
 void CSnakeGame::UpdateInputActions( float dt )
 {
-	CInputManager * input = CInputManager::GetInstance();
-
-	if( input->DoAction("snake_down") )
-	{
-		m_Snake->SetDirection (DIR_DOWN);
-	}
-	else if( input->DoAction("snake_up") )
-	{
-		m_Snake->SetDirection (DIR_UP);
-	}
-	else if( input->DoAction("snake_right") )
-	{
-		m_Snake->SetDirection (DIR_RIGHT);
-	}
-	else if( input->DoAction("snake_left") )
-	{
-		m_Snake->SetDirection (DIR_LEFT);
-	}
 }
 
 void CSnakeGame::Collision(float posx,float posy)
 {
+	for (int i=0;i<m_Snakes.size();i++)
+	{
+		Collision(*m_Snakes[i],posx,posy);
+	}
+}
+void CSnakeGame::Collision(CSnake &snake,float posx,float posy)
+{
 	for (int i=0;i<m_Items.size();i++)
+	{
 		if (m_Items[i]->IsCollision(posx,posy))
 		{
 			if (m_Items[i]->GetType()==ETYPEITEMS::TYPEITEMS_BONUS)
 			{
 				m_Items[i]->SetVisible(false);
-				m_Snake->Grow();
+				snake.Grow();
 				m_CoutBonus--;
 				if (m_CoutBonus<=0)
 				{
@@ -110,8 +120,9 @@ void CSnakeGame::Collision(float posx,float posy)
 				m_bIsEnd=true;
 		}
 
-		if (m_Snake->IsCollision(posx,posy))
+		if (snake.IsCollision(posx,posy))
 			m_bIsEnd=true;
+	}
 }
 
 void CSnakeGame::BuildScreenNivel()
