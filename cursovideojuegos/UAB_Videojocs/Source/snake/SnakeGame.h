@@ -28,17 +28,15 @@ private:
 
 	float								m_fGrowTime;
 	
-
-	CSnake								*m_Snake;
-
 	std::vector <CSnake *>				m_Snakes;
-	std::vector <CPlayerInput *>		m_InputManagers;
+	std::vector <CPlayerInput *>		m_PlayerInputs;
 	std::vector	<CItems *>				m_Items;
 	int									m_Nivel;
 	int									m_CoutBonus;
 
 	void		UpdateInputActions	(float dt);
 	void		Collision(float posx,float posy);
+	void		Collision(CSnake &snake,float posx,float posy);
 	void		BuildScreenNivel();
 private:
 
