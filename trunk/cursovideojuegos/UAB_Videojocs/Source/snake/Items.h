@@ -11,22 +11,25 @@ enum ETYPEITEMS
 class CItems
 {
 public:
-	inline CItems() {} // Borrar cuando separe en clases los Items
 	CItems(float posx,float posy,ETYPEITEMS type);
+	CItems(ETYPEITEMS type);
 	~CItems(void);
 
-	void		Render							(CDebugPrintText2D& printText2d);
-	bool		IsCollision						(float posx,float posy);
-	inline		void SetVisible(bool visible)
+	virtual		void		Render							(CDebugPrintText2D& printText2d)=0;
+	virtual     void		Update							(float dt)=0;
+	bool					IsCollision						(float posx,float posy);
+	inline		void		SetVisible						(bool visible)
 	{
 		m_Visible=visible;
 	}
 	inline		ETYPEITEMS GetType() const { return m_Type; }
 
-private:
+protected:
 	float				m_PosX,m_PosY;
 	bool				m_Visible;
 	ETYPEITEMS			m_Type;
+
+	virtual	void		Init							();
 
 };
 

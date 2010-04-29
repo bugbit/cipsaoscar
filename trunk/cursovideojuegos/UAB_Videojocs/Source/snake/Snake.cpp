@@ -1,10 +1,12 @@
 #include "Snake.h"
 
-CSnake::CSnake(float posx,float posy)
+CSnake::CSnake(float posx,float posy,int nsnake)
 : m_Direction(DIR_RIGHT)
+, m_DirectionOld(DIR_RIGHT)
 , m_bMove(false)
 , m_bGrow(false)
 , m_fMoveTime(MOVE_TIME)
+, m_NSnake(nsnake)
 {
 	SBody body;
 	body.m_fPosX = posx;
@@ -14,6 +16,12 @@ CSnake::CSnake(float posx,float posy)
 
 CSnake::~CSnake(void)
 {
+}
+
+void CSnake::SetDirection(Direction direction)
+{
+	m_DirectionOld=m_Direction;
+	m_Direction=direction;
 }
 
 void CSnake::Render(CDebugPrintText2D& printText2d)
@@ -76,6 +84,8 @@ void CSnake::Update(float dt)
 bool CSnake::IsCollision(float posx,float posy)
 {
 	//	en la collision no se mira la cabeza que es la posicion 0
+	if (m_Snake.size()>1 && m_Direction!=m_DirectionOld && m_Direction==GetDireccionContraria(m_DirectionOld))
+		return true;
 	for (int i=1;i<m_Snake.size();i++)
 	{
 		float dx=posx-m_Snake[i].m_fPosX;
@@ -85,4 +95,19 @@ bool CSnake::IsCollision(float posx,float posy)
 	}
 
 	return false;
+}
+
+Direction CSnake::GetDireccionContraria(const Direction &dir) const
+{
+	switch(dir)
+	{
+	case Direction::DIR_DOWN:
+		return Direction::DIR_UP;
+	case Direction::DIR_UP:
+		return Direction::DIR_DOWN;
+	case Direction::DIR_LEFT:
+		return Direction::DIR_RIGHT;
+	case Direction::DIR_RIGHT:
+		return Direction::DIR_LEFT;
+	}
 }

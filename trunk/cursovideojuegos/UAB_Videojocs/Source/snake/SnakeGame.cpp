@@ -1,7 +1,11 @@
 #include "SnakeGame.h"
+#include "ItemsWall.h"
+#include "ItemsBonus.h"
+
 #include "KeyboardPlayerInput.h"
 
 #include <time.h>
+#include <sstream>
 
 #define XI	  40
 #define YI	  40
@@ -14,9 +18,10 @@ CSnakeGame::CSnakeGame()
 , m_fGrowTime(5.f)
 , m_Nivel(1)
 , m_CoutBonus(0)
+, m_MsgEnd()
 {
-	CSnake *s1= new CSnake(400,400);
-	CSnake *s2= new CSnake(200,200);
+	CSnake *s1= new CSnake(400,400,1);
+	CSnake *s2= new CSnake(200,200,2);
 	CKeyboardPlayerInput *pi1=new CKeyboardPlayerInput();
 	CKeyboardPlayerInput *pi2=new CKeyboardPlayerInput();
 	pi1->SetSnake(s1);
@@ -26,9 +31,9 @@ CSnakeGame::CSnakeGame()
 	pi2->SetMoveRight("snake2_right");
 	pi2->SetMoveLeft("snake2_left");
 	m_Snakes.push_back(s1);
-	m_Snakes.push_back(s2);
+	//m_Snakes.push_back(s2);
 	m_PlayerInputs.push_back(pi1);
-	m_PlayerInputs.push_back(pi2);
+	//m_PlayerInputs.push_back(pi2);
 	srand(unsigned(time(0)));
 	BuildScreenNivel();
 }
@@ -43,7 +48,7 @@ void CSnakeGame::Render		(CDebugPrintText2D& printText2d)
 	if (m_bIsEnd)
 	{
 		int dy = 400;
-		dy += printText2d.PrintText(400,dy,0xffffffff,"GAME OVER");	
+		dy += printText2d.PrintText(400,dy,0xffffffff,m_MsgEnd.c_str());	
 	}
 	for (int i=0;i<m_Snakes.size();i++)
 		m_Snakes[i]->Render(printText2d);
@@ -74,7 +79,19 @@ void CSnakeGame::Update		(float dt)
 		CSnake &snake=*m_Snakes[i];
 		snake.Update(dt);
 		SBody bodyHead=snake.GetBodyHead();
-		Collision(bodyHead.m_fPosX,bodyHead.m_fPosY);
+		CollisionItems(bodyHead.m_fPosX,bodyHead.m_fPosY);
+		if (snake.IsCollision(bodyHead.m_fPosX,bodyHead.m_fPosY))
+		{
+			std::ostringstream ms;
+			ms << "El snake " << snake.GetNSnake() << " se ha comido a si misma" << std::ends;
+			m_MsgEnd=ms.str();
+			m_bIsEnd=true;
+		}
+	}
+
+	for (int i=0;i<m_Items.size();i++)
+	{
+		m_Items[i]->Update(dt);
 	}
 
 	//Update Logic Game:
@@ -92,14 +109,14 @@ void CSnakeGame::UpdateInputActions( float dt )
 {
 }
 
-void CSnakeGame::Collision(float posx,float posy)
+void CSnakeGame::CollisionItems(float posx,float posy)
 {
 	for (int i=0;i<m_Snakes.size();i++)
 	{
-		Collision(*m_Snakes[i],posx,posy);
+		CollisionItems(*m_Snakes[i],posx,posy);
 	}
 }
-void CSnakeGame::Collision(CSnake &snake,float posx,float posy)
+void CSnakeGame::CollisionItems(CSnake &snake,float posx,float posy)
 {
 	for (int i=0;i<m_Items.size();i++)
 	{
@@ -117,11 +134,13 @@ void CSnakeGame::Collision(CSnake &snake,float posx,float posy)
 				}
 			}
 			else
+			{
+				std::ostringstream ms;
+				ms << "El snake " << snake.GetNSnake() << " Ha chocado contra la pared" << std::ends;
+				m_MsgEnd=ms.str();
 				m_bIsEnd=true;
+			}
 		}
-
-		if (snake.IsCollision(posx,posy))
-			m_bIsEnd=true;
 	}
 }
 
@@ -131,7 +150,12 @@ void CSnakeGame::BuildScreenNivel()
 	m_CoutBonus=2*m_Nivel;
 	for (int i=0;i<m_CoutBonus;i++)
 	{
-		m_Items.push_back(new CItems(XI+BODY_SIZE+(rand()%(int)(XF-XI-2*BODY_SIZE)),YI+BODY_SIZE+(rand()%(int)(YF-YI-2*BODY_SIZE)),TYPEITEMS_BONUS));
+		/*
+		CItemBonus *bonus=new CItemsBonus();
+		bonus->GeneratePosition();
+		m_Items.push_back(bonus);
+		**/
+		m_Items.push_back(new CItemsBonus(XI+BODY_SIZE+(rand()%(int)(XF-XI-2*BODY_SIZE)),YI+BODY_SIZE+(rand()%(int)(YF-YI-2*BODY_SIZE))));
 	}
 	int coutWall=1+(rand() % (10*m_Nivel));
 	for (int i=0;i<coutWall;i++)
@@ -141,17 +165,17 @@ void CSnakeGame::BuildScreenNivel()
 		float posy=YI+BODY_SIZE+(rand() % (int)(YF-YI-2*lng*BODY_SIZE));
 		for (int i=0;i<lng;i++,posx += BODY_SIZE)
 		{
-			m_Items.push_back(new CItems(posx,posy,TYPEITEMS_WALL));
+			m_Items.push_back(new CItemsWall(posx,posy));
 		}
 	}
 	for (int x=XI;x<XF;x += BODY_SIZE)
 	{
-		m_Items.push_back(new CItems(x,YI,TYPEITEMS_WALL));
-		m_Items.push_back(new CItems(x,YF-BODY_SIZE,TYPEITEMS_WALL));
+		m_Items.push_back(new CItemsWall(x,YI));
+		m_Items.push_back(new CItemsWall(x,YF-BODY_SIZE));
 	}
 	for (int y=YI;y<YF-BODY_SIZE;y += BODY_SIZE)
 	{
-		m_Items.push_back(new CItems(XI,y,TYPEITEMS_WALL));
-		m_Items.push_back(new CItems(XF-BODY_SIZE,y,TYPEITEMS_WALL));
+		m_Items.push_back(new CItemsWall(XI,y));
+		m_Items.push_back(new CItemsWall(XF-BODY_SIZE,y));
 	}
 }
