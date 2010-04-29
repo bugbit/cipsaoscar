@@ -33,10 +33,11 @@ private:
 	std::vector	<CItems *>				m_Items;
 	int									m_Nivel;
 	int									m_CoutBonus;
+	std::string							m_MsgEnd;
 
 	void		UpdateInputActions	(float dt);
-	void		Collision(float posx,float posy);
-	void		Collision(CSnake &snake,float posx,float posy);
+	void		CollisionItems(float posx,float posy);
+	void		CollisionItems(CSnake &snake,float posx,float posy);
 	void		BuildScreenNivel();
 private:
 
