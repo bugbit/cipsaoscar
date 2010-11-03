@@ -329,6 +329,29 @@ void CQuakeGameProcess::Update (float elapsedTime)
 			m_PruebaShut.push_back(shut);
 		}
 	}
+
+	// Granada
+
+	if (inputManager->IsDownUp(IDV_MOUSE, 1))
+	{
+		m_PruebaShut.clear();
+		Vect3f dir=m_pCamera->GetDirection();
+		Vect3f pos=m_Player->GetPosition()+.6f*dir;
+		std::vector<CPhysicUserData *> mdatas;
+		CCore::GetSingletonPtr()->GetPhysicManager()->OverlapSphereActor(10.f,pos,mdatas);
+		if (!mdatas.empty())
+		{
+			std::vector<CPhysicUserData *>::iterator itend=mdatas.end();
+			for(std::vector<CPhysicUserData *>::iterator it=mdatas.end();it!=itend;it++)
+			{
+				CQuakePhysicsData *data=(CQuakePhysicsData *) *it;
+				SPRUEBASHUT *shut=new SPRUEBASHUT;
+				shut->msg += std::string("OverlapSphereActor a colisionado con ").append(data->GetName());
+				shut->pos=pos;
+				m_PruebaShut.push_back(shut);
+			}
+		}
+	}
 }
 
 //-----------------ScriptManager------------------------------
