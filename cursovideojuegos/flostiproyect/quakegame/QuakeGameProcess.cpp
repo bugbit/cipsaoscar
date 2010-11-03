@@ -85,7 +85,7 @@ bool CQuakeGameProcess::Init ()
 
 		m_EnemyData=new CQuakePhysicsData("enemy");
 		m_EnemyData->SetPaint(true);
-		m_Enemy=new CPhysicController(1.5f,5.f,0.4f,0.1f,3.f,1,m_EnemyData,Vect3f(5.f,6.f,1.f));
+		m_Enemy=new CPhysicController(1.5f,5.f,0.4f,0.1f,3.f,IMPACT_MASK_1,m_EnemyData,Vect3f(5.f,6.f,1.f));
 		physicManager->AddPhysicController(m_Enemy);
 	}
 	if (!CProcess::m_bIsOk)
@@ -140,7 +140,12 @@ void CQuakeGameProcess::RenderScene (CRenderManager* renderManager)
 	std::vector<SPRUEBASHUT *>::iterator itend=m_PruebaShut.end();
 	for (std::vector<SPRUEBASHUT *>::iterator it=m_PruebaShut.begin();it!=itend;it++)
 	{
-		renderManager->DrawSphere(3.f);
+		SPRUEBASHUT *shut=*it;
+		Mat44f mat;
+		mat.SetIdentity();
+		mat.Translate(shut->pos);
+		renderManager->SetTransform(mat);
+		renderManager->DrawSphere(.3f,colRED);
 	}
 }
 
@@ -151,6 +156,12 @@ uint32 CQuakeGameProcess::RenderDebugInfo(CRenderManager* renderManager, float f
 	if (m_bRenderDebugInfo)
 	{
 		uint32 posX = m_PosRenderDebugInfo.x;
+		std::vector<SPRUEBASHUT *>::iterator itend=m_PruebaShut.end();
+		for (std::vector<SPRUEBASHUT *>::iterator it=m_PruebaShut.begin();it!=itend;it++)
+		{
+			SPRUEBASHUT *shut=*it;
+			posY += renderManager->DrawDefaultText(posX,posY,colWHITE,shut->msg.c_str());
+		}
 		//...
 	}
 	return posY;
@@ -303,16 +314,19 @@ void CQuakeGameProcess::Update (float elapsedTime)
 
 	//Rayo
 
-	if (inputManager->IsDown(IDV_MOUSE, 0))
+	if (inputManager->IsDownUp(IDV_MOUSE, 0))
 	{
 		m_PruebaShut.clear();
 		SCollisionInfo info;
-		CQuakePhysicsData *data=(CQuakePhysicsData *) CCore::GetSingletonPtr()->GetPhysicManager()->RaycastClosestActor(m_Player->GetPosition(),m_pCamera->GetDirection(),IMPACT_MASK_1,NULL,info);
+		Vect3f dir=m_pCamera->GetDirection();
+		Vect3f pos=m_Player->GetPosition()+.6f*dir;
+		CQuakePhysicsData *data=(CQuakePhysicsData *) CCore::GetSingletonPtr()->GetPhysicManager()->RaycastClosestActor(pos,dir,COLLIDABLE_MASK,NULL,info);
 		if (data!=NULL)
 		{
 			SPRUEBASHUT *shut=new SPRUEBASHUT;
 			shut->msg += std::string("RaycastClosestActor a colisionado con ").append(data->GetName());
 			shut->pos=info.m_CollisionPoint;
+			m_PruebaShut.push_back(shut);
 		}
 	}
 }
