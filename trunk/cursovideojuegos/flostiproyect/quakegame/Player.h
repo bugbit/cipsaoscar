@@ -1,15 +1,14 @@
 #pragma once
 
-//--Forward Declaration--
-class CPhysicActor;
-class CPhysicController;
+//---Engine Includes----
+#include "PhysX/PhysicController.h"
+#include "QuakePhysicsData.h"
 
-class CPlayer
+class CPlayer : public CPhysicController, public CQuakePhysicsData
 {
 public:
-	CPlayer();
-	~CPlayer();
-private:
-	CPhysicUserData																			*m_PhysicData;
-	CPhysicController																		*m_PControler;
+	CPlayer(float radius, float height, float slope, float skinwidth, 
+		float stepOffset, uint32 collisionGroups, 
+		const Vect3f& pos = Vect3f(0.f,0.f,0.f), float gravity = -9.8f);
+	virtual ~CPlayer();
 };

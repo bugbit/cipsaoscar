@@ -36,10 +36,11 @@
 bool CQuakeGameProcess::Init ()
 {
 	CProcess::m_bIsOk = false;	
-	CPhysicUserData *m_PlayerData=new CQuakePhysicsData("player");
+	m_PlayerData=new CQuakePhysicsData("player",CQuakePhysicsData::TYPE3D_PLAYER);
 	m_PlayerData->SetPaint(true);
 	CPhysicsManager* physicManager = CCore::GetSingletonPtr()->GetPhysicManager();
 	m_Player=new CPhysicController(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,m_PlayerData,Vect3f(5.f,6.f,3.f));
+	m_PlayerData->SetObject3D(m_Player);
 	physicManager->AddPhysicController(m_Player);
 	uint32 w,h;
 	CCore::GetSingletonPtr()->GetRenderManager()->GetWidthAndHeight(w,h);
@@ -83,10 +84,11 @@ bool CQuakeGameProcess::Init ()
 		m_Pelota->AddSphereShape(1.f,Vect3f(5.f,6.f,0.f));
 		CCore::GetSingletonPtr()->GetPhysicManager()->AddPhysicActor(m_Pelota);*/
 
-		m_EnemyData=new CQuakePhysicsData("enemy");
+		m_EnemyData=new CQuakePhysicsData("enemy",CQuakePhysicsData::TYPE3D_PLAYER);
 		m_EnemyData->SetPaint(true);
 		m_Enemy=new CPhysicController(1.5f,5.f,0.4f,0.1f,3.f,IMPACT_MASK_1,m_EnemyData,Vect3f(5.f,6.f,1.f));
 		physicManager->AddPhysicController(m_Enemy);
+		m_EnemyData->SetObject3D(m_Enemy);
 	}
 	if (!CProcess::m_bIsOk)
 	{
@@ -324,7 +326,7 @@ void CQuakeGameProcess::Update (float elapsedTime)
 		if (data!=NULL)
 		{
 			SPRUEBASHUT *shut=new SPRUEBASHUT;
-			shut->msg += std::string("RaycastClosestActor a colisionado con ").append(data->GetName());
+			shut->msg += std::string("RaycastClosestActor a colisionado con ").append(data->GetName());			
 			shut->pos=info.m_CollisionPoint;
 			m_PruebaShut.push_back(shut);
 		}
@@ -342,12 +344,16 @@ void CQuakeGameProcess::Update (float elapsedTime)
 		if (!mdatas.empty())
 		{
 			std::vector<CPhysicUserData *>::iterator itend=mdatas.end();
-			for(std::vector<CPhysicUserData *>::iterator it=mdatas.end();it!=itend;it++)
+			for(std::vector<CPhysicUserData *>::iterator it=mdatas.begin();it!=itend;it++)
 			{
 				CQuakePhysicsData *data=(CQuakePhysicsData *) *it;
 				SPRUEBASHUT *shut=new SPRUEBASHUT;
 				shut->msg += std::string("OverlapSphereActor a colisionado con ").append(data->GetName());
-				shut->pos=pos;
+				const CObject3D *obj3d= data->GetObject3D();
+				if (obj3d==NULL)
+					shut->pos=pos;
+				else
+					shut->pos=obj3d->GetPosition();
 				m_PruebaShut.push_back(shut);
 			}
 		}
