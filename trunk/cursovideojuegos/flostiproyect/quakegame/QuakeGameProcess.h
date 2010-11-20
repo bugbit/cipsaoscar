@@ -14,6 +14,7 @@
 #include "Core/Process.h"
 #include "Math/Matrix44.h"
 #include "Graphics/ASEObject/ASEObject.h"
+#include "PhysX/PhysicTriggerReport.h"
 
 //---Game Includes-------
 #include "Arena.h"
@@ -29,6 +30,7 @@ class CTexture;
 class CPhysicActor;
 class CPhysicController;
 class CQuakePhysicsData;
+class CPhysicSphericalJoint;
 //-----------------------
 
 //struct SPRUEBAITEM
@@ -44,7 +46,7 @@ struct SPRUEBASHUT
 	Vect3f pos;
 };
 
-class CQuakeGameProcess: public CProcess
+class CQuakeGameProcess: public CProcess, public CPhysicTriggerReport 
 {
 public:
 	//---Init and End protocols
@@ -56,6 +58,13 @@ public:
 																										m_Pelota(NULL),
 																										m_Player(NULL),
 																										m_Enemy(NULL),
+																										m_Trigger(NULL),
+																										m_TriggerData(NULL),
+																										m_ActorPruebaShut(NULL),
+																										m_ActorPruebaShutData(NULL),
+																										m_ActorPruebaJoint(NULL),
+																										m_ActorPruebaJointData(NULL),
+																										m_PruebaJoint(NULL),
 																										mPCX(0),
 																										mPCDiff(1)
 																										{
@@ -75,6 +84,10 @@ public:
 	virtual uint32			RenderDebugInfo			(CRenderManager* renderManager, float fps);
 	//--------------------------------------------------------------
 
+	//----CPhysicTriggerReport Interface------------------------------------------------------
+	virtual void				OnEnter							(CPhysicUserData* trigger1, CPhysicUserData* other_shape);
+	virtual void				OnLeave							(CPhysicUserData* trigger1, CPhysicUserData* other_shape);
+
 
 private:
 	//----CProcess Interface---------------------------------------
@@ -85,7 +98,7 @@ private:
 
 private:
 	CArena																	m_Arena;
-	//CASEObject															m_PruebaItemASE;
+	CASEObject															m_PruebaItemASE;
 	//std::vector	<SPRUEBAITEM *>								m_PruebaItems;
 	std::vector <SPRUEBASHUT *>									m_PruebaShut;
 	float																		m_SpeedPlayer;
@@ -99,8 +112,16 @@ private:
 	CPhysicActor														*m_Pelota;
 	CPhysicController												*m_Player;
 	CPhysicController												*m_Enemy;
+	CPhysicActor														*m_Trigger;
+	CQuakePhysicsData												*m_TriggerData;
+	CPhysicActor														*m_ActorPruebaShut;
+	CQuakePhysicsData												*m_ActorPruebaShutData;
+	CPhysicActor														*m_ActorPruebaJoint;
+	CQuakePhysicsData												*m_ActorPruebaJointData;
+	CPhysicSphericalJoint										*m_PruebaJoint;
 	int																			mPCX;
 	int																			mPCDiff;
+	std::string															mStrTrigger;
 };
 
 static CQuakeGameProcess* GetQuakeGame() {return static_cast<CQuakeGameProcess*>(CCore::GetSingletonPtr()->GetProcess());}
