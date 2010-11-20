@@ -74,15 +74,19 @@ bool CQuakeGameProcess::Init ()
 
 		// Prueba PhysX
 
+		m_PelotaData=new CQuakePhysicsData("pelota");
+		m_PelotaData->SetPaint(true);
 		/*CPhysicUserData *data=new CPhysicUserData();
 		data->SetPaint(true);
 		CPhysicActor plano(data);
 		plano.AddPlaneShape(Vect3f(0.f,1.f,0.f),0.f);
-		CCore::GetSingletonPtr()->GetPhysicManager()->AddPhysicActor(&plano);		
-		m_Pelota=new CPhysicActor(data);
-		m_Pelota->CreateBody(1.f);		
+		CCore::GetSingletonPtr()->GetPhysicManager()->AddPhysicActor(&plano);
+		m_PelotaData=new CQuakePhysicsData("pelota");
+		m_PelotaData->SetPaint(true);
+		m_Pelota=new CPhysicActor(m_PelotaData);
+		m_Pelota->CreateBody(100.9f,.9f);	
 		m_Pelota->AddSphereShape(1.f,Vect3f(5.f,6.f,0.f));
-		CCore::GetSingletonPtr()->GetPhysicManager()->AddPhysicActor(m_Pelota);*/
+		CCore::GetSingletonPtr()->GetPhysicManager()->AddPhysicActor(m_Pelota);	*/
 
 		m_EnemyData=new CQuakePhysicsData("enemy",CQuakePhysicsData::TYPE3D_PLAYER);
 		m_EnemyData->SetPaint(true);
@@ -328,18 +332,13 @@ void CQuakeGameProcess::Update (float elapsedTime)
 	CInputManager*inputManager = CCore::GetSingletonPtr()->GetInputManager();
 	
 	if (inputManager->IsDownUp(IDV_KEYBOARD, ZVK_B))
-	{
-		if (m_Pelota==NULL)
-		{
-			CPhysicUserData *data=new CPhysicUserData();
-			data->SetPaint(true);
-			m_Pelota=new CPhysicActor(data);
-			m_Pelota->CreateBody(100.9f,.9f);		
-			m_Pelota->AddSphereShape(1.f,m_Player->GetPosition());
-			CCore::GetSingletonPtr()->GetPhysicManager()->AddPhysicActor(m_Pelota);
-		}
-		m_Pelota->SetLinearVelocity(m_pCamera->GetDirection());
-		
+	{				
+			CPhysicActor *pelota=new CPhysicActor(m_PelotaData);
+			pelota->CreateBody(100.9f,.9f);		
+			pelota->AddSphereShape(1.f);
+			pelota->SetGlobalPosition(m_Player->GetPosition());
+			CCore::GetSingletonPtr()->GetPhysicManager()->AddPhysicActor(pelota);
+			pelota->SetLinearVelocity(m_pCamera->GetDirection());		
 	}
 	if (m_Pelota!=NULL)
 	{
