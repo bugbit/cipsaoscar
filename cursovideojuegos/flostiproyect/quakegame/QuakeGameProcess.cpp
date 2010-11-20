@@ -59,8 +59,8 @@ bool CQuakeGameProcess::Init ()
 		
 		m_Arena.LoadWorld("./Data/Textures/quake/","./Data/quake/room%i.ASE",5);
 		
-		/*m_PruebaItemASE.Load("./Data/quake/ShotGun_Player.ASE",rm);
-		SPRUEBAITEM *item=new SPRUEBAITEM;
+		m_PruebaItemASE.Load("./Data/quake/ShotGun_Player.ASE",rm);
+		/*SPRUEBAITEM *item=new SPRUEBAITEM;
 		item->Position=Vect3f(5.f,6.f,0.f);
 		item->Mat.SetIdentity();
 		item->Mat.Translate(item->Position);
@@ -89,6 +89,32 @@ bool CQuakeGameProcess::Init ()
 		m_Enemy=new CPhysicController(1.5f,5.f,0.4f,0.1f,3.f,IMPACT_MASK_1,m_EnemyData,Vect3f(5.f,6.f,1.f));
 		physicManager->AddPhysicController(m_Enemy);
 		m_EnemyData->SetObject3D(m_Enemy);
+		m_TriggerData=new CQuakePhysicsData("trigger");
+		m_TriggerData->SetPaint(false);
+		m_Trigger=new CPhysicActor(m_TriggerData);
+		m_Trigger->CreateBoxTrigger(Vect3f(7.f,2.f,7.f),GROUP_BASIC_PRIMITIVES);
+		m_Trigger->SetGlobalPosition(Vect3f(5.f,2.f,1.f));
+		physicManager->AddPhysicActor(m_Trigger);
+		physicManager->SetTriggerReport(this);
+
+		m_ActorPruebaShutData=new CQuakePhysicsData("shut");
+		m_ActorPruebaShutData->SetPaint(true);
+		m_ActorPruebaShut=new CPhysicActor(m_ActorPruebaShutData);
+		m_ActorPruebaShut->AddBoxSphape(Vect3f(.5f,.3f,.25f));
+		m_ActorPruebaShut->SetGlobalPosition(Vect3f(5.f,6.f,0.f));
+		m_ActorPruebaShut->CreateBody(0.1f,.8f);
+		physicManager->AddPhysicActor(m_ActorPruebaShut);
+
+		m_ActorPruebaJointData=new CQuakePhysicsData("joint");
+		m_ActorPruebaJointData->SetPaint(true);
+		m_ActorPruebaJoint=new CPhysicActor(m_ActorPruebaJointData);
+		m_ActorPruebaJoint->AddBoxSphape(Vect3f(1.f,1.f,1.f));
+		m_ActorPruebaJoint->SetGlobalPosition(Vect3f(0,5.f,0));
+		m_ActorPruebaJoint->CreateBody(2.f,3.f);
+		physicManager->AddPhysicActor(m_ActorPruebaJoint);
+		m_PruebaJoint=new CPhysicSphericalJoint();
+		m_PruebaJoint->SetInfo(Vect3f(0,3.f,0),m_ActorPruebaJoint);
+		physicManager->AddPhysicSphericalJoint(m_PruebaJoint);
 	}
 	if (!CProcess::m_bIsOk)
 	{
@@ -104,9 +130,32 @@ void CQuakeGameProcess::Release ()
 	CHECKED_DELETE(m_EnemyData);
 	CHECKED_DELETE(m_Player);
 	CHECKED_DELETE(m_pCamera);
-	//m_PruebaItemASE.CleanUp();
+	m_PruebaItemASE.CleanUp();
 	CHECKED_DELETE(m_Pelota);
 	CHECKED_DELETE(m_Player);
+	CHECKED_DELETE(m_Trigger);
+	CHECKED_DELETE(m_TriggerData);
+	CHECKED_DELETE(m_ActorPruebaShut);
+	CHECKED_DELETE(m_ActorPruebaShutData);
+	CHECKED_DELETE(m_ActorPruebaJoint);
+	CHECKED_DELETE(m_ActorPruebaJointData);
+	CHECKED_DELETE(m_PruebaJoint);
+}
+
+void CQuakeGameProcess::OnEnter (CPhysicUserData* trigger, CPhysicUserData* other_shape)
+{
+	char str[100];
+
+	sprintf_s(str,sizeof(str),"El %s ha entrado en %s",((CQuakePhysicsData *) other_shape)->GetName().c_str(),((CQuakePhysicsData *) trigger)->GetName().c_str());
+	mStrTrigger.assign(str);
+}
+
+void CQuakeGameProcess::OnLeave (CPhysicUserData* trigger1, CPhysicUserData* other_shape)
+{
+	char str[100];
+
+	sprintf_s(str,sizeof(str),"El %s ha salido en %s",((CQuakePhysicsData *) other_shape)->GetName().c_str(),((CQuakePhysicsData *) trigger1)->GetName().c_str());
+	mStrTrigger.assign(str);
 }
 
 void CQuakeGameProcess::RenderQuake(CRenderManager* renderManager)
@@ -121,6 +170,13 @@ void CQuakeGameProcess::RenderQuake(CRenderManager* renderManager)
 		renderManager->SetTransform(item->Mat);
 		m_PruebaItemASE.Render(renderManager);
 	}*/
+
+	Mat44f mat;
+	//mat.SetIdentity();
+	//mat.Translate(Vect3f(5.f,6.f,0.f));
+	m_ActorPruebaShut->GetMat44(mat);
+	renderManager->SetTransform(mat);
+	m_PruebaItemASE.Render(renderManager);
 }
 
 void CQuakeGameProcess::RenderScene (CRenderManager* renderManager)
@@ -149,6 +205,11 @@ void CQuakeGameProcess::RenderScene (CRenderManager* renderManager)
 		renderManager->SetTransform(mat);
 		renderManager->DrawSphere(.3f,colRED);
 	}
+	/*Mat44f mat;
+	mat.SetIdentity();
+	mat.Translate(Vect3f(5.f,6.f,1.f));
+	renderManager->SetTransform(mat);
+	renderManager->DrawBox(7.f,2.f,7.f,colGREEN);*/
 }
 
 uint32 CQuakeGameProcess::RenderDebugInfo(CRenderManager* renderManager, float fps)
@@ -165,6 +226,7 @@ uint32 CQuakeGameProcess::RenderDebugInfo(CRenderManager* renderManager, float f
 			posY += renderManager->DrawDefaultText(posX,posY,colWHITE,shut->msg.c_str());
 		}
 		//...
+		posY += renderManager->DrawDefaultText(posX,posY,colWHITE,mStrTrigger.c_str());
 	}
 	return posY;
 }
@@ -357,6 +419,13 @@ void CQuakeGameProcess::Update (float elapsedTime)
 				m_PruebaShut.push_back(shut);
 			}
 		}
+	}
+
+	// Prueba Joint
+
+	if (inputManager->IsDown(IDV_KEYBOARD, ZVK_C))
+	{
+		m_ActorPruebaJoint->SetLinearVelocity(Vect3f(0.f,10.f,0.f));
 	}
 }
 
