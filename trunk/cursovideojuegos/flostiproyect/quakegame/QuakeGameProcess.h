@@ -31,6 +31,7 @@ class CPhysicActor;
 class CPhysicController;
 class CQuakePhysicsData;
 class CPhysicSphericalJoint;
+class CQuakePlayerInput;
 //-----------------------
 
 //struct SPRUEBAITEM
@@ -52,11 +53,9 @@ public:
 	//---Init and End protocols
 	CQuakeGameProcess(const std::string& processName):	CProcess(processName),
 																										m_PelotaData(NULL),
-																										m_PlayerData(NULL),
 																										m_EnemyData(NULL),
 																										m_SpeedPlayer(15.f),
 																										m_Pelota(NULL),
-																										m_Player(NULL),
 																										m_Enemy(NULL),
 																										m_Trigger(NULL),
 																										m_TriggerData(NULL),
@@ -93,7 +92,6 @@ private:
 	//----CProcess Interface---------------------------------------
 	virtual void				Release             ();
 	//--------------------------------------------------------------
-	void								UpdatePlayer		   (float elapsedTime);
 	//void								UpdatePruebaItems   (float elapsedTime);
 
 private:
@@ -102,15 +100,14 @@ private:
 	//std::vector	<SPRUEBAITEM *>								m_PruebaItems;
 	std::vector <SPRUEBASHUT *>									m_PruebaShut;
 	float																		m_SpeedPlayer;
+	std::vector<CQuakePlayerInput *>				m_PlayerInputs;
 
 	void								RenderQuake					(CRenderManager* renderManager);
 
 	// Prueba PhysX
 	CQuakePhysicsData												*m_PelotaData;
-	CQuakePhysicsData												*m_PlayerData;
 	CQuakePhysicsData												*m_EnemyData;
 	CPhysicActor														*m_Pelota;
-	CPhysicController												*m_Player;
 	CPhysicController												*m_Enemy;
 	CPhysicActor														*m_Trigger;
 	CQuakePhysicsData												*m_TriggerData;
@@ -122,6 +119,9 @@ private:
 	int																			mPCX;
 	int																			mPCDiff;
 	std::string															mStrTrigger;
+	
+	void																		ReleasePlayerInputs();
+	void																		UpdatePlayerInputs(float elapsedTime);
 };
 
 static CQuakeGameProcess* GetQuakeGame() {return static_cast<CQuakeGameProcess*>(CCore::GetSingletonPtr()->GetProcess());}

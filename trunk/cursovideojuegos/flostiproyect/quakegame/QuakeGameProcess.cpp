@@ -4,6 +4,9 @@
 
 #include "QuakeGameProcess.h"
 #include "QuakePhysicsData.h"
+#include "QuakePlayerInput.h"
+#include "QuakePlayer.h"
+#include "QuakeHumanPlayerInput.h"
 
 //---Engine Includes--------
 #include "Core/Core.h"
@@ -35,18 +38,21 @@
 //----------------------------------------------------------------------------
 bool CQuakeGameProcess::Init ()
 {
-	CProcess::m_bIsOk = false;	
-	m_PlayerData=new CQuakePhysicsData("player",CQuakePhysicsData::TYPE3D_PLAYER);
-	m_PlayerData->SetPaint(true);
+	CProcess::m_bIsOk = false;
 	CPhysicsManager* physicManager = CCore::GetSingletonPtr()->GetPhysicManager();
-	m_Player=new CPhysicController(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,m_PlayerData,Vect3f(5.f,6.f,3.f));
-	m_PlayerData->SetObject3D(m_Player);
-	physicManager->AddPhysicController(m_Player);
+	CQuakePhysicsData *playerdata=new CQuakePhysicsData("player",CQuakePhysicsData::TYPE3D_PLAYER);
+	CQuakePlayer *player=new CQuakePlayer(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,playerdata,Vect3f(5.f,6.f,3.f));
+	playerdata->SetPaint(true);
+	playerdata->SetObject3D(player);
+	physicManager->AddPhysicController(player);
+	CQuakeHumanPlayerInput *inputplayer=new CQuakeHumanPlayerInput();
+	inputplayer->SetPlayer(player);
+	m_PlayerInputs.push_back(inputplayer);
 	uint32 w,h;
 	CCore::GetSingletonPtr()->GetRenderManager()->GetWidthAndHeight(w,h);
 	float aspect_ratio = (float)w/h;
-	m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,m_Player);
-	if (m_Player && m_pCamera) 
+	m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
+	if (player && m_pCamera) 
 	{
 		CProcess::m_bIsOk = true;
 	}
@@ -127,16 +133,24 @@ bool CQuakeGameProcess::Init ()
 	return CProcess::m_bIsOk;
 }
 
+void CQuakeGameProcess::ReleasePlayerInputs()
+{
+	std::vector<CQuakePlayerInput *>::iterator it=m_PlayerInputs.begin(),
+		itend=m_PlayerInputs.end();
+	for(;it!=itend;it++)
+	{
+		CQuakePlayerInput *playerinput=*it;
+		delete playerinput;
+	}
+}
+
 void CQuakeGameProcess::Release ()
 {
 	CHECKED_DELETE(m_PelotaData);
-	CHECKED_DELETE(m_PlayerData);
 	CHECKED_DELETE(m_EnemyData);
-	CHECKED_DELETE(m_Player);
 	CHECKED_DELETE(m_pCamera);
 	m_PruebaItemASE.CleanUp();
 	CHECKED_DELETE(m_Pelota);
-	CHECKED_DELETE(m_Player);
 	CHECKED_DELETE(m_Trigger);
 	CHECKED_DELETE(m_TriggerData);
 	CHECKED_DELETE(m_ActorPruebaShut);
@@ -144,6 +158,7 @@ void CQuakeGameProcess::Release ()
 	CHECKED_DELETE(m_ActorPruebaJoint);
 	CHECKED_DELETE(m_ActorPruebaJointData);
 	CHECKED_DELETE(m_PruebaJoint);
+	ReleasePlayerInputs();
 }
 
 void CQuakeGameProcess::OnEnter (CPhysicUserData* trigger, CPhysicUserData* other_shape)
@@ -235,76 +250,6 @@ uint32 CQuakeGameProcess::RenderDebugInfo(CRenderManager* renderManager, float f
 	return posY;
 }
 
-void CQuakeGameProcess::UpdatePlayer(float elapsedTime)
-{
-	CProcess::Update(elapsedTime);
-	CCore * core = CCore::GetSingletonPtr();
-	CInputManager*inputManager = core->GetInputManager();
-	Vect3i deltaMouse = inputManager->GetMouseDelta();
-	float yaw = m_Player->GetYaw();
-	float pitch = m_Player->GetPitch();
-	Vect3f directionXZ(0.f,0.f,0.f);
-
-	if (deltaMouse.x != 0)
-	{
-		float deltaX = deltaMouse.x * 0.01f;
-		m_Player->SetYaw(yaw+deltaX);
-	}
-	if (deltaMouse.y != 0)
-	{
-		if (pitch<-ePIf/4.f)
-			m_Player->SetPitch(-ePIf/4.f);
-		else if(pitch>ePIf/4.f)
-			m_Player->SetPitch(ePIf/4.f);
-		else
-		{
-			float deltaY = deltaMouse.y * 0.01f;
-			m_Player->SetPitch(pitch+deltaY);
-		}
-	}
-	
-	//- Si se presiona el boton del medio y se mueve el mouse, la camara se desplaza por el plano (X,Z) segun su yaw
-	if( inputManager->IsDown(IDV_MOUSE,2) )
-	{
-		if (deltaMouse.y != 0)
-		{
-			//Segun su yaw directamente
-			float delatY = deltaMouse.y * 0.1f;
-			(	cos(yaw), 0, sin(yaw) );
-			//m_Player->SetPosition(m_Player->GetPosition()+directionXZ*delatY);
-		}
-		if (deltaMouse.x != 0)
-		{
-			//Perpendicularmente a su yaw. Realizamos un strafe
-			float deltaX = deltaMouse.x * 0.1f;
-			directionXZ=Vect3f(	sin(yaw), 0, cos(yaw) );
-			//nos desplazamos a una velocidad de 1unidad x segundo
-			//m_Player->SetPosition(m_Player->GetPosition()+directionXZ*deltaX);
-		}
-	}
-	if (inputManager->IsDown(IDV_KEYBOARD, ZVK_UP))
-	{
-		directionXZ=Vect3f(	cos(yaw), 0, sin(yaw) );
-		//m_Player->SetPosition(m_Player->GetPosition()+directionXZ*m_SpeedPlayer*elapsedTime);
-	}
-	if (inputManager->IsDown(IDV_KEYBOARD, ZVK_DOWN))
-	{
-		directionXZ=Vect3f(	-cos(yaw), 0, -sin(yaw) );
-		//m_Player->SetPosition(m_Player->GetPosition()-directionXZ*m_SpeedPlayer*elapsedTime);
-	}
-	if (inputManager->IsDown(IDV_KEYBOARD, ZVK_RIGHT))
-	{
-		directionXZ=Vect3f(	sin(yaw), 0, cos(yaw) );
-		//m_Player->SetPosition(m_Player->GetPosition()+directionXZ*m_SpeedPlayer*elapsedTime);
-	}
-	if (inputManager->IsDown(IDV_KEYBOARD, ZVK_LEFT))
-	{
-		directionXZ=Vect3f(	-sin(yaw), 0, -cos(yaw) );
-		//m_Player->SetPosition(m_Player->GetPosition()-directionXZ*m_SpeedPlayer*elapsedTime);
-	}
-	m_Player->Move(.05f*directionXZ,elapsedTime);
-}
-
 //void CQuakeGameProcess::UpdatePruebaItems  (float elapsedTime)
 //{
 //	std::vector<SPRUEBAITEM *>::iterator it=m_PruebaItems.begin(),itend=m_PruebaItems.end();
@@ -322,9 +267,22 @@ void CQuakeGameProcess::UpdatePlayer(float elapsedTime)
 //	}
 //}
 
+void  CQuakeGameProcess::UpdatePlayerInputs(float elapsedTime)
+{
+	std::vector<CQuakePlayerInput *>::iterator it=m_PlayerInputs.begin(),
+		itend=m_PlayerInputs.end();
+	for(;it!=itend;it++)
+	{
+		CQuakePlayerInput *playerinput=*it;
+		playerinput->UpdateInputAction(elapsedTime);
+	}
+}
+
 void CQuakeGameProcess::Update (float elapsedTime)
 {
-	UpdatePlayer(elapsedTime);
+	CProcess::Update(elapsedTime);
+	UpdatePlayerInputs(elapsedTime);
+	m_Arena.Update(elapsedTime);
 	//UpdatePruebaItems(elapsedTime);
 
 	// Prueba PhysX
@@ -336,7 +294,7 @@ void CQuakeGameProcess::Update (float elapsedTime)
 			CPhysicActor *pelota=new CPhysicActor(m_PelotaData);
 			pelota->CreateBody(100.9f,.9f);		
 			pelota->AddSphereShape(1.f);
-			pelota->SetGlobalPosition(m_Player->GetPosition());
+			pelota->SetGlobalPosition(m_pCamera->GetObject3D()->GetPosition());
 			CCore::GetSingletonPtr()->GetPhysicManager()->AddPhysicActor(pelota);
 			pelota->SetLinearVelocity(m_pCamera->GetDirection());		
 	}
@@ -382,7 +340,7 @@ void CQuakeGameProcess::Update (float elapsedTime)
 		m_PruebaShut.clear();
 		SCollisionInfo info;
 		Vect3f dir=m_pCamera->GetDirection();
-		Vect3f pos=m_Player->GetPosition()+.6f*dir;
+		Vect3f pos=m_pCamera->GetObject3D()->GetPosition()+.6f*dir;
 		CQuakePhysicsData *data=(CQuakePhysicsData *) CCore::GetSingletonPtr()->GetPhysicManager()->RaycastClosestActor(pos,dir,COLLIDABLE_MASK,NULL,info);
 		if (data!=NULL)
 		{
@@ -399,7 +357,7 @@ void CQuakeGameProcess::Update (float elapsedTime)
 	{
 		m_PruebaShut.clear();
 		Vect3f dir=m_pCamera->GetDirection();
-		Vect3f pos=m_Player->GetPosition()+.6f*dir;
+		Vect3f pos=m_pCamera->GetObject3D()->GetPosition()+.6f*dir;
 		std::vector<CPhysicUserData *> mdatas;
 		CCore::GetSingletonPtr()->GetPhysicManager()->OverlapSphereActor(10.f,pos,mdatas);
 		if (!mdatas.empty())
