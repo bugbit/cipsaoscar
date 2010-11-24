@@ -5,6 +5,7 @@
 class CRenderManager;
 class CQuakePlayer;
 class CQuakePhysicsData;
+class CEnemy;
 
 class CArena
 {
@@ -20,9 +21,12 @@ public:
 	void																								Update(float elapsedTime);
 	void																								RenderScene(CRenderManager* renderManager);
 private:	
+	bool																								m_VisibleWorld;
 	CWorld																							*m_World;
 	std::vector <CQuakePlayer *>												m_Players;
 	std::vector <CQuakePhysicsData *>										m_PlayerDatas;
+	CEnemy																							*m_Enemy;
+
 	
 	void																								ReleasePlayers();
 	void																								UpdatePlayers(float elapsedTime);
