@@ -3,10 +3,14 @@
 #include "Arena.h"
 #include "QuakePlayer.h"
 #include "QuakePhysicsData.h"
+#include "Enemy.h"
 
 CArena::CArena(void)
 :m_World(NULL)
+,m_Enemy(NULL)
+,m_VisibleWorld(false)
 {
+	m_Enemy=new CEnemy();
 }
 
 CArena::~CArena(void)
@@ -64,6 +68,7 @@ void CArena::UpdatePlayers(float elapsedTime)
 void CArena::Update(float elapsedTime)
 {
 	UpdatePlayers(elapsedTime);	
+	m_Enemy->Update(elapsedTime);
 }
 
 void CArena::RenderPlayers(CRenderManager* renderManager)
@@ -80,6 +85,8 @@ void CArena::RenderPlayers(CRenderManager* renderManager)
 
 void CArena::RenderScene(CRenderManager* renderManager)
 {
-	m_World->RenderScene(renderManager);
+	if (m_VisibleWorld)
+		m_World->RenderScene(renderManager);
 	RenderPlayers(renderManager);
+	m_Enemy->RenderScene(renderManager);
 }
