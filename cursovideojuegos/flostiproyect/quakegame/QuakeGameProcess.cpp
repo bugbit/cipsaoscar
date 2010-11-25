@@ -15,6 +15,7 @@
 #include "Logger/Logger.h"
 #include "Graphics/Object3D.h"
 #include "Graphics/FPSCamera.h"
+#include "Graphics/ThPSCamera.h"
 #include "Graphics/Textures/TextureManager.h"
 #include "Graphics/Textures/Texture.h"
 #include "Graphics/AviPlayer.h"
@@ -51,7 +52,10 @@ bool CQuakeGameProcess::Init ()
 	uint32 w,h;
 	CCore::GetSingletonPtr()->GetRenderManager()->GetWidthAndHeight(w,h);
 	float aspect_ratio = (float)w/h;
-	m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
+	//m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
+	//camara de prueba (view)
+	CObject3D * pObj = new CObject3D(Vect3f(10.f,10.f,10.f), 0.f, 0.f);
+	m_pCamera = new CThPSCamera(1.f,100.f,mathUtils::Deg2Rad(60.f),aspect_ratio,pObj,10.f);
 	if (player && m_pCamera) 
 	{
 		CProcess::m_bIsOk = true;
