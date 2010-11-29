@@ -1,5 +1,7 @@
 #include "__PCH_Tests.h"
 
+#include <stdlib.h>
+
 #include "Enemy.h"
 
 //---Engine Includes--------
@@ -7,7 +9,7 @@
 #include "Math/Matrix44.h"
 
 CEnemy::CEnemy(void)
-:m_State(CEnemy::PATROL)
+:m_State(CEnemy::REBIRTH)
 {
 	for (int i=0;i<10;i++)
 	{
@@ -27,8 +29,21 @@ void CEnemy::Update(float elapsedTime)
 {
 	switch(m_State)
 	{
-	case CEnemy::PATROL:
-		Patrol(elapsedTime);
+		// REBIRTH, PATROL, WATCH, SHOOT, DEATH
+		case CEnemy::REBIRTH:
+			Rebirth(elapsedTime);
+			break;		
+		case CEnemy::PATROL:
+			Patrol(elapsedTime);
+			break;
+		case CEnemy::WATCH:
+			Watch(elapsedTime);
+			break;
+		case CEnemy::SHOOT:
+			Shoot(elapsedTime);
+			break;
+		case CEnemy::DEATH:
+			Death(elapsedTime);
 			break;
 	}
 }
@@ -67,14 +82,27 @@ void CEnemy::RenderModel(CRenderManager* renderManager)
 	float ang=mathUtils::ACos(m_VectDir.x);
 	Mat44f mat;
 	mat.SetIdentity();
-	//mat.GetRotedByAngleY(ang);
+	mat.GetRotedByAngleY(ang);
 	mat.Translate(m_Position);
 	renderManager->SetTransform(mat);
 	renderManager->DrawCube(6.f,colGREEN);
+	Vect3f posI=m_Position+Vect3f(0.f,1.5f,0.f);
+	Vect3f posF=posI+3.f*m_VectDir;	
 	renderManager->SetTransform((Mat44f&) m44fIDENTITY);
-	Vect3f posI=m_Position-Vect3f(3.f,3.f,3.f);
-	Vect3f posF=posI+1.5f*m_VectDir;
-	renderManager->DrawLine(m_Position,posF,colGREEN);
+	renderManager->DrawLine(posI,posF,colGREEN);
+	mat.SetIdentity();
+	mat.GetRotedByAngleY(ang);
+	mat.Translate(m_Position);
+	renderManager->SetTransform(mat);
+	renderManager->DrawSphere(.4f,colYELLOW);
+}
+
+void CEnemy::Rebirth(float elapsedTime)
+{
+	int n=m_WayPoints.size();
+	m_CurrentWayP=rand() % n;
+	m_Position=m_WayPoints[(m_CurrentWayP -1) % n];
+	m_State=PATROL;
 }
 
 void CEnemy::Patrol(float elapsedTime)
@@ -86,4 +114,16 @@ void CEnemy::Patrol(float elapsedTime)
 	m_Position += dir*elapsedTime;
 	if (pLng<.5)
 		m_CurrentWayP=(m_CurrentWayP+1) % m_WayPoints.size();
+}
+
+void CEnemy::Watch(float elapsedTime)
+{
+}
+
+void CEnemy::Shoot(float elapsedTime)
+{
+}
+
+void CEnemy::Death(float elapsedTime)
+{
 }

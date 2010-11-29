@@ -52,6 +52,9 @@ class CQuakeGameProcess: public CProcess, public CPhysicTriggerReport
 public:
 	//---Init and End protocols
 	CQuakeGameProcess(const std::string& processName):	CProcess(processName),
+																										m_IsCameraView(false),
+																										m_pCameraView(NULL),
+																										m_CameraViewObj3D(NULL),
 																										m_PelotaData(NULL),
 																										m_EnemyData(NULL),
 																										m_SpeedPlayer(15.f),
@@ -83,6 +86,8 @@ public:
 	virtual uint32			RenderDebugInfo			(CRenderManager* renderManager, float fps);
 	//--------------------------------------------------------------
 
+	virtual CCamera*		GetCamera						() const;
+
 	//----CPhysicTriggerReport Interface------------------------------------------------------
 	virtual void				OnEnter							(CPhysicUserData* trigger1, CPhysicUserData* other_shape);
 	virtual void				OnLeave							(CPhysicUserData* trigger1, CPhysicUserData* other_shape);
@@ -95,6 +100,9 @@ private:
 	//void								UpdatePruebaItems   (float elapsedTime);
 
 private:
+	bool																		m_IsCameraView;
+	CThPSCamera															m_pCameraView;
+	CObject3D *															m_CameraViewObj3D;
 	CArena																	m_Arena;
 	CASEObject															m_PruebaItemASE;
 	//std::vector	<SPRUEBAITEM *>								m_PruebaItems;

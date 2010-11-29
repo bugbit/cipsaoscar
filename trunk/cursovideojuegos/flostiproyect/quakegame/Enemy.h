@@ -12,7 +12,7 @@ class CEnemy
 public:
 	enum States
 	{
-		NO_STATE,	PATROL
+		NO_STATE,	REBIRTH, PATROL, WATCH, SHOOT, DEATH
 	};
 	CEnemy(void);
 	~CEnemy(void);
@@ -25,5 +25,9 @@ private:
 	States																						m_State;
 	void																							RenderWayPoints(CRenderManager* renderManager);
 	void																							RenderModel(CRenderManager* renderManager);
+	void																							Rebirth(float elapsedTime);
 	void																							Patrol(float elapsedTime);
+	void																							Watch(float elapsedTime);
+	void																							Shoot(float elapsedTime);
+	void																							Death(float elapsedTime);
 };
