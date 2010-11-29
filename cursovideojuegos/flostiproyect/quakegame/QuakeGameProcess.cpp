@@ -1,6 +1,8 @@
 #include "__PCH_Tests.h"
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #include "QuakeGameProcess.h"
 #include "QuakePhysicsData.h"
@@ -39,6 +41,7 @@
 //----------------------------------------------------------------------------
 bool CQuakeGameProcess::Init ()
 {
+	srand((unsigned) time(NULL)); 
 	CProcess::m_bIsOk = false;
 	CPhysicsManager* physicManager = CCore::GetSingletonPtr()->GetPhysicManager();
 	CQuakePhysicsData *playerdata=new CQuakePhysicsData("player",CQuakePhysicsData::TYPE3D_PLAYER);
@@ -52,10 +55,10 @@ bool CQuakeGameProcess::Init ()
 	uint32 w,h;
 	CCore::GetSingletonPtr()->GetRenderManager()->GetWidthAndHeight(w,h);
 	float aspect_ratio = (float)w/h;
-	//m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
-	//camara de prueba (view)
+	m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
+	//camara (view)
 	CObject3D * pObj = new CObject3D(Vect3f(10.f,10.f,10.f), 0.f, 0.f);
-	m_pCamera = new CThPSCamera(1.f,100.f,mathUtils::Deg2Rad(60.f),aspect_ratio,pObj,10.f);
+	m_pCameraView = new CThPSCamera(1.f,100.f,mathUtils::Deg2Rad(60.f),aspect_ratio,pObj,10.f);
 	if (player && m_pCamera) 
 	{
 		CProcess::m_bIsOk = true;
@@ -150,6 +153,7 @@ void CQuakeGameProcess::ReleasePlayerInputs()
 
 void CQuakeGameProcess::Release ()
 {
+	CHECKED_DELETE(m_CameraViewObj3D);
 	CHECKED_DELETE(m_PelotaData);
 	CHECKED_DELETE(m_EnemyData);
 	CHECKED_DELETE(m_pCamera);
@@ -163,6 +167,11 @@ void CQuakeGameProcess::Release ()
 	CHECKED_DELETE(m_ActorPruebaJointData);
 	CHECKED_DELETE(m_PruebaJoint);
 	ReleasePlayerInputs();
+}
+
+virtual CCamera* CQuakeGameProcess::GetCamera() const
+{
+	return (!m_IsCameraView) ? CProcess::GetCamera() : m_pCameraView;
 }
 
 void CQuakeGameProcess::OnEnter (CPhysicUserData* trigger, CPhysicUserData* other_shape)
