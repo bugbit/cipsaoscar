@@ -8,7 +8,7 @@
 CArena::CArena(void)
 :m_World(NULL)
 ,m_Enemy(NULL)
-,m_VisibleWorld(false)
+,m_VisibleWorld(true)
 {
 	m_Enemy=new CEnemy();
 }

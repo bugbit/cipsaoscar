@@ -13,3 +13,7 @@ CPlayer::CPlayer(float radius, float height, float slope, float skinwidth,
 		stepOffset, collisionGroups, this,pos,gravity):CQuakePhysicsData(TYPE3D_PLAYER,this)
 {
 }
+
+void CPlayer::Update(float elapsedTime) {}
+
+void CPlayer::RenderScene(CRenderManager* renderManager) {}

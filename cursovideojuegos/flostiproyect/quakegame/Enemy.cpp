@@ -11,12 +11,15 @@
 CEnemy::CEnemy(void)
 :m_State(CEnemy::REBIRTH)
 {
-	for (int i=0;i<10;i++)
+	/*for (int i=0;i<10;i++)
 	{
 		float alpha=e2PIf*i/10.f;
 		Vect3f pPos(35.f+15.f*cos(alpha),0.f,-5.f+15.f*sin(alpha));
 		m_WayPoints.push_back(pPos);
-	}
+	}*/
+	m_WayPoints.push_back(Vect3f(5,2,3));
+	m_WayPoints.push_back(Vect3f(-13,2,-7));
+	m_WayPoints.push_back(Vect3f(-17,2,-15));
 	m_Position=*(m_WayPoints.begin());
 	m_CurrentWayP=1;
 }
@@ -101,7 +104,7 @@ void CEnemy::Rebirth(float elapsedTime)
 {
 	int n=m_WayPoints.size();
 	m_CurrentWayP=rand() % n;
-	m_Position=m_WayPoints[(m_CurrentWayP -1) % n];
+	m_Position=m_WayPoints[abs(m_CurrentWayP -1) % n];
 	m_State=PATROL;
 }
 

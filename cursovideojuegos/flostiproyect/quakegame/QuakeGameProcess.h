@@ -24,6 +24,7 @@
 //--Forward Declaration--
 class CRenderManager;
 class CObject3D;  
+class CThPSCamera;
 class CInputManager;
 class CAviPlayer;
 class CTexture;
@@ -101,7 +102,7 @@ private:
 
 private:
 	bool																		m_IsCameraView;
-	CThPSCamera															m_pCameraView;
+	CThPSCamera	*														m_pCameraView;
 	CObject3D *															m_CameraViewObj3D;
 	CArena																	m_Arena;
 	CASEObject															m_PruebaItemASE;
@@ -130,6 +131,7 @@ private:
 	
 	void																		ReleasePlayerInputs();
 	void																		UpdatePlayerInputs(float elapsedTime);
+	void																		UpdateCameraView	(float elapsedTime);
 };
 
 static CQuakeGameProcess* GetQuakeGame() {return static_cast<CQuakeGameProcess*>(CCore::GetSingletonPtr()->GetProcess());}

@@ -15,6 +15,9 @@ public:
 	inline const CWorld &																GetWorld() const { return *m_World;  }
 	inline std::vector <CQuakePlayer *> &								GetPlayers() { return m_Players; }
 	inline std::vector <CQuakePhysicsData *> &					GetPlayerDatas() { return m_PlayerDatas; }
+	inline bool																					GetVisibleWorld() const { return m_VisibleWorld; }
+	inline void																					SetVisibleWorld(bool visible) { m_VisibleWorld=visible; }
+	inline void																					ToggleWorld() { m_VisibleWorld=!m_VisibleWorld; }
 
 	void																								Release();
 	void																								LoadWorld(const char *pathtextures,const char *pathfmt,int numRooms);
