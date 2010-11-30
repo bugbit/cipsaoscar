@@ -52,13 +52,14 @@ bool CQuakeGameProcess::Init ()
 	CQuakeHumanPlayerInput *inputplayer=new CQuakeHumanPlayerInput();
 	inputplayer->SetPlayer(player);
 	m_PlayerInputs.push_back(inputplayer);
+	m_Arena.GetPlayers().push_back(player);
 	uint32 w,h;
 	CCore::GetSingletonPtr()->GetRenderManager()->GetWidthAndHeight(w,h);
 	float aspect_ratio = (float)w/h;
 	m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
 	//camara (view)
-	CObject3D * pObj = new CObject3D(Vect3f(10.f,10.f,10.f), 0.f, 0.f);
-	m_pCameraView = new CThPSCamera(1.f,100.f,mathUtils::Deg2Rad(60.f),aspect_ratio,pObj,10.f);
+	m_CameraViewObj3D = new CObject3D(Vect3f(10.f,10.f,10.f), 0.f, 0.f);
+	m_pCameraView = new CThPSCamera(1.f,100.f,mathUtils::Deg2Rad(60.f),aspect_ratio,m_CameraViewObj3D,10.f);
 	if (player && m_pCamera) 
 	{
 		CProcess::m_bIsOk = true;
@@ -154,6 +155,7 @@ void CQuakeGameProcess::ReleasePlayerInputs()
 void CQuakeGameProcess::Release ()
 {
 	CHECKED_DELETE(m_CameraViewObj3D);
+	CHECKED_DELETE(m_pCameraView);
 	CHECKED_DELETE(m_PelotaData);
 	CHECKED_DELETE(m_EnemyData);
 	CHECKED_DELETE(m_pCamera);
@@ -169,7 +171,7 @@ void CQuakeGameProcess::Release ()
 	ReleasePlayerInputs();
 }
 
-virtual CCamera* CQuakeGameProcess::GetCamera() const
+CCamera* CQuakeGameProcess::GetCamera() const
 {
 	return (!m_IsCameraView) ? CProcess::GetCamera() : m_pCameraView;
 }
@@ -259,6 +261,13 @@ uint32 CQuakeGameProcess::RenderDebugInfo(CRenderManager* renderManager, float f
 		}
 		//...
 		posY += renderManager->DrawDefaultText(posX,posY,colWHITE,mStrTrigger.c_str());
+		std::vector <CQuakePlayer *> &players=m_Arena.GetPlayers();
+		if (!players.empty())
+		{
+			CQuakePlayer *player=*(players.begin());
+			Vect3f pos=player->GetPosition();
+			posY += renderManager->DrawDefaultText(posX,posY,colWHITE,"Player : %f,%f,%f",pos.x,pos.y,pos.z);
+		}
 	}
 	return posY;
 }
@@ -291,16 +300,89 @@ void  CQuakeGameProcess::UpdatePlayerInputs(float elapsedTime)
 	}
 }
 
+void CQuakeGameProcess::UpdateCameraView	(float elapsedTime)
+{
+	//----------------------------------------------------------
+	//-----ACTUALIZAMOS LA CAMARA ESFERICA AL ESTILO DEL MAX----
+	CCore * core = CCore::GetSingletonPtr();
+	CInputManager*inputManager = core->GetInputManager();
+	Vect3i deltaMouse;
+	deltaMouse = inputManager->GetMouseDelta();
+	if( inputManager->IsDown(IDV_MOUSE,0) )
+	{
+		if (deltaMouse.x != 0)
+		{
+			float deltaX = deltaMouse.x * 0.01f;
+			float yaw = m_CameraViewObj3D->GetYaw();
+			m_CameraViewObj3D->SetYaw(yaw+deltaX);
+		}
+		if (deltaMouse.y != 0)
+		{
+			float deltaY = deltaMouse.y * 0.01f;
+			float pitch = m_CameraViewObj3D->GetPitch();
+			m_CameraViewObj3D->SetPitch(pitch+deltaY);
+		}
+	}
+	
+	if (deltaMouse.z != 0)
+	{
+		float deltaZ = deltaMouse.z * 0.1f;
+		float increment = 1.f;
+		if (inputManager->IsDown(IDV_KEYBOARD, ZVK_RCTRL) || inputManager->IsDown(IDV_KEYBOARD, ZVK_LCTRL))
+		{
+			increment = 0.1f;
+		}
+		static_cast<CThPSCamera*>(m_pCameraView)->AddZoom(-deltaZ*increment);
+	}
+	//- Si se presiona el boton del medio y se mueve el mouse, la camara se desplaza por el plano (X,Z) segun su yaw
+	if( inputManager->IsDown(IDV_MOUSE,2) )
+	{
+		if (deltaMouse.y != 0)
+		{
+			//Segun su yaw directamente
+			float delatY = deltaMouse.y * 0.1f;
+			float yaw = m_CameraViewObj3D->GetYaw();
+			Vect3f directionXZ(	cos(yaw), 0, sin(yaw) );
+			m_CameraViewObj3D->SetPosition(m_CameraViewObj3D->GetPosition()+directionXZ*delatY);
+		}
+		if (deltaMouse.x != 0)
+		{
+			//Perpendicularmente a su yaw. Realizamos un strafe
+			float deltaX = deltaMouse.x * 0.1f;
+			float yaw = m_CameraViewObj3D->GetYaw()+ePI2f;
+			Vect3f directionXZ(	cos(yaw), 0, sin(yaw) );
+			//nos desplazamos a una velocidad de 1unidad x segundo
+			m_CameraViewObj3D->SetPosition(m_CameraViewObj3D->GetPosition()+directionXZ*deltaX);
+		}
+	}
+	//----------------------------------------------------------
+	//----------------------------------------------------------
+}
+
+
 void CQuakeGameProcess::Update (float elapsedTime)
 {
 	CProcess::Update(elapsedTime);
-	UpdatePlayerInputs(elapsedTime);
+	if (m_IsCameraView)
+		UpdateCameraView(elapsedTime);
+	else
+		UpdatePlayerInputs(elapsedTime);
 	m_Arena.Update(elapsedTime);
 	//UpdatePruebaItems(elapsedTime);
 
 	// Prueba PhysX
 
 	CInputManager*inputManager = CCore::GetSingletonPtr()->GetInputManager();
+
+	if (inputManager->IsDownUp(IDV_KEYBOARD, ZVK_V))
+	{				
+		m_IsCameraView=!m_IsCameraView;
+	}
+
+	if (inputManager->IsDownUp(IDV_KEYBOARD, ZVK_W))
+	{				
+		m_Arena.ToggleWorld();
+	}
 	
 	if (inputManager->IsDownUp(IDV_KEYBOARD, ZVK_B))
 	{				

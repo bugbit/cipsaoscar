@@ -11,4 +11,6 @@ public:
 		float stepOffset, uint32 collisionGroups, 
 		const Vect3f& pos = Vect3f(0.f,0.f,0.f), float gravity = -9.8f);
 	virtual ~CPlayer();
+	virtual void																			Update(float elapsedTime);
+	virtual void																			RenderScene(CRenderManager* renderManager);
 };
