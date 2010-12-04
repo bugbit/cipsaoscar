@@ -1,43 +1,43 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "001 Base", "..\..\Flosti Engine\Base\Base.vcproj", "{691679FF-0C85-48DA-89B8-FFE3E1E4431E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "001 Base", "..\Flosti Engine\Base\Base.vcproj", "{691679FF-0C85-48DA-89B8-FFE3E1E4431E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "008 ComputerVision", "..\..\Flosti Engine\ComputerVision\ComputerVisionManager.vcproj", "{AE205299-63ED-40D9-B7CF-D301F1990DD8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "008 ComputerVision", "..\Flosti Engine\ComputerVision\ComputerVisionManager.vcproj", "{AE205299-63ED-40D9-B7CF-D301F1990DD8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "002 Core", "..\..\Flosti Engine\Core\Core.vcproj", "{C3DBCD4D-0F9F-45A1-AB88-FEBB1058121E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "002 Core", "..\Flosti Engine\Core\Core.vcproj", "{C3DBCD4D-0F9F-45A1-AB88-FEBB1058121E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "003 Graphics", "..\..\Flosti Engine\Graphics\Graphics.vcproj", "{65439AB5-75D1-403B-A2CE-9A8F0136AEA1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "003 Graphics", "..\Flosti Engine\Graphics\Graphics.vcproj", "{65439AB5-75D1-403B-A2CE-9A8F0136AEA1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "006 GUI", "..\..\Flosti Engine\GUI\GUI.vcproj", "{5245BC09-11CA-4497-BEE0-A655878DD86A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "006 GUI", "..\Flosti Engine\GUI\GUI.vcproj", "{5245BC09-11CA-4497-BEE0-A655878DD86A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "009 Input", "..\..\Flosti Engine\Input\Input.vcproj", "{A7E79E84-C13C-4C34-9924-6C25C2C7E752}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "009 Input", "..\Flosti Engine\Input\Input.vcproj", "{A7E79E84-C13C-4C34-9924-6C25C2C7E752}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "007 Network", "..\..\Flosti Engine\Network\Network.vcproj", "{502CA920-609F-442C-AC69-547D771056A9}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "007 Network", "..\Flosti Engine\Network\Network.vcproj", "{502CA920-609F-442C-AC69-547D771056A9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "004 PhysX", "..\..\Flosti Engine\PhysX\PhysX.vcproj", "{C6149A5F-A96A-4A92-B645-1760E8049A4E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "004 PhysX", "..\Flosti Engine\PhysX\PhysX.vcproj", "{C6149A5F-A96A-4A92-B645-1760E8049A4E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "010 Script", "..\..\Flosti Engine\Script\Script.vcproj", "{3C058272-1664-41AE-8579-69BCACE6345D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "010 Script", "..\Flosti Engine\Script\Script.vcproj", "{3C058272-1664-41AE-8579-69BCACE6345D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "005 Sound", "..\..\Flosti Engine\Sound\Sound.vcproj", "{ACD3FA4D-F804-44FA-B01F-8C8FBC809A30}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "005 Sound", "..\Flosti Engine\Sound\Sound.vcproj", "{ACD3FA4D-F804-44FA-B01F-8C8FBC809A30}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Flosti Engine", "Flosti Engine", "{9A67D085-436B-43C9-AC16-61FFAA61B9F7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Games", "Games", "{EC645CC1-10ED-4719-B85F-8E663BE4FB13}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "003 AirHockey", "..\..\Games\AirHockey\AirHockey.vcproj", "{01B1293A-1EBD-4B39-8468-D22F35121FE6}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "003 AirHockey", "..\Games\AirHockey\AirHockey.vcproj", "{01B1293A-1EBD-4B39-8468-D22F35121FE6}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "004 Laberynth", "..\..\Games\Laberynth\Laberynth.vcproj", "{FB877056-30D3-4136-8501-04D21BB6B849}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "004 Laberynth", "..\Games\Laberynth\Laberynth.vcproj", "{FB877056-30D3-4136-8501-04D21BB6B849}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "001 PokerTH", "..\..\Games\PokerTH\PokerTH.vcproj", "{C894EF2F-921D-4EE7-9291-48969E325507}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "001 PokerTH", "..\Games\PokerTH\PokerTH.vcproj", "{C894EF2F-921D-4EE7-9291-48969E325507}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "002 Quiz", "..\..\Games\Quiz\Quiz.vcproj", "{92517CB3-C5B9-4D77-B8AB-E7E520426071}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "002 Quiz", "..\Games\Quiz\Quiz.vcproj", "{92517CB3-C5B9-4D77-B8AB-E7E520426071}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{74BD03AA-B000-4186-8FD6-943A01CE4ED1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "002 Tests", "..\..\Tools\Tests\Tests.vcproj", "{C5C458D4-145F-4D50-BFA6-4E7B93BE2682}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "002 Tests", "..\Tools\Tests\Tests.vcproj", "{C5C458D4-145F-4D50-BFA6-4E7B93BE2682}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "001 Viewer", "..\..\Tools\Viewer\Viewer.vcproj", "{55B0ADB5-4ED9-4A4D-BFDC-B2D5528CCE9A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "001 Viewer", "..\Tools\Viewer\Viewer.vcproj", "{55B0ADB5-4ED9-4A4D-BFDC-B2D5528CCE9A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mis Proyectos", "Mis Proyectos", "{1BD2671F-5CCF-4620-BFD6-D66FA8D146E1}"
 EndProject

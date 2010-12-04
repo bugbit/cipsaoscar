@@ -1,190 +1,156 @@
-// Quake.cpp: define el punto de entrada de la aplicación.
-//
+#include "__PCH_Quake.h"
+#include <windows.h>
 
-#include "stdafx.h"
-#include "Quake.h"
 
-#define MAX_LOADSTRING 100
+//---Engine Includes---
+#include "Core/FlostiEngine.h"
+#include "Base/Exceptions/Exception.h"
+//---------------------
 
-// Variables globales:
-HINSTANCE hInst;								// Instancia actual
-TCHAR szTitle[MAX_LOADSTRING];					// Texto de la barra de título
-TCHAR szWindowClass[MAX_LOADSTRING];			// nombre de clase de la ventana principal
+//---Game Includes---
+#include "QuakeProcess.h"
+//-------------------
 
-// Declaraciones de funciones adelantadas incluidas en este módulo de código:
-ATOM				MyRegisterClass(HINSTANCE hInstance);
-BOOL				InitInstance(HINSTANCE, int);
-LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK	About(HWND, UINT, WPARAM, LPARAM);
+//---Always the last:
+#include "Memory/MemLeaks.h"
 
-int APIENTRY _tWinMain(HINSTANCE hInstance,
-                     HINSTANCE hPrevInstance,
-                     LPTSTR    lpCmdLine,
-                     int       nCmdShow)
+#define APPLICATION_NAME	"AIR HOCKEY GAME"
+
+// ----------------------------------------
+// -- Windows Message Handlers
+// ----------------------------------------
+#define WM_SERVER (WM_USER + 1)
+#define WM_CLIENT (WM_USER + 2)
+
+//Globals
+CFlostiEngine * g_FlostEngine = new CFlostiEngine();
+
+//-----------------------------------------------------------------------------
+// Name: MsgProc()
+// Desc: The window's message handler
+//-----------------------------------------------------------------------------
+LRESULT WINAPI MsgProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
-	UNREFERENCED_PARAMETER(hPrevInstance);
-	UNREFERENCED_PARAMETER(lpCmdLine);
 
- 	// TODO: colocar código aquí.
-	MSG msg;
-	HACCEL hAccelTable;
-
-	// Inicializar cadenas globales
-	LoadString(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-	LoadString(hInstance, IDC_QUAKE, szWindowClass, MAX_LOADSTRING);
-	MyRegisterClass(hInstance);
-
-	// Realizar la inicialización de la aplicación:
-	if (!InitInstance (hInstance, nCmdShow))
+	switch( msg )
 	{
-		return FALSE;
-	}
-
-	hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_QUAKE));
-
-	// Bucle principal de mensajes:
-	while (GetMessage(&msg, NULL, 0, 0))
-	{
-		if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
-		}
-	}
-
-	return (int) msg.wParam;
-}
-
-
-
-//
-//  FUNCIÓN: MyRegisterClass()
-//
-//  PROPÓSITO: registrar la clase de ventana.
-//
-//  COMENTARIOS:
-//
-//    Esta función y su uso son sólo necesarios si desea que el código
-//    sea compatible con sistemas Win32 anteriores a la función
-//    'RegisterClassEx' que se agregó a Windows 95. Es importante llamar a esta función
-//    para que la aplicación obtenga iconos pequeños bien formados
-//    asociados a ella.
-//
-ATOM MyRegisterClass(HINSTANCE hInstance)
-{
-	WNDCLASSEX wcex;
-
-	wcex.cbSize = sizeof(WNDCLASSEX);
-
-	wcex.style			= CS_HREDRAW | CS_VREDRAW;
-	wcex.lpfnWndProc	= WndProc;
-	wcex.cbClsExtra		= 0;
-	wcex.cbWndExtra		= 0;
-	wcex.hInstance		= hInstance;
-	wcex.hIcon			= LoadIcon(hInstance, MAKEINTRESOURCE(IDI_QUAKE));
-	wcex.hCursor		= LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW+1);
-	wcex.lpszMenuName	= MAKEINTRESOURCE(IDC_QUAKE);
-	wcex.lpszClassName	= szWindowClass;
-	wcex.hIconSm		= LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
-
-	return RegisterClassEx(&wcex);
-}
-
-//
-//   FUNCIÓN: InitInstance(HINSTANCE, int)
-//
-//   PROPÓSITO: guardar el identificador de instancia y crear la ventana principal
-//
-//   COMENTARIOS:
-//
-//        En esta función, se guarda el identificador de instancia en una variable común y
-//        se crea y muestra la ventana principal del programa.
-//
-BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
-{
-   HWND hWnd;
-
-   hInst = hInstance; // Almacenar identificador de instancia en una variable global
-
-   hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
-
-   if (!hWnd)
-   {
-      return FALSE;
-   }
-
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
-
-   return TRUE;
-}
-
-//
-//  FUNCIÓN: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  PROPÓSITO: procesar mensajes de la ventana principal.
-//
-//  WM_COMMAND	: procesar el menú de aplicación
-//  WM_PAINT	: pintar la ventana principal
-//  WM_DESTROY	: enviar un mensaje de finalización y volver
-//
-//
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	int wmId, wmEvent;
-	PAINTSTRUCT ps;
-	HDC hdc;
-
-	switch (message)
-	{
-	case WM_COMMAND:
-		wmId    = LOWORD(wParam);
-		wmEvent = HIWORD(wParam);
-		// Analizar las selecciones de menú:
-		switch (wmId)
-		{
-		case IDM_ABOUT:
-			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-			break;
-		case IDM_EXIT:
-			DestroyWindow(hWnd);
-			break;
-		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
-		}
-		break;
-	case WM_PAINT:
-		hdc = BeginPaint(hWnd, &ps);
-		// TODO: agregar código de dibujo aquí...
-		EndPaint(hWnd, &ps);
-		break;
 	case WM_DESTROY:
-		PostQuitMessage(0);
-		break;
-	default:
-		return DefWindowProc(hWnd, message, wParam, lParam);
-	}
-	return 0;
-}
-
-// Controlador de mensajes del cuadro Acerca de.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-	UNREFERENCED_PARAMETER(lParam);
-	switch (message)
-	{
-	case WM_INITDIALOG:
-		return (INT_PTR)TRUE;
-
-	case WM_COMMAND:
-		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
-			EndDialog(hDlg, LOWORD(wParam));
-			return (INT_PTR)TRUE;
+			PostQuitMessage( 0 );
+			return 0;
 		}
 		break;
+	case WM_KEYDOWN:
+		{
+			switch( wParam )
+			{
+			case VK_ESCAPE:
+				//Cleanup();
+				PostQuitMessage( 0 );
+				return 0;
+				break;
+			}
+		}
+		break;
+	case WM_SERVER: case WM_CLIENT: 
+		{
+			g_FlostEngine->MsgProc(wParam, lParam);
+		}
+		break;
+
+	}//end switch( msg )
+
+	return DefWindowProc( hWnd, msg, wParam, lParam );
+}
+
+void ShowErrorMessage (const std::string& message)
+{
+		bool logSaved = false;
+		logSaved = LOGGER->SaveLogsInFile();
+		std::string end_message = "";
+		if (logSaved)
+		{
+			end_message += "Sorry, Application failed. Logs saved\n";
+		}
+		else
+		{
+			end_message += "Sorry, Application failed. Logs could not be saved\n";
+		}
+		end_message += message;
+		MessageBox(0, end_message.c_str(), "VideoGameBook Report", MB_OK | MB_ICONERROR);
+}
+
+//-----------------------------------------------------------------------
+// WinMain
+//-----------------------------------------------------------------------
+int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCmdLine, int _nCmdShow)
+{
+
+#if defined( _DEBUG )
+	MemLeaks::MemoryBegin();
+#endif //defined(_DEBUG)
+
+	WNDCLASSEX wc = {	sizeof(WNDCLASSEX), CS_CLASSDC, MsgProc, 0L, 0L, GetModuleHandle(NULL), 
+										NULL, NULL, NULL, NULL, APPLICATION_NAME, NULL };
+
+	// Register the window class
+	RegisterClassEx( &wc );
+
+	try
+	{
+		CQuakeGameProcess* QuakeGame = new CQuakeGameProcess("QuakeGame");
+		std::vector<CProcess*> l_ProcessVector;
+		l_ProcessVector.push_back(QuakeGame);
+		g_FlostEngine->LoadInitParams("Data/Config/init_Quake.xml");
+		uint32 width	= g_FlostEngine->GetInitParams().m_ScreenResolution.x;
+		uint32 height	= g_FlostEngine->GetInitParams().m_ScreenResolution.y;
+
+		uint32 posX	= g_FlostEngine->GetInitParams().m_WindowsPosition.x;
+		uint32 posY	= g_FlostEngine->GetInitParams().m_WindowsPosition.y;
+
+
+		// Create the application's window
+		HWND hWnd = CreateWindow(	APPLICATION_NAME, APPLICATION_NAME, WS_OVERLAPPEDWINDOW, 
+															posX, posY, width, height,
+															NULL, NULL, wc.hInstance, NULL );
+
+		g_FlostEngine->Init(l_ProcessVector, hWnd);
+
+		ShowWindow( hWnd, SW_SHOWDEFAULT );
+		UpdateWindow( hWnd );
+		MSG msg;
+		ZeroMemory( &msg, sizeof(msg) );
+		while( msg.message!=WM_QUIT && !g_FlostEngine->Exit())
+		{
+			if( PeekMessage( &msg, NULL, 0U, 0U, PM_REMOVE ) )
+			{
+				TranslateMessage( &msg );
+				DispatchMessage( &msg );
+			}
+			else
+			{
+				// main loop
+				g_FlostEngine->Update();
+				g_FlostEngine->Render();
+			}
+		}
+
 	}
-	return (INT_PTR)FALSE;
+	catch(CException& e)
+	{
+		ShowErrorMessage(e.GetDescription());
+	}
+	catch (...)	
+	{
+		ShowErrorMessage("Exception Occured");
+	}
+
+	UnregisterClass( APPLICATION_NAME, wc.hInstance );
+	CHECKED_DELETE(g_FlostEngine);
+
+#if defined( _DEBUG )
+	MemLeaks::MemoryEnd();
+#endif //defined(_DEBUG)
+
+	return 0;
 }
