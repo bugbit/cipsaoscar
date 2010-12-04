@@ -2,11 +2,11 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="Quake"
+	Name="001 Quake"
 	ProjectGUID="{41F72777-3EE7-4B52-B955-A78534594BA7}"
 	RootNamespace="Quake"
 	Keyword="Win32Proj"
-	TargetFrameworkVersion="196613"
+	TargetFrameworkVersion="131072"
 	>
 	<Platforms>
 		<Platform
@@ -18,10 +18,10 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="..\..\..\Bin"
+			IntermediateDirectory="..\..\..\Bin\Intermediate\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -40,13 +40,18 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				UseUnicodeResponseFiles="false"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS"
+				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories="..\;&quot;..\..\Flosti Engine\&quot;;&quot;..\..\Flosti Engine\Base&quot;;&quot;..\..\..\3rdParty\libxml2-2.7.2.win32\include&quot;;&quot;..\..\..\3rdParty\iconv-1.9.2.win32\include&quot;;..\..\..\3rdParty\openAL\include;..\..\..\3rdParty\lua\;..\..\..\3rdParty\"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="1"
+				PrecompiledHeaderThrough="__PCH_Quake.h"
 				WarningLevel="3"
+				WarnAsError="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -60,9 +65,18 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="InputD.lib ScriptD.lib Winmm.lib libxml2.lib libxml2_a.lib libxml2_a_dll.lib d3dx9d.lib d3d9.lib PhysXLoader.lib NxCooking.lib NxCharacter.lib lua50.lib alut.lib OpenAL32.lib cv.lib cvaux.lib highgui.lib cxcore.lib BaseD.lib GraphicsD.lib GuiD.lib PhysxD.lib SoundD.lib CoreD.lib NetworkD.lib ComputerVisionD.lib vfw32.lib xinput.lib"
+				OutputFile="$(OutDir)\QuakeD.exe"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\..\Bin\lib;&quot;..\..\..\3rdParty\libxml2-2.7.2.win32\lib&quot;;..\..\..\3rdParty\lua;..\..\..\3rdParty\openAL\;..\..\..\3rdParty\OpenCV\lib"
+				GenerateManifest="false"
 				GenerateDebugInformation="true"
 				SubSystem="2"
+				OptimizeReferences="0"
+				EnableCOMDATFolding="0"
+				LinkTimeCodeGeneration="0"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -89,11 +103,11 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
-			IntermediateDirectory="$(ConfigurationName)"
+			OutputDirectory="..\..\..\Bin\"
+			IntermediateDirectory="..\..\..\Bin\Intermediate\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
-			WholeProgramOptimization="1"
+			CharacterSet="2"
+			WholeProgramOptimization="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -113,12 +127,16 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="2"
-				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS"
-				RuntimeLibrary="2"
-				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
+				WholeProgramOptimization="false"
+				AdditionalIncludeDirectories="..\;&quot;..\..\Flosti Engine\&quot;;&quot;..\..\Flosti Engine\Base&quot;;&quot;..\..\..\3rdParty\libxml2-2.7.2.win32\include&quot;;&quot;..\..\..\3rdParty\iconv-1.9.2.win32\include&quot;;..\..\..\3rdParty\openAL\include;..\..\..\3rdParty\lua\;..\..\..\3rdParty\"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="0"
+				RuntimeLibrary="0"
+				UsePrecompiledHeader="1"
+				PrecompiledHeaderThrough="__PCH_Quake.h"
 				WarningLevel="3"
+				WarnAsError="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool
@@ -132,11 +150,18 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="1"
+				AdditionalDependencies=" vfw32.lib Winmm.lib libxml2.lib libxml2_a.lib libxml2_a_dll.lib d3dx9d.lib d3d9.lib PhysXLoader.lib NxCooking.lib NxCharacter.lib lua50.lib alut.lib OpenAL32.lib cv.lib cvaux.lib highgui.lib cxcore.lib Base.lib Graphics.lib Gui.lib Physx.lib Sound.lib Core.lib Network.lib ComputerVision.lib"
+				OutputFile="$(OutDir)\Quake.exe"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\..\Bin\lib;&quot;..\..\..\3rdParty\libxml2-2.7.2.win32\lib&quot;;..\..\..\3rdParty\lua;..\..\..\3rdParty\openAL\;..\..\..\3rdParty\OpenCV\lib"
+				GenerateManifest="false"
 				GenerateDebugInformation="true"
 				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				OptimizeReferences="1"
+				EnableCOMDATFolding="1"
+				LinkTimeCodeGeneration="0"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -166,77 +191,35 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Archivos de código fuente"
-			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
-			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
+			Name="__PCH"
 			>
 			<File
-				RelativePath=".\Quake.cpp"
+				RelativePath=".\__PCH_Quake.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
-				>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-			</File>
-		</Filter>
-		<Filter
-			Name="Archivos de encabezado"
-			Filter="h;hpp;hxx;hm;inl;inc;xsd"
-			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
-			>
-			<File
-				RelativePath=".\Quake.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Resource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\targetver.h"
+				RelativePath=".\__PCH_Quake.h"
 				>
 			</File>
 		</Filter>
 		<Filter
-			Name="Archivos de recursos"
-			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
-			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			Name="_XML_Config"
 			>
 			<File
-				RelativePath=".\Quake.ico"
-				>
-			</File>
-			<File
-				RelativePath=".\Quake.rc"
-				>
-			</File>
-			<File
-				RelativePath=".\small.ico"
+				RelativePath="..\..\..\Run\Quake\Data\Config\init_Quake.xml"
 				>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\ReadMe.txt"
+			RelativePath=".\Quake.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\QuakeProcess.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\QuakeProcess.h"
 			>
 		</File>
 	</Files>
