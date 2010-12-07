@@ -27,12 +27,6 @@
     <Script action="_aviPM         = getCore():getAviPlayer();"/>
     <Script action="_networkM      = getCore():getNetwork();"/>
     <Script action="_cvM           = getCore():getComputerVision();"/>
-    <Script action="_GprahicTest   = getGrpahicTest();"/>
-    <Script action="_aVITest       = getAVITest();"/>
-    <Script action="_guiTest       = getGuiTest();"/>
-    <Script action="_physXTest     = getPhysXTest();"/>
-    <Script action="_spriteTest    = getSpriteTest();"/>
-    <Script action="_partSystTest  = getPartSystTest();"/>
     <Script action="_game          = getGameQuake();"/>
   </InitScripts>
   <Process initProcess="QuakeGame"/>
