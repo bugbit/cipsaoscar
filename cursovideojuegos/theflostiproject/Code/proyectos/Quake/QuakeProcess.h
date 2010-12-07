@@ -9,6 +9,8 @@
 #ifndef INC_AIR_HOCKEY_GAME_PROCESS_H_
 #define INC_AIR_HOCKEY_GAME_PROCESS_H_
 
+#include "Arena.h"
+
 //---Engine Includes---
 #include "Core/Process.h"
 #include "Core/Core.h"
@@ -21,14 +23,21 @@ class CRenderManager;
 class CObject3D;  
 class CInputManager;
 class CASEObject;
+class CThPSCamera;
+class CObject3D;
 //-----------------------
 
-class CQuakeGameProcess: public CProcess
+class CQuakeProcess: public CProcess
 {
 public:
 	//---Init and End protocols
-	CQuakeGameProcess(const std::string& processName): CProcess(processName) {}
-	virtual ~CQuakeGameProcess(void) {Done();}
+	CQuakeProcess(const std::string& processName): CProcess(processName),
+																										m_IsCameraView(false),
+																										m_pCameraView(NULL),
+																										m_CameraViewObj3D(NULL),
+																										m_drawAxisGrid(true)
+																										{}
+	virtual ~CQuakeProcess(void) {Done();}
 
 	//----CScriptRegister Interface---------------------------------------
 	virtual void				RegisterFunctions			(CScriptManager* scriptManager);
@@ -42,7 +51,7 @@ public:
 	virtual uint32			RenderDebugInfo			(CRenderManager* renderManager, CFontManager* fontManager, float fps);
 	//--------------------------------------------------------------
 
-
+	virtual CCamera*		GetCamera						() const;
 
 private:
 	//----CProcess Interface---------------------------------------
@@ -50,9 +59,16 @@ private:
 	//--------------------------------------------------------------
 
 private:
+	bool																		m_IsCameraView;
+	CThPSCamera	*														m_pCameraView;
+	CObject3D *															m_CameraViewObj3D;
+	bool																		m_drawAxisGrid;
+	CArena																	m_pArena;
 
+	void																		UpdateCameraView		(CInputManager* inputManager);
+	void																		UpdateInputActions	(CInputManager* inputManager);
 };
 
-static CQuakeGameProcess* GetGameQuake() {return static_cast<CQuakeGameProcess*>(CORE->GetProcess());}
+static CQuakeProcess* GetGameQuake() {return static_cast<CQuakeProcess*>(CORE->GetProcess());}
 
 #endif //INC_AIR_HOCKEY_GAME_PROCESS_H_
