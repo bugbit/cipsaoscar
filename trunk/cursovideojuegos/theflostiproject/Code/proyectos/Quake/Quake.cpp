@@ -98,7 +98,7 @@ int APIENTRY WinMain(HINSTANCE _hInstance, HINSTANCE _hPrevInstance, LPSTR _lpCm
 
 	try
 	{
-		CQuakeGameProcess* QuakeGame = new CQuakeGameProcess("QuakeGame");
+		CQuakeProcess* QuakeGame = new CQuakeProcess("QuakeGame");
 		std::vector<CProcess*> l_ProcessVector;
 		l_ProcessVector.push_back(QuakeGame);
 		g_FlostEngine->LoadInitParams("Data/Config/init_Quake.xml");

@@ -206,12 +206,60 @@
 			Name="_XML_Config"
 			>
 			<File
+				RelativePath="..\..\..\Run\Quake\Data\actions.xml"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\Run\Quake\Data\Config\init_Quake.xml"
 				>
 			</File>
+			<Filter
+				Name="World"
+				>
+				<Filter
+					Name="First"
+					>
+					<File
+						RelativePath="..\..\..\Run\Quake\Data\Models\Worlds\First\first.xml"
+						>
+					</File>
+				</Filter>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="GameLogic"
+			>
+			<Filter
+				Name="Board"
+				>
+				<File
+					RelativePath=".\Arena.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Arena.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Player.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Player.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\Quake.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\QuakePhysicsData.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\QuakePhysicsData.h"
 			>
 		</File>
 		<File
@@ -220,6 +268,30 @@
 		</File>
 		<File
 			RelativePath=".\QuakeProcess.h"
+			>
+		</File>
+		<File
+			RelativePath=".\Util.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Util.h"
+			>
+		</File>
+		<File
+			RelativePath=".\World.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\World.h"
+			>
+		</File>
+		<File
+			RelativePath=".\WorldASE.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\WorldASE.h"
 			>
 		</File>
 	</Files>
