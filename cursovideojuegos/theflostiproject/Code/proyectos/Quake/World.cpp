@@ -29,6 +29,7 @@ bool IWorld::Init()
 		m_bIsOk=true;
 		m_pPhysxData->SetPaint(false);
 		m_pActor=new CPhysicActor(m_pPhysxData);
+		//CORE->GetPhysicManager()->AddPhysicActor(m_pActor);
 	}
 
 	return m_bIsOk;

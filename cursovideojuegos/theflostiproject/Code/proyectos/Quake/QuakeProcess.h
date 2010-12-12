@@ -10,6 +10,7 @@
 #define INC_AIR_HOCKEY_GAME_PROCESS_H_
 
 #include "Arena.h"
+#include "playerinput.h"
 
 //---Engine Includes---
 #include "Core/Process.h"
@@ -64,9 +65,11 @@ private:
 	CObject3D *															m_CameraViewObj3D;
 	bool																		m_drawAxisGrid;
 	CArena																	m_pArena;
+	std::vector<CPlayerInput *>							m_PlayerInputs;
 
 	void																		UpdateCameraView		(CInputManager* inputManager);
 	void																		UpdateInputActions	(CInputManager* inputManager);
+	void																		UpdatePlayerInputs	(float elapsedTime);
 };
 
 static CQuakeProcess* GetGameQuake() {return static_cast<CQuakeProcess*>(CORE->GetProcess());}
