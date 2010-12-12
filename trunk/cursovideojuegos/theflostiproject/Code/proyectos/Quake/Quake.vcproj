@@ -249,6 +249,22 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="PlayerInputs"
+				>
+				<File
+					RelativePath=".\ActionsPlayerInput.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ActionsPlayerInput.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PlayerInput.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\Quake.cpp"
