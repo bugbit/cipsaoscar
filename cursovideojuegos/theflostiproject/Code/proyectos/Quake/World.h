@@ -37,6 +37,7 @@ public:
 	inline void					SetPhysxGroup			(uint32 group) { m_uPhysxGroup=group; }
 
 	bool								ReloadWorld				();
+	void								AddActorInPhysxManager();
 
 protected:
 	bool				        m_bIsOk;			      // Initialization boolean control

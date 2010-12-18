@@ -85,3 +85,8 @@ void IWorld::ClearPhysx()
 	}
 	CHECKED_DELETE(m_pPhysxData);
 }
+
+void IWorld::AddActorInPhysxManager()
+{
+	CORE->GetPhysicManager()->AddPhysicActor(m_pActor);
+}

@@ -89,7 +89,6 @@ void CWorldASE::LoadModels()
 		pObjAse=LoadModelsRoom(m_RoomsFilesASE[i],i);
 		m_RoomsASE[i]=pObjAse;
 	}
-	CORE->GetPhysicManager()->AddPhysicActor(m_pActor);
 }
 
 #pragma warning( push )	
