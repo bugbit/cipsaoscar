@@ -7,5 +7,5 @@ class CActionsPlayerInput :
 public:
 	CActionsPlayerInput(void);
 	~CActionsPlayerInput(void);
-	virtual void UpdateInputAction	(float elapsedTime);
+	virtual void										UpdateInputAction		(float elapsedTime);
 };

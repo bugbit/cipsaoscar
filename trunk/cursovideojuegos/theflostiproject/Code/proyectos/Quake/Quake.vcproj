@@ -266,6 +266,22 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="PlayerRender"
+			>
+			<File
+				RelativePath=".\FPSPlayerRender.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FPSPlayerRender.h"
+				>
+			</File>
+			<File
+				RelativePath=".\PlayerRender.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\Quake.cpp"
 			>

@@ -26,6 +26,7 @@ class CInputManager;
 class CASEObject;
 class CThPSCamera;
 class CObject3D;
+class CPlayerRender;
 //-----------------------
 
 class CQuakeProcess: public CProcess
@@ -36,7 +37,7 @@ public:
 																										m_IsCameraView(false),
 																										m_pCameraView(NULL),
 																										m_CameraViewObj3D(NULL),
-																										m_drawAxisGrid(true)
+																										m_drawAxisGrid(false)
 																										{}
 	virtual ~CQuakeProcess(void) {Done();}
 
@@ -66,10 +67,14 @@ private:
 	bool																		m_drawAxisGrid;
 	CArena																	m_pArena;
 	std::vector<CPlayerInput *>							m_PlayerInputs;
+	std::vector<CPlayerRender *>						m_PlayerRenders;
 
 	void																		UpdateCameraView		(CInputManager* inputManager);
+	void																		RenderPlayers				(CRenderManager* renderManager, CFontManager* fontManager);
 	void																		UpdateInputActions	(CInputManager* inputManager);
 	void																		UpdatePlayerInputs	(float elapsedTime);
+	void																		ReleasePlayerInputs	();
+	void																		ReleasePlayerRenders	();
 };
 
 static CQuakeProcess* GetGameQuake() {return static_cast<CQuakeProcess*>(CORE->GetProcess());}

@@ -1,11 +1,12 @@
 #include "__PCH_Quake.h"
 
+#include "QuakeProcess.h"
 #include "WorldASE.h"
 #include "Player.h"
 #include "ActionsPlayerInput.h"
+#include "FPSPlayerRender.h"
 
 //---Engine Includes----
-#include "QuakeProcess.h"
 #include "Input/InputManager.h"
 #include "Input/ActionToInput.h"
 #include "Graphics/RenderManager.h"
@@ -46,6 +47,10 @@ bool CQuakeProcess::Init ()
 	CActionsPlayerInput *inputplayer=new CActionsPlayerInput();
 	inputplayer->SetPlayer(player);
 	m_PlayerInputs.push_back(inputplayer);
+	CFPSPlayerRender *renderplayer=new CFPSPlayerRender();
+	renderplayer->SetPlayer(player);
+	renderplayer->LoadFaceASE("./Data/Models/ItemsPlayer/Head_Razor_Player.ASE","./Data/Textures/First/");
+	m_PlayerRenders.push_back(renderplayer);
 	m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
 	//camara (view)
 	m_pCameraView = new CThPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,m_CameraViewObj3D,10.f);
@@ -59,6 +64,7 @@ bool CQuakeProcess::Init ()
 			world->Init();
 			world->LoadWorld("./Data/Models/Worlds/First/first.xml");
 			world->LoadModels();
+			world->AddActorInPhysxManager();
 			m_pArena.SetWorld(world);
 			CProcess::m_bIsOk = true;
 		}
@@ -76,7 +82,31 @@ void CQuakeProcess::Release ()
 	CHECKED_DELETE(m_CameraViewObj3D);
 	CHECKED_DELETE(m_pCameraView);
 	CHECKED_DELETE(m_pCamera);
+	ReleasePlayerInputs();
+	ReleasePlayerRenders();
 	m_pArena.Done();
+}
+
+void CQuakeProcess::ReleasePlayerInputs()
+{
+	std::vector<CPlayerInput *>::iterator it=m_PlayerInputs.begin(),
+		itend=m_PlayerInputs.end();
+	for(;it!=itend;it++)
+	{
+		CPlayerInput *playerinput=*it;
+		delete playerinput;
+	}
+}
+
+void CQuakeProcess::ReleasePlayerRenders	()
+{
+	std::vector<CPlayerRender *>::iterator it=m_PlayerRenders.begin(),
+		itend=m_PlayerRenders.end();
+	for(;it!=itend;it++)
+	{
+		CPlayerRender *playerrender=*it;
+		delete playerrender;
+	}
 }
 
 CCamera* CQuakeProcess::GetCamera() const
@@ -96,9 +126,21 @@ void CQuakeProcess::RenderScene (CRenderManager* renderManager, CFontManager* fo
 		renderManager->DrawCamera(m_pCamera);
 	}
 	m_pArena.RenderScene(renderManager,fontManager);
+	RenderPlayers(renderManager,fontManager);
 	if (pm->GetDebugRenderMode())
 	{
 		pm->DebugRender(renderManager);
+	}
+}
+
+void  CQuakeProcess::RenderPlayers(CRenderManager* renderManager, CFontManager* fontManager)
+{
+	std::vector<CPlayerRender *>::iterator it=m_PlayerRenders.begin(),
+		itend=m_PlayerRenders.end();
+	for(;it!=itend;it++)
+	{
+		CPlayerRender *playerrender=*it;
+		playerrender->RenderScene(renderManager,fontManager);
 	}
 }
 
