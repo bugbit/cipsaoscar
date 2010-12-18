@@ -66,11 +66,31 @@
   
   <!--Movimiento Del Player-->
 
-  <action name="MoveXViewerCam">
+  <action name="YawPlayer">
     <input deviceType="IDV_MOUSE" AxisType="AXIS_MOUSE_X"     Delta="1.f"/>
   </action>
 
-  <!--.......VIEWER CAMERA CONTROL: MOUSE AND KEYBOARD............-->
+  <action name="PitchPlayer">
+    <input deviceType="IDV_MOUSE" AxisType="AXIS_MOUSE_Y"     Delta="1.f"/>
+  </action>
+
+  <action name="MoveUpPlayer">
+    <input deviceType="IDV_KEYBOARD" EventType="EVENT_DOWN"  Code="KEY_UP"/>
+  </action>
+
+  <action name="MoveDownPlayer">
+    <input deviceType="IDV_KEYBOARD" EventType="EVENT_DOWN"  Code="KEY_DOWN"/>
+  </action>
+
+  <action name="MoveLeftPlayer">
+    <input deviceType="IDV_KEYBOARD" EventType="EVENT_DOWN"  Code="KEY_LEFT"/>
+  </action>
+
+  <action name="MoveRightPlayer">
+    <input deviceType="IDV_KEYBOARD" EventType="EVENT_DOWN"  Code="KEY_RIGHT"/>
+  </action>
+
+    <!--.......VIEWER CAMERA CONTROL: MOUSE AND KEYBOARD............-->
   <action name="MoveXViewerCam">
     <input deviceType="IDV_MOUSE" EventType="EVENT_DOWN"      Code="MOUSE_BUTTON_MIDDLE"/>
     <input deviceType="IDV_MOUSE" AxisType="AXIS_MOUSE_X"     Delta="1.f"/>
