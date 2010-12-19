@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "ActionsPlayerInput.h"
 #include "FPSPlayerRender.h"
+#include "QuakePhysicsData.h"
 
 //---Engine Includes----
 #include "Input/InputManager.h"
@@ -19,7 +20,7 @@
 #include "Script/ScriptManager.h"
 #include "luabind/luabind.hpp"
 #include "PhysX/PhysicsManager.h"
-#include "QuakePhysicsData.h"
+#include "Math/Matrix44.h"
 //----------------------
 
 //---Game Includes------
@@ -40,7 +41,7 @@ bool CQuakeProcess::Init ()
 	float aspect_ratio = (float)w/h;	
 	m_CameraViewObj3D = new CObject3D(Vect3f(10.f,10.f,10.f), 0.f, 0.f);
 	CQuakePhysicsData *playerdata=new CQuakePhysicsData("player",CQuakePhysicsData::TYPE3D_PLAYER);
-	CPlayer *player=new CPlayer(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,playerdata,Vect3f(5.f,6.f,3.f));
+	CPlayer *player=new CPlayer(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,playerdata,Vect3f(0.f,2.f,0.f));
 	playerdata->SetPaint(true);
 	playerdata->SetObject3D(player);
 	pm->AddPhysicController(player);
@@ -52,6 +53,7 @@ bool CQuakeProcess::Init ()
 	renderplayer->LoadFaceASE("./Data/Models/ItemsPlayer/Head_Razor_Player.ASE","./Data/Textures/First/");
 	m_PlayerRenders.push_back(renderplayer);
 	m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
+	renderplayer->SetCamera(m_pCamera);
 	//camara (view)
 	m_pCameraView = new CThPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,m_CameraViewObj3D,10.f);
 
@@ -131,6 +133,40 @@ void CQuakeProcess::RenderScene (CRenderManager* renderManager, CFontManager* fo
 	{
 		pm->DebugRender(renderManager);
 	}
+	CCamera *camera=GetCamera();
+	/*Vect3f posI=camera->GetObject3D()->GetPosition();
+	Vect3f posF=posI+100.f*camera->GetDirection();
+	renderManager->DrawLine(posI,posF,colGREEN);*/
+	/*
+		A	/------------------\	B
+			|              /   |
+			|       POS /      |
+			|      / *         |
+			| /                |
+		C	\------------------/	D*/
+	Vect3f vup=camera->GetVecUp();
+	Vect3f dir=camera->GetDirection();
+	/*dir.Normalize();
+	Vect3f right=vup ^ dir;
+	Vect3f up=dir ^ right;
+	Vect3f lookAt=camera->GetEye();*/
+	Vect3f up=camera->GetVecUp();
+	float yaw  = camera->GetObject3D()->GetYaw();
+	Vect3f right=Vect3f(cos(yaw+ D3DX_PI * 0.5f), 0, sin(yaw+ D3DX_PI * 0.5f));
+	Vect3f lookAt=camera->GetLookAt();
+	right.Normalize();
+	up.Normalize();
+	float SizeX=1.6f;
+	float SizeY=1.1f;
+	Vect3f PointA = lookAt - (right*SizeX*0.5f) - (up*SizeY*0.5f);
+	Vect3f PointB = lookAt + (right*SizeX*0.5f) - (up*SizeY*0.5f);
+	Vect3f PointC = lookAt - (right*SizeX*0.5f) + (up*SizeY*0.5f);
+	Vect3f PointD = lookAt + (right*SizeX*0.5f) + (up*SizeY*0.5f);
+	renderManager->SetTransform((Mat44f) m44fIDENTITY);
+	renderManager->DrawLine(PointA,PointB,colGREEN);
+	renderManager->DrawLine(PointA,PointC,colGREEN);
+	renderManager->DrawLine(PointC,PointD,colGREEN);
+	renderManager->DrawLine(PointD,PointB,colGREEN);
 }
 
 void  CQuakeProcess::RenderPlayers(CRenderManager* renderManager, CFontManager* fontManager)
