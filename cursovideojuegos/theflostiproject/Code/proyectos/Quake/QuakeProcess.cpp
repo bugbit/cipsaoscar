@@ -4,8 +4,8 @@
 #include "WorldASE.h"
 #include "Player.h"
 #include "ActionsPlayerInput.h"
-#include "FPSPlayerRender.h"
 #include "QuakePhysicsData.h"
+#include "PlayerRender.h"
 
 //---Engine Includes----
 #include "Input/InputManager.h"
@@ -48,12 +48,10 @@ bool CQuakeProcess::Init ()
 	CActionsPlayerInput *inputplayer=new CActionsPlayerInput();
 	inputplayer->SetPlayer(player);
 	m_PlayerInputs.push_back(inputplayer);
-	CFPSPlayerRender *renderplayer=new CFPSPlayerRender();
-	renderplayer->SetPlayer(player);
-	renderplayer->LoadFaceASE("./Data/Models/ItemsPlayer/Head_Razor_Player.ASE","./Data/Textures/First/");
-	m_PlayerRenders.push_back(renderplayer);
+	m_GUIPlayer.SetPlayer(player);
+	m_GUIPlayer.LoadFaceASE("./Data/Models/ItemsPlayer/Head_Razor_Player.ASE","./Data/Textures/First/");
+	m_GUIPlayer.LoadTextureNumber(0,"./Data/Textures/First/zero_32b.tga");
 	m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
-	renderplayer->SetCamera(m_pCamera);
 	//camara (view)
 	m_pCameraView = new CThPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,m_CameraViewObj3D,10.f);
 
@@ -167,9 +165,35 @@ void CQuakeProcess::RenderScene (CRenderManager* renderManager, CFontManager* fo
 	renderManager->DrawLine(PointA,PointC,colGREEN);
 	renderManager->DrawLine(PointC,PointD,colGREEN);
 	renderManager->DrawLine(PointD,PointB,colGREEN);
+	//D3DXMATRIX matrix;
+	//D3DXMATRIX translation;
+	//D3DXMATRIX translation2;
+	//D3DXMATRIX rotation0;
+	//D3DXMATRIX rotation;
+	//D3DXMATRIX rotation2;
+	//Vect3f position = m_pCamera->GetObject3D()->GetPosition();
+	////float yaw =  m_pCamera->GetObject3D()->GetYaw();
+	//float m_yawGun=0;
+	//float pitch =  m_pCamera->GetObject3D()->GetPitch();
+
+	//D3DXMatrixRotationZ ( &rotation2,  pitch);
+
+	////--------------Paint the FACE------------------------------
+	//D3DXMatrixTranslation( &translation, position.x,position.y ,position.z);
+	//D3DXMatrixTranslation( &translation2, 0.6f, -0.24f , 0.2f);
+	//
+	//D3DXMatrixRotationY ( &rotation,  -yaw);
+	//D3DXMatrixRotationY ( &rotation0,  sin( -m_yawGun )*0.1f);
+	//
+	//matrix = rotation0 * translation2 * rotation2 * rotation * translation; 
+
+	//renderManager->SetTransform(matrix);
+
+	
+	m_GUIPlayer.RenderScene(renderManager,fontManager,m_pCamera);
 }
 
-void  CQuakeProcess::RenderPlayers(CRenderManager* renderManager, CFontManager* fontManager)
+void CQuakeProcess::RenderPlayers(CRenderManager* renderManager, CFontManager* fontManager)
 {
 	std::vector<CPlayerRender *>::iterator it=m_PlayerRenders.begin(),
 		itend=m_PlayerRenders.end();
@@ -178,6 +202,11 @@ void  CQuakeProcess::RenderPlayers(CRenderManager* renderManager, CFontManager* 
 		CPlayerRender *playerrender=*it;
 		playerrender->RenderScene(renderManager,fontManager);
 	}
+}
+
+void CQuakeProcess::RenderScene2D(CRenderManager* renderManager, CFontManager* fm)
+{
+	m_GUIPlayer.RenderScene2D(renderManager,fm);
 }
 
 uint32 CQuakeProcess::RenderDebugInfo(CRenderManager* renderManager, CFontManager* fm, float fps)
@@ -203,6 +232,7 @@ void CQuakeProcess::Update (float elapsedTime)
 	CInputManager*inputManager = core->GetInputManager();	
 	UpdateInputActions(inputManager);
 	m_pArena.Update(elapsedTime);
+	m_GUIPlayer.Update(elapsedTime);
 	UpdatePlayerInputs(elapsedTime);
 }
 
