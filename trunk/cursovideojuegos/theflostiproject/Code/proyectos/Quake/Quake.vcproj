@@ -270,11 +270,11 @@
 			Name="PlayerRender"
 			>
 			<File
-				RelativePath=".\FPSPlayerRender.cpp"
+				RelativePath=".\GUIPlayer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\FPSPlayerRender.h"
+				RelativePath=".\GUIPlayer.h"
 				>
 			</File>
 			<File

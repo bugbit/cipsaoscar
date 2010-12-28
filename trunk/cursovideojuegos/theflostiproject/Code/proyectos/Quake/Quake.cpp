@@ -14,7 +14,7 @@
 //---Always the last:
 #include "Memory/MemLeaks.h"
 
-#define APPLICATION_NAME	"AIR HOCKEY GAME"
+#define APPLICATION_NAME	"Quake"
 
 // ----------------------------------------
 // -- Windows Message Handlers

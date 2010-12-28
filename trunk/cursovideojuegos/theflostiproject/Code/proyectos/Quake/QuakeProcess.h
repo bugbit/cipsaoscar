@@ -1,16 +1,8 @@
-//----------------------------------------------------------------------------------
-// CConsoleAndLoggerProcess class
-// Author: Enric Vergara
-//
-// Description:
-// Esta clase se encarga la aplicacion Console And Logger
-//----------------------------------------------------------------------------------
 #pragma once
-#ifndef INC_AIR_HOCKEY_GAME_PROCESS_H_
-#define INC_AIR_HOCKEY_GAME_PROCESS_H_
 
 #include "Arena.h"
 #include "playerinput.h"
+#include "GUIPlayer.h"
 
 //---Engine Includes---
 #include "Core/Process.h"
@@ -46,6 +38,7 @@ public:
 
 	//----CProcess Interface---------------------------------------
 	virtual bool	      Init	              ();
+	virtual void				RenderScene2D				(CRenderManager* renderManager, CFontManager* fm);
 	
 	//---Update and Render function
 	virtual void				Update	            (float elapsedTime);
@@ -68,6 +61,7 @@ private:
 	CArena																	m_pArena;
 	std::vector<CPlayerInput *>							m_PlayerInputs;
 	std::vector<CPlayerRender *>						m_PlayerRenders;
+	CGUIPlayer												m_GUIPlayer;
 
 	void																		UpdateCameraView		(CInputManager* inputManager);
 	void																		RenderPlayers				(CRenderManager* renderManager, CFontManager* fontManager);
@@ -78,5 +72,3 @@ private:
 };
 
 static CQuakeProcess* GetGameQuake() {return static_cast<CQuakeProcess*>(CORE->GetProcess());}
-
-#endif //INC_AIR_HOCKEY_GAME_PROCESS_H_
