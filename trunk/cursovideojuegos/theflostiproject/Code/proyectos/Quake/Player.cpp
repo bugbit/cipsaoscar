@@ -14,6 +14,7 @@ CPlayer::CPlayer(float radius, float height, float slope, float skinwidth, float
 		:CPhysicController(radius, height, slope, skinwidth, stepOffset, collisionGroups, data,pos,gravity)
 		,m_fSpeedForward(3.5f)
 		,m_fSpeed(7.f)
+		,m_life(50)
 {
 	data->SetObject3D(this);
 }

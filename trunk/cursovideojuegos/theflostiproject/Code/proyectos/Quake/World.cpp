@@ -20,6 +20,15 @@ IWorld::IWorld(uint32 group)
 
 IWorld::~IWorld(void)	{ Done(); }
 
+void IWorld::Done()
+{
+	if (IsOk())
+	{
+		Release();
+		m_bIsOk = false;
+	}
+}
+
 bool IWorld::Init()
 {
 	m_bIsOk=false;
@@ -34,16 +43,6 @@ bool IWorld::Init()
 
 	return m_bIsOk;
 }
-
-void IWorld::Done()
-{
-	if (IsOk())
-	{
-		Release();
-		m_bIsOk = false;
-	}
-}
-
 void IWorld::Release() { ClearWorld(); ClearModels(); ClearPhysx(); }
 
 #pragma warning( push )	

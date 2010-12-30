@@ -48,9 +48,11 @@ bool CQuakeProcess::Init ()
 	CActionsPlayerInput *inputplayer=new CActionsPlayerInput();
 	inputplayer->SetPlayer(player);
 	m_PlayerInputs.push_back(inputplayer);
+	m_GUIPlayer.Init();
 	m_GUIPlayer.SetPlayer(player);
-	m_GUIPlayer.LoadFaceASE("./Data/Models/ItemsPlayer/Head_Razor_Player.ASE","./Data/Textures/First/");
-	m_GUIPlayer.LoadTextureNumber(0,"./Data/Textures/First/zero_32b.tga");
+	m_GUIPlayer.LoadGUIPlayer("./Data/ItemsPlayer/GUIPlayer.xml");
+	//m_GUIPlayer.LoadFaceASE("./Data/Models/ItemsPlayer/Head_Razor_Player.ASE","./Data/Textures/First/");
+	//m_GUIPlayer.LoadTextureNumber(0,"./Data/Textures/First/zero_32b.tga");
 	m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
 	//camara (view)
 	m_pCameraView = new CThPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,m_CameraViewObj3D,10.f);
@@ -82,6 +84,7 @@ void CQuakeProcess::Release ()
 	CHECKED_DELETE(m_CameraViewObj3D);
 	CHECKED_DELETE(m_pCameraView);
 	CHECKED_DELETE(m_pCamera);
+	m_GUIPlayer.Done();
 	ReleasePlayerInputs();
 	ReleasePlayerRenders();
 	m_pArena.Done();

@@ -44,7 +44,7 @@ void CWorldASE::ClearModels()
 	m_RoomsASE.clear();
 }
 
-bool  CWorldASE::LoadWorld(std::string filexml)
+bool CWorldASE::LoadWorld(std::string filexml)
 {
 	m_sWorldXML=filexml;
 	std::string pathWorld=GetDirWorld();

@@ -13,13 +13,62 @@
 #include "Graphics/Textures/TextureManager.h"
 
 CGUIPlayer::CGUIPlayer(void)
+:m_bIsOk(false)
+,m_yawGun(0)
 {
-	m_yawGun=0;
 }
 
 CGUIPlayer::~CGUIPlayer(void)
 {
+	Done();
+}
+
+void CGUIPlayer::Done()
+{
+	if (IsOk())
+	{
+		Release();
+		m_bIsOk = false;
+	}
+}
+
+
+bool CGUIPlayer::Init()
+{
+	m_bIsOk=true;
+
+	return m_bIsOk;
+}
+
+void CGUIPlayer::Release()
+{
 	m_FaceASE.CleanUp();
+}
+
+void CGUIPlayer::LoadFaceASE(std::string filease,std::string pathTextures)
+{
+	CASETextureManager::GetInstance()->SetTexturePath(pathTextures);
+	CRenderManager* rm = CORE->GetRenderManager();
+	m_FaceASE.Load(filease.c_str(),rm);
+}
+
+void CGUIPlayer::LoadTextureNumber(int i,std::string filetexture)
+{
+	m_TexturesNumbers[i]=CORE->GetTextureManager()->GetTexture(filetexture);
+}
+
+void CGUIPlayer::LoadGUIPlayer(std::string filexml)
+{
+}
+
+bool CGUIPlayer::ReloadGUIPlayer()
+{
+	Done();
+	Init();
+	if (m_sFileXML!="")
+		LoadGUIPlayer(m_sFileXML);
+
+	return true;
 }
 
 /*
@@ -95,16 +144,8 @@ void CGUIPlayer::RenderScene2D(CRenderManager* renderManager, CFontManager* fm)
 	renderManager->DrawQuad2D(pos3,32,32,UPPER_LEFT,m_TexturesNumbers[0]);
 }
 
-void CGUIPlayer::LoadFaceASE(std::string filease,std::string pathTextures)
+void CGUIPlayer::RenderContador2D	(CRenderManager* renderManager, CFontManager* fm,int x,int y,int contador,int maxbasecontador)
 {
-	CASETextureManager::GetInstance()->SetTexturePath(pathTextures);
-	CRenderManager* rm = CORE->GetRenderManager();
-	m_FaceASE.Load(filease.c_str(),rm);
-}
-
-void CGUIPlayer::LoadTextureNumber(int i,std::string filetexture)
-{
-	m_TexturesNumbers[i]=CORE->GetTextureManager()->GetTexture(filetexture);
 }
 
 void CGUIPlayer::Update(float elapsedTime)
