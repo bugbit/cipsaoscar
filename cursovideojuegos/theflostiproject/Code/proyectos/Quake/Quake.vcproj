@@ -214,13 +214,25 @@
 				>
 			</File>
 			<Filter
-				Name="World"
+				Name="Models"
 				>
 				<Filter
-					Name="First"
+					Name="Worlds"
+					>
+					<Filter
+						Name="First"
+						>
+						<File
+							RelativePath="..\..\..\Run\Quake\Data\Models\Worlds\First\first.xml"
+							>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="ItemsPlayer"
 					>
 					<File
-						RelativePath="..\..\..\Run\Quake\Data\Models\Worlds\First\first.xml"
+						RelativePath="..\..\..\Run\Quake\Data\Models\ItemsPlayer\GUIPlayer.xml"
 						>
 					</File>
 				</Filter>

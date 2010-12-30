@@ -23,6 +23,7 @@ private:
 	float								m_fSpeedForward;
 	float								m_fSpeed;
 	Vect3f							m_MoveDirection;
+	int									m_life;
 
 	void								SetMove(Vect3f vu,bool speed,float elapsedTime);
 };
