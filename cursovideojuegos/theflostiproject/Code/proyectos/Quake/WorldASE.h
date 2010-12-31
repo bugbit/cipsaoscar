@@ -15,7 +15,7 @@ public:
 	CWorldASE(void);
 	virtual ~CWorldASE(void);
 
-	virtual bool				LoadWorld(std::string filexml);
+	virtual bool				LoadXML(std::string filexml);
 	virtual void				LoadModels();
 
 	//---Update and Render function

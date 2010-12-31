@@ -2,6 +2,7 @@
 
 #include "Arena.h"
 #include "world.h"
+#include "Player.h"
 
 CArena::CArena(void):m_bIsOk(true),m_pWorld(NULL)
 {
@@ -34,9 +35,21 @@ bool CArena::Init()
 	return m_bIsOk;
 }
 
-void  CArena::Release()
+void CArena::Release()
 {
 	CHECKED_DELETE(m_pWorld);
+	ReleasePlayers();
+}
+
+void CArena::ReleasePlayers()
+{
+	std::vector<CPlayer *>::iterator it=m_Players.begin(),
+		it_end=m_Players.end();
+	for (;it!=it_end;it++)
+	{
+		CPlayer *player=*it;		
+		player->Done();
+	}
 }
 
 void CArena::Update(float elapsedTime)

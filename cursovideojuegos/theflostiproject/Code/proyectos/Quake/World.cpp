@@ -59,14 +59,14 @@ std::string IWorld::GetDirWorld() const
 }
 #pragma warning( pop )
 
-bool IWorld::ReloadWorld				()
+bool IWorld::ReloadXML()
 {
 	ClearWorld();
 	ClearModels();
 	ClearPhysx();
 	if (m_sWorldXML!="")
 	{
-		if (!LoadWorld(m_sWorldXML))
+		if (!LoadXML(m_sWorldXML))
 		{
 			if (m_sPathTextures!="" && m_sPathTextures!="")
 				LoadModels();

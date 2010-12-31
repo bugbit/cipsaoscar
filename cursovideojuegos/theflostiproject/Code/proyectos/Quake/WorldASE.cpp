@@ -44,16 +44,16 @@ void CWorldASE::ClearModels()
 	m_RoomsASE.clear();
 }
 
-bool CWorldASE::LoadWorld(std::string filexml)
+bool CWorldASE::LoadXML(std::string filexml)
 {
 	m_sWorldXML=filexml;
 	std::string pathWorld=GetDirWorld();
-	LOGGER->AddNewLog(ELL_INFORMATION, "CWorldASE::LoadWorld: Iniciando el parseo del fichero %s", filexml.c_str());
+	LOGGER->AddNewLog(ELL_INFORMATION, "CWorldASE::LoadXML: Iniciando el parseo del fichero %s", filexml.c_str());
 	CXMLTreeNode newFile;
 	m_bIsOk = false;
 	if (!newFile.LoadFile((filexml).c_str()))
 	{
-		LOGGER->AddNewLog(ELL_ERROR, "CWorldASE::LoadWorld:: No se ha podido leer correctamente el fichero ->%s", filexml.c_str());
+		LOGGER->AddNewLog(ELL_ERROR, "CWorldASE::LoadXML:: No se ha podido leer correctamente el fichero ->%s", filexml.c_str());
 		m_bIsOk = false;
 	}
 	else
@@ -63,6 +63,9 @@ bool CWorldASE::LoadWorld(std::string filexml)
 		m_iNumRooms=world.GetIntProperty("num_rooms");
 		m_sPathTextures=world.GetPszProperty("textures");
 		m_sPathPhysx=world.GetPszProperty("physx");
+		LOGGER->AddNewLog(ELL_INFORMATION, "CWorldASE::LoadXML: Numero de rooms %d", m_iNumRooms);
+		LOGGER->AddNewLog(ELL_INFORMATION, "CWorldASE::LoadXML: Path textures: %s", m_sPathTextures.c_str());
+		LOGGER->AddNewLog(ELL_INFORMATION, "CWorldASE::LoadXML: Path Physx: %s", m_sPathPhysx.c_str());
 		m_RoomsFilesASE.resize(m_iNumRooms);
 		m_RoomsASE.resize(m_iNumRooms);
 		CXMLTreeNode rooms=world["rooms"];
@@ -71,7 +74,9 @@ bool CWorldASE::LoadWorld(std::string filexml)
 		{
 			CXMLTreeNode room=rooms(i);
 			int id=room.GetIntProperty("id");
-			m_RoomsFilesASE[id]=pathWorld+room.GetPszProperty("file");
+			const char *file=room.GetPszProperty("file");
+			m_RoomsFilesASE[id]=pathWorld+file;
+			LOGGER->AddNewLog(ELL_INFORMATION, "CWorldASE::LoadXML: Room %d file: %s", id,file);
 		}
 	}
 

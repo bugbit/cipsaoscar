@@ -42,33 +42,37 @@ bool CQuakeProcess::Init ()
 	m_CameraViewObj3D = new CObject3D(Vect3f(10.f,10.f,10.f), 0.f, 0.f);
 	CQuakePhysicsData *playerdata=new CQuakePhysicsData("player",CQuakePhysicsData::TYPE3D_PLAYER);
 	CPlayer *player=new CPlayer(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,playerdata,Vect3f(0.f,2.f,0.f));
+	player->Init();
 	playerdata->SetPaint(true);
 	playerdata->SetObject3D(player);
+	m_pArena.AddPlayer(player);
 	pm->AddPhysicController(player);
 	CActionsPlayerInput *inputplayer=new CActionsPlayerInput();
 	inputplayer->SetPlayer(player);
 	m_PlayerInputs.push_back(inputplayer);
 	m_GUIPlayer.Init();
 	m_GUIPlayer.SetPlayer(player);
-	m_GUIPlayer.LoadGUIPlayer("./Data/ItemsPlayer/GUIPlayer.xml");
-	//m_GUIPlayer.LoadFaceASE("./Data/Models/ItemsPlayer/Head_Razor_Player.ASE","./Data/Textures/First/");
-	//m_GUIPlayer.LoadTextureNumber(0,"./Data/Textures/First/zero_32b.tga");
-	m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
-	//camara (view)
-	m_pCameraView = new CThPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,m_CameraViewObj3D,10.f);
-
-	if (m_CameraViewObj3D && m_pCamera)
+	if (m_GUIPlayer.LoadXML("./Data/Models/ItemsPlayer/GUIPlayer.xml"))
 	{
-		if (m_pArena.Init())
+		m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
+		//camara (view)
+		m_pCameraView = new CThPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,m_CameraViewObj3D,10.f);
+
+		if (m_CameraViewObj3D && m_pCamera)
 		{
-			CWorldASE *world=new CWorldASE();
-			world->SetPhysxGroup(GROUP_BASIC_PRIMITIVES);
-			world->Init();
-			world->LoadWorld("./Data/Models/Worlds/First/first.xml");
-			world->LoadModels();
-			world->AddActorInPhysxManager();
-			m_pArena.SetWorld(world);
-			CProcess::m_bIsOk = true;
+			if (m_pArena.Init())
+			{
+				CWorldASE *world=new CWorldASE();
+				world->SetPhysxGroup(GROUP_BASIC_PRIMITIVES);
+				world->Init();
+				if (world->LoadXML("./Data/Models/Worlds/First/first.xml"))
+				{
+					world->LoadModels();
+					world->AddActorInPhysxManager();
+					m_pArena.SetWorld(world);
+					CProcess::m_bIsOk = true;
+				}
+			}
 		}
 	}
 
@@ -203,7 +207,8 @@ void CQuakeProcess::RenderPlayers(CRenderManager* renderManager, CFontManager* f
 	for(;it!=itend;it++)
 	{
 		CPlayerRender *playerrender=*it;
-		playerrender->RenderScene(renderManager,fontManager);
+		if (playerrender->IsOk())
+			playerrender->RenderScene(renderManager,fontManager);
 	}
 }
 
@@ -327,7 +332,8 @@ void  CQuakeProcess::UpdatePlayerInputs(float elapsedTime)
 	for(;it!=itend;it++)
 	{
 		CPlayerInput *playerinput=*it;
-		playerinput->UpdateInputAction(elapsedTime);
+		if (playerinput->IsOk())
+			playerinput->UpdateInputAction(elapsedTime);
 	}
 }
 

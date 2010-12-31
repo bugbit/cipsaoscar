@@ -12,6 +12,7 @@
 CPlayer::CPlayer(float radius, float height, float slope, float skinwidth, float stepOffset, uint32 collisionGroups, CQuakePhysicsData *data, 
 								 const Vect3f& pos, float gravity)
 		:CPhysicController(radius, height, slope, skinwidth, stepOffset, collisionGroups, data,pos,gravity)
+		,m_bIsOk(false)
 		,m_fSpeedForward(3.5f)
 		,m_fSpeed(7.f)
 		,m_life(50)
@@ -21,6 +22,29 @@ CPlayer::CPlayer(float radius, float height, float slope, float skinwidth, float
 
 CPlayer::~CPlayer(void)
 {
+	Done();
+}
+
+void CPlayer::Done()
+{
+	if (IsOk())
+	{
+		Release();
+		m_bIsOk = false;
+	}
+}
+
+void CPlayer::Release()
+{
+	CQuakePhysicsData *data=(CQuakePhysicsData *) GetUserData();
+	CHECKED_DELETE(data);
+}
+
+bool CPlayer::Init()
+{
+	m_bIsOk=true;
+
+	return m_bIsOk;
 }
 
 void CPlayer::SetCleanMove()

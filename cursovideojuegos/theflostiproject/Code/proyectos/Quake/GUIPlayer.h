@@ -26,19 +26,21 @@ public:
 	inline void								SetPlayer					(CPlayer * player) {m_pPlayer = player;}
 	void											LoadFaceASE				(std::string filease,std::string pathTextures);
 	void											LoadTextureNumber	(int i,std::string filetexture);
-	void											LoadGUIPlayer			(std::string filexml);
-	bool											ReloadGUIPlayer		();
+	bool											LoadXML						(std::string filexml);
+	bool											ReloadXML					();
 private:
 	bool																				m_bIsOk;			      // Initialization boolean control
 	std::string																	m_sFileXML;
 	CPlayer*																		m_pPlayer;	
 	CASEObject																	m_FaceASE;
 	float																				m_yawGun;
+	static const int														m_iWidthNumber;
 
 	// 2D
 	CTexture																		*m_TexturesNumbers[10];
 
-	virtual void							Release();
+	void											Release						();
+	inline int								RangTexturesNumbers() const { return sizeof(m_TexturesNumbers)/sizeof(*m_TexturesNumbers); }
 
 	// Funciones render2D
 
