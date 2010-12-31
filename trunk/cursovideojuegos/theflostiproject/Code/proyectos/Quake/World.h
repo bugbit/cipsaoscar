@@ -18,7 +18,7 @@ public:
 	void	              Done	              ();
 	inline bool	        IsOk	              () const { return m_bIsOk; }
 
-	virtual bool				LoadWorld						(std::string filexml)=0;
+	virtual bool				LoadXML							(std::string filexml)=0;
 	virtual void				LoadModels					()=0;
 
 	//---Update and Render function
@@ -36,7 +36,7 @@ public:
 	inline uint32				GetPhysxGroup			() const { return m_uPhysxGroup; }
 	inline void					SetPhysxGroup			(uint32 group) { m_uPhysxGroup=group; }
 
-	bool								ReloadWorld				();
+	bool								ReloadXML					();
 	void								AddActorInPhysxManager();
 
 protected:

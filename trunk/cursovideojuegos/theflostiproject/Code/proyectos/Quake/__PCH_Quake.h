@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sstream>
+#include <assert.h>
 
 //Base
 #include "Base.h"
