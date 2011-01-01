@@ -14,22 +14,29 @@ CArena::~CArena(void)
 }
 
 void CArena::Done()
+{
+	if (IsOk())
 	{
-		if (IsOk())
-		{
-			Release();
-			m_bIsOk = false;
-		}
+		Release();
+		m_bIsOk = false;
 	}
+}
 
 bool CArena::Init()
 {
 	m_bIsOk=true;
 	
-	if (m_pWorld!=NULL)
+	if (m_ItemManager.Init())
 	{
-		m_bIsOk=true;
-		m_pWorld->Init();
+		if (m_pWorld!=NULL)
+		{		
+			if (m_pWorld->Init())
+			{			
+				m_bIsOk=true;
+			}				
+		}
+		if (!m_bIsOk)
+			m_ItemManager.Done();
 	}
 
 	return m_bIsOk;
@@ -37,6 +44,7 @@ bool CArena::Init()
 
 void CArena::Release()
 {
+	m_ItemManager.Done();
 	CHECKED_DELETE(m_pWorld);
 	ReleasePlayers();
 }

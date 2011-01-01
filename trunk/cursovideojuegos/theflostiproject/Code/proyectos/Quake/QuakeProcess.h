@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Arena.h"
 #include "playerinput.h"
 #include "GUIPlayer.h"
+#include "GameLogic.h"
 
 //---Engine Includes---
 #include "Core/Process.h"
@@ -58,7 +58,7 @@ private:
 	CThPSCamera	*														m_pCameraView;
 	CObject3D *															m_CameraViewObj3D;
 	bool																		m_drawAxisGrid;
-	CArena																	m_pArena;
+	CGameLogic															m_GameLogic;
 	std::vector<CPlayerInput *>							m_PlayerInputs;
 	std::vector<CPlayerRender *>						m_PlayerRenders;
 	CGUIPlayer												m_GUIPlayer;

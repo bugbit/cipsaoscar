@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ItemManager.h"
+
 //--Forward Declaration--
 class IWorld;
 class CPlayer;
@@ -18,8 +20,8 @@ public:
 	inline bool																					IsOk	              () const { return m_bIsOk; }
 
 	//---Update and Render function
-	virtual void																				Update	            (float elapsedTime);
-	virtual void																				RenderScene					(CRenderManager* renderManager, CFontManager* fontManager);
+	void																								Update	            (float elapsedTime);
+	void																								RenderScene					(CRenderManager* renderManager, CFontManager* fontManager);
 
 	inline IWorld &																			GetWorld() const  { return *m_pWorld; }
 	inline void																					SetWorld(IWorld *world) { m_pWorld=world; }
@@ -29,6 +31,7 @@ private:
 	bool																								m_bIsOk;			      // Initialization boolean control
 	IWorld *																						m_pWorld;
 	std::vector <CPlayer *>															m_Players;
+	CItemManager																				m_ItemManager;
 
 	void																								Release             ();
 	void																								ReleasePlayers();
