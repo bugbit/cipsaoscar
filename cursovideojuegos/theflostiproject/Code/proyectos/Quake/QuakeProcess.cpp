@@ -33,6 +33,8 @@
 //----------------------------------------------------------------------------
 bool CQuakeProcess::Init ()
 {
+	CArena &arena=m_GameLogic.GetArena();
+	arena.Init();
 	CPhysicsManager *pm=CORE->GetPhysicManager();
 	CProcess::m_bIsOk = false;
 	uint32 w,h;
@@ -40,12 +42,12 @@ bool CQuakeProcess::Init ()
 	CORE->GetRenderManager()->GetWidthAndHeight(w,h);
 	float aspect_ratio = (float)w/h;	
 	m_CameraViewObj3D = new CObject3D(Vect3f(10.f,10.f,10.f), 0.f, 0.f);
-	CQuakePhysicsData *playerdata=new CQuakePhysicsData("player",CQuakePhysicsData::TYPE3D_PLAYER);
+	CQuakePhysicsData *playerdata=new CQuakePhysicsData("player");
 	CPlayer *player=new CPlayer(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,playerdata,Vect3f(0.f,2.f,0.f));
 	player->Init();
 	playerdata->SetPaint(true);
 	playerdata->SetObject3D(player);
-	m_pArena.AddPlayer(player);
+	arena.AddPlayer(player);
 	pm->AddPhysicController(player);
 	CActionsPlayerInput *inputplayer=new CActionsPlayerInput();
 	inputplayer->SetPlayer(player);
@@ -60,7 +62,7 @@ bool CQuakeProcess::Init ()
 
 		if (m_CameraViewObj3D && m_pCamera)
 		{
-			if (m_pArena.Init())
+			if (arena.Init())
 			{
 				CWorldASE *world=new CWorldASE();
 				world->SetPhysxGroup(GROUP_BASIC_PRIMITIVES);
@@ -69,7 +71,7 @@ bool CQuakeProcess::Init ()
 				{
 					world->LoadModels();
 					world->AddActorInPhysxManager();
-					m_pArena.SetWorld(world);
+					arena.SetWorld(world);
 					CProcess::m_bIsOk = true;
 				}
 			}
@@ -90,8 +92,7 @@ void CQuakeProcess::Release ()
 	CHECKED_DELETE(m_pCamera);
 	m_GUIPlayer.Done();
 	ReleasePlayerInputs();
-	ReleasePlayerRenders();
-	m_pArena.Done();
+	ReleasePlayerRenders();	
 }
 
 void CQuakeProcess::ReleasePlayerInputs()
@@ -132,7 +133,7 @@ void CQuakeProcess::RenderScene (CRenderManager* renderManager, CFontManager* fo
 		renderManager->DrawGrid(150.f,colWHITE,20,20);
 		renderManager->DrawCamera(m_pCamera);
 	}
-	m_pArena.RenderScene(renderManager,fontManager);
+	m_GameLogic.RenderScene(renderManager,fontManager);
 	RenderPlayers(renderManager,fontManager);
 	if (pm->GetDebugRenderMode())
 	{
@@ -239,7 +240,7 @@ void CQuakeProcess::Update (float elapsedTime)
 	CCore * core = CCore::GetSingletonPtr();
 	CInputManager*inputManager = core->GetInputManager();	
 	UpdateInputActions(inputManager);
-	m_pArena.Update(elapsedTime);
+	m_GameLogic.Update(elapsedTime);
 	m_GUIPlayer.Update(elapsedTime);
 	UpdatePlayerInputs(elapsedTime);
 }

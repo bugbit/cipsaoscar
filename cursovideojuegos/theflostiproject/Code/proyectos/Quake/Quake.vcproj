@@ -44,6 +44,7 @@
 				Optimization="0"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="..\;&quot;..\..\Flosti Engine\&quot;;&quot;..\..\Flosti Engine\Base&quot;;&quot;..\..\..\3rdParty\libxml2-2.7.2.win32\include&quot;;&quot;..\..\..\3rdParty\iconv-1.9.2.win32\include&quot;;..\..\..\3rdParty\openAL\include;..\..\..\3rdParty\lua\;..\..\..\3rdParty\"
+				PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -129,6 +130,7 @@
 				Optimization="2"
 				WholeProgramOptimization="false"
 				AdditionalIncludeDirectories="..\;&quot;..\..\Flosti Engine\&quot;;&quot;..\..\Flosti Engine\Base&quot;;&quot;..\..\..\3rdParty\libxml2-2.7.2.win32\include&quot;;&quot;..\..\..\3rdParty\iconv-1.9.2.win32\include&quot;;..\..\..\3rdParty\openAL\include;..\..\..\3rdParty\lua\;..\..\..\3rdParty\"
+				PreprocessorDefinitions="WIN32;_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="0"
@@ -241,6 +243,14 @@
 		<Filter
 			Name="GameLogic"
 			>
+			<File
+				RelativePath=".\GameLogic.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\GameLogic.h"
+				>
+			</File>
 			<Filter
 				Name="Board"
 				>
@@ -250,6 +260,14 @@
 				</File>
 				<File
 					RelativePath=".\Arena.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ItemManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ItemManager.h"
 					>
 				</File>
 				<File
@@ -277,22 +295,66 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Items"
+				>
+				<File
+					RelativePath=".\Item.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Item.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
-			Name="PlayerRender"
+			Name="Renders"
 			>
-			<File
-				RelativePath=".\GUIPlayer.cpp"
+			<Filter
+				Name="PlayerRender"
 				>
-			</File>
-			<File
-				RelativePath=".\GUIPlayer.h"
+				<File
+					RelativePath=".\GUIPlayer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GUIPlayer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\PlayerRender.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="ItemsModels"
 				>
-			</File>
-			<File
-				RelativePath=".\PlayerRender.h"
+				<File
+					RelativePath=".\ItemModel.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Worlds"
 				>
-			</File>
+				<File
+					RelativePath=".\World.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\World.h"
+					>
+				</File>
+				<File
+					RelativePath=".\WorldASE.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\WorldASE.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\Quake.cpp"
@@ -320,22 +382,6 @@
 		</File>
 		<File
 			RelativePath=".\Util.h"
-			>
-		</File>
-		<File
-			RelativePath=".\World.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\World.h"
-			>
-		</File>
-		<File
-			RelativePath=".\WorldASE.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\WorldASE.h"
 			>
 		</File>
 	</Files>
