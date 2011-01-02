@@ -25,6 +25,7 @@ public:
 
 	inline IWorld &																			GetWorld() const  { return *m_pWorld; }
 	inline void																					SetWorld(IWorld *world) { m_pWorld=world; }
+	inline CItemManager &																GetItemManager() { return m_ItemManager; }
 	inline void																					AddPlayer(CPlayer *player) { m_Players.push_back(player); }
 
 private:

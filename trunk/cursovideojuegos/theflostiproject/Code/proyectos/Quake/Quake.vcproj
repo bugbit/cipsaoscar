@@ -238,6 +238,10 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="Items"
+					>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -334,6 +338,14 @@
 					RelativePath=".\ItemModel.h"
 					>
 				</File>
+				<File
+					RelativePath=".\ItemModelASE.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ItemModelASE.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Worlds"
@@ -356,6 +368,14 @@
 				</File>
 			</Filter>
 		</Filter>
+		<File
+			RelativePath=".\ItemLife.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ItemLife.h"
+			>
+		</File>
 		<File
 			RelativePath=".\Quake.cpp"
 			>

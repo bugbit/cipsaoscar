@@ -77,6 +77,7 @@ void CGUIPlayer::LoadTextureNumber(int i,std::string filetexture)
 
 bool CGUIPlayer::LoadXML(std::string filexml)
 {
+	Release();
 	m_sFileXML=filexml;
 	LOGGER->AddNewLog(ELL_INFORMATION, "CGUIPlayer::LoadXML: Iniciando el parseo del fichero %s", filexml.c_str());
 	CXMLTreeNode newFile;
@@ -117,8 +118,6 @@ bool CGUIPlayer::LoadXML(std::string filexml)
 
 bool CGUIPlayer::ReloadXML()
 {
-	Done();
-	Init();
 	if (m_sFileXML!="")
 		return LoadXML(m_sFileXML);
 

@@ -25,6 +25,7 @@ public:
 	void								SetMoveRight(bool speed,float elapsedTime);
 	void								Move(float elapsedTime);
 	inline int					GetStatusPlayer() const { return m_life; }
+	inline void					AddStatusPlayer(int amount) { m_life += amount; }
 private:
 	bool								m_bIsOk;			      // Initialization boolean control
 	float								m_fSpeedForward;
