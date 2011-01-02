@@ -24,17 +24,16 @@ void CArena::Done()
 
 bool CArena::Init()
 {
-	m_bIsOk=true;
+	m_bIsOk=false;
 	
 	if (m_ItemManager.Init())
 	{
 		if (m_pWorld!=NULL)
 		{		
-			if (m_pWorld->Init())
-			{			
-				m_bIsOk=true;
-			}				
+			m_bIsOk=m_pWorld->Init();
 		}
+		else
+			m_bIsOk=true;
 		if (!m_bIsOk)
 			m_ItemManager.Done();
 	}
@@ -58,16 +57,19 @@ void CArena::ReleasePlayers()
 		CPlayer *player=*it;		
 		player->Done();
 	}
+	m_Players.clear();
 }
 
 void CArena::Update(float elapsedTime)
 {
 	if (m_pWorld!=NULL)
 		m_pWorld->Update(elapsedTime);
+	m_ItemManager.Update(elapsedTime);
 }
 
 void CArena::RenderScene(CRenderManager* renderManager, CFontManager* fontManager)
 {
 	if (m_pWorld!=NULL)
 		m_pWorld->RenderScene(renderManager,fontManager);
+	m_ItemManager.RenderScene(renderManager,fontManager);
 }

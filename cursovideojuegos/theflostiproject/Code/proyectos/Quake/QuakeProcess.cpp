@@ -6,6 +6,8 @@
 #include "ActionsPlayerInput.h"
 #include "QuakePhysicsData.h"
 #include "PlayerRender.h"
+#include "ItemModelASE.h"
+#include "ItemLife.h"
 
 //---Engine Includes----
 #include "Input/InputManager.h"
@@ -42,6 +44,7 @@ bool CQuakeProcess::Init ()
 	CORE->GetRenderManager()->GetWidthAndHeight(w,h);
 	float aspect_ratio = (float)w/h;	
 	m_CameraViewObj3D = new CObject3D(Vect3f(10.f,10.f,10.f), 0.f, 0.f);
+	// Init players temporal 
 	CQuakePhysicsData *playerdata=new CQuakePhysicsData("player");
 	CPlayer *player=new CPlayer(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,playerdata,Vect3f(0.f,2.f,0.f));
 	player->Init();
@@ -64,6 +67,7 @@ bool CQuakeProcess::Init ()
 		{
 			if (arena.Init())
 			{
+				// Init world temporal
 				CWorldASE *world=new CWorldASE();
 				world->SetPhysxGroup(GROUP_BASIC_PRIMITIVES);
 				world->Init();
@@ -72,6 +76,15 @@ bool CQuakeProcess::Init ()
 					world->LoadModels();
 					world->AddActorInPhysxManager();
 					arena.SetWorld(world);
+					// Init items temporal
+					CItemModelASE *itemModel=new CItemModelASE();
+					itemModel->LoadModelASE("./Data/Models/Items/Shared.ASE","./Data/Textures/First/");
+					itemModel->SetSize(Vect3f(1.f,1.f,1.f));
+					arena.GetItemManager().AddModel(CItemManager::LIFE,itemModel);
+					CItemLife *item=new CItemLife();
+					item->SetModel(itemModel);
+					item->CreateActor(Vect3f(5.f,2.f,1.f));
+					arena.GetItemManager().AddItem(item);
 					CProcess::m_bIsOk = true;
 				}
 			}
@@ -104,6 +117,7 @@ void CQuakeProcess::ReleasePlayerInputs()
 		CPlayerInput *playerinput=*it;
 		delete playerinput;
 	}
+	m_PlayerInputs.clear();
 }
 
 void CQuakeProcess::ReleasePlayerRenders	()
@@ -115,6 +129,7 @@ void CQuakeProcess::ReleasePlayerRenders	()
 		CPlayerRender *playerrender=*it;
 		delete playerrender;
 	}
+	m_PlayerRenders.clear();
 }
 
 CCamera* CQuakeProcess::GetCamera() const
@@ -139,8 +154,8 @@ void CQuakeProcess::RenderScene (CRenderManager* renderManager, CFontManager* fo
 	{
 		pm->DebugRender(renderManager);
 	}
-	CCamera *camera=GetCamera();
-	/*Vect3f posI=camera->GetObject3D()->GetPosition();
+	/*CCamera *camera=GetCamera();
+	Vect3f posI=camera->GetObject3D()->GetPosition();
 	Vect3f posF=posI+100.f*camera->GetDirection();
 	renderManager->DrawLine(posI,posF,colGREEN);*/
 	/*
@@ -149,13 +164,9 @@ void CQuakeProcess::RenderScene (CRenderManager* renderManager, CFontManager* fo
 			|       POS /      |
 			|      / *         |
 			| /                |
-		C	\------------------/	D*/
+		C	\------------------/	D
 	Vect3f vup=camera->GetVecUp();
 	Vect3f dir=camera->GetDirection();
-	/*dir.Normalize();
-	Vect3f right=vup ^ dir;
-	Vect3f up=dir ^ right;
-	Vect3f lookAt=camera->GetEye();*/
 	Vect3f up=camera->GetVecUp();
 	float yaw  = camera->GetObject3D()->GetYaw();
 	Vect3f right=Vect3f(cos(yaw+ D3DX_PI * 0.5f), 0, sin(yaw+ D3DX_PI * 0.5f));
@@ -172,33 +183,9 @@ void CQuakeProcess::RenderScene (CRenderManager* renderManager, CFontManager* fo
 	renderManager->DrawLine(PointA,PointB,colGREEN);
 	renderManager->DrawLine(PointA,PointC,colGREEN);
 	renderManager->DrawLine(PointC,PointD,colGREEN);
-	renderManager->DrawLine(PointD,PointB,colGREEN);
-	//D3DXMATRIX matrix;
-	//D3DXMATRIX translation;
-	//D3DXMATRIX translation2;
-	//D3DXMATRIX rotation0;
-	//D3DXMATRIX rotation;
-	//D3DXMATRIX rotation2;
-	//Vect3f position = m_pCamera->GetObject3D()->GetPosition();
-	////float yaw =  m_pCamera->GetObject3D()->GetYaw();
-	//float m_yawGun=0;
-	//float pitch =  m_pCamera->GetObject3D()->GetPitch();
-
-	//D3DXMatrixRotationZ ( &rotation2,  pitch);
-
-	////--------------Paint the FACE------------------------------
-	//D3DXMatrixTranslation( &translation, position.x,position.y ,position.z);
-	//D3DXMatrixTranslation( &translation2, 0.6f, -0.24f , 0.2f);
-	//
-	//D3DXMatrixRotationY ( &rotation,  -yaw);
-	//D3DXMatrixRotationY ( &rotation0,  sin( -m_yawGun )*0.1f);
-	//
-	//matrix = rotation0 * translation2 * rotation2 * rotation * translation; 
-
-	//renderManager->SetTransform(matrix);
-
-	
-	m_GUIPlayer.RenderScene(renderManager,fontManager,m_pCamera);
+	renderManager->DrawLine(PointD,PointB,colGREEN);*/	
+	if (!m_IsCameraView)
+		m_GUIPlayer.RenderScene(renderManager,fontManager,m_pCamera);
 }
 
 void CQuakeProcess::RenderPlayers(CRenderManager* renderManager, CFontManager* fontManager)
