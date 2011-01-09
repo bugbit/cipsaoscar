@@ -1,0 +1,22 @@
+<itemsmodels>
+  <life model="./Data/Models/Items/Shared.ASE" texture="./Data/Textures/First/" despy="true" debug="true">
+    <size x="0.2" y="0.65" z="0.2"/>
+    <scale x="0.35" y="0.35" z="0.35"/>
+    <desp x="0" y="-0.35" z="0"/>
+  </life>
+  <shotgun model="./Data/Models/Items/ShotGun.ASE" texture="./Data/Textures/First/" despy="true" debug="true">
+    <size x="0.2" y="0.65" z="0.2"/>
+    <scale x="0.35" y="0.35" z="0.35"/>
+    <desp x="0" y="-0.35" z="0"/>
+  </shotgun>
+  <rocketl model="./Data/Models/Items/Rocket.ASE" texture="./Data/Textures/First/" despy="true" debug="true">
+    <size x="0.2" y="0.65" z="0.2"/>
+    <scale x="0.35" y="0.35" z="0.35"/>
+    <desp x="0" y="-0.35" z="0"/>
+  </rocketl>
+  <machinegun model="./Data/Models/Items/MachineGun.ASE" texture="./Data/Textures/First/" despy="faLse" debug="true">
+    <size x="0.8" y="0.65" z="0.8"/>
+    <scale x="0.35" y="0.35" z="0.35"/>
+    <desp x="0" y="-0.35" z="0"/>
+  </machinegun>
+</itemsmodels>
