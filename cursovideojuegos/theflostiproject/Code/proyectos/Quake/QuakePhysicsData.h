@@ -34,7 +34,7 @@ public:
 
 	inline const std::string&			GetName() const {return m_sName;}
 	inline void										SetName(const std::string& name) {m_sName = name;}
-	inline const CObject3D *			GetObject3D() const { return m_Object3D; }
+	inline CObject3D *						GetObject3D() const { return m_Object3D; }
 	inline void										SetObject3D(CObject3D *object3d) { m_Object3D=object3d; }
 	inline ETYPEOBJECT3D					GetType3D() const { return GetType(m_Object3D); }
 private:

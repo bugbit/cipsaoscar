@@ -1,6 +1,9 @@
 #include "__PCH_Quake.h"
 
 #include "GameLogic.h"
+#include "QuakePhysicsData.h"
+#include "Player.h"
+#include "Item.h"
 
 //----Engine Includes-------------
 #include "Core/Core.h"
@@ -51,6 +54,22 @@ void CGameLogic::RenderScene(CRenderManager* renderManager, CFontManager* fontMa
 
 void CGameLogic::OnEnter(CPhysicUserData* trigger1, CPhysicUserData* other_shape)
 {
+	CQuakePhysicsData *t=static_cast<CQuakePhysicsData *>(trigger1);
+	CQuakePhysicsData *s=static_cast<CQuakePhysicsData *>(other_shape);
+	CObject3D *to=t->GetObject3D();
+	CObject3D *so=s->GetObject3D();
+	
+	// El player ha cogido un item
+	CPlayer *player=dynamic_cast<CPlayer *>(so);
+	CItem *item=dynamic_cast<CItem *>(to);
+	if (player!=NULL && item!=NULL)
+	{
+		if (!item->GetSelected())
+		{
+			item->SetSelected(true);
+			player->Catch(item);
+		}
+	}
 }
 
 void CGameLogic::OnLeave(CPhysicUserData* trigger1, CPhysicUserData* other_shape)

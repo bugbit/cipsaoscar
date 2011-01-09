@@ -2,6 +2,7 @@
 
 #include "Player.h"
 #include "QuakePhysicsData.h"
+#include "ItemLife.h"
 
 //---Engine Includes--------
 #include "Core/Core.h"
@@ -11,11 +12,12 @@
 
 CPlayer::CPlayer(float radius, float height, float slope, float skinwidth, float stepOffset, uint32 collisionGroups, CQuakePhysicsData *data, 
 								 const Vect3f& pos, float gravity)
-		:CPhysicController(radius, height, slope, skinwidth, stepOffset, collisionGroups, data,pos,gravity)
-		,m_bIsOk(false)
-		,m_fSpeedForward(3.5f)
-		,m_fSpeed(7.f)
-		,m_life(50)
+:CPhysicController(radius, height, slope, skinwidth, stepOffset, collisionGroups, data,pos,gravity)
+,m_bIsOk(false)
+,m_fSpeedForward(3.5f)
+,m_fSpeed(7.f)
+,m_life(50)
+,m_gunSelected(CItem::SHOTGUN)
 {
 	data->SetObject3D(this);
 }
@@ -81,4 +83,35 @@ void CPlayer::SetMoveRight(bool speed,float elapsedTime)
 void CPlayer::Move(float elapsedTime)
 {
 	CPhysicController::Move(m_MoveDirection,elapsedTime);
+}
+
+void CPlayer::AddStatusPlayer(int amount)
+{
+	if( m_life + amount > 100)
+	{
+		m_life = 100;
+	}
+	else if( m_life + amount < 0)
+	{
+		m_life = 0;
+	}
+	else m_life += amount; 
+	
+	if( amount < 0 )
+	{
+		// Activar muerte del player
+	}
+}
+
+void CPlayer::Catch(CItem *item)
+{
+	CItemLife *itemlife=dynamic_cast<CItemLife *>(item);
+
+	if (itemlife!=NULL)
+		Catch(itemlife);
+}
+
+void CPlayer::Catch(CItemLife *item)
+{
+	AddStatusPlayer(item->GetAmountLife());
 }

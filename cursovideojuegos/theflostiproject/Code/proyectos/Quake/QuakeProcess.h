@@ -48,6 +48,8 @@ public:
 
 	virtual CCamera*		GetCamera						() const;
 
+	void								ReloadItemModels		();
+
 private:
 	//----CProcess Interface---------------------------------------
 	virtual void				Release             ();
