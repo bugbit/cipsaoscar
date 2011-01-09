@@ -1,11 +1,13 @@
 #pragma once
 
+#include "Item.h"
 //--Forward Declaration--
 class CPlayer;
 class CRenderManager;
 class CFontManager;
 class CCamera;
 class CTexture;
+class CXMLTreeNode;
 
 //---Engine Includes--------
 #include "Graphics/ASEObject/ASEObject.h"
@@ -25,6 +27,7 @@ public:
 	void											Update	          (float elapsedTime);
 	inline void								SetPlayer					(CPlayer * player) {m_pPlayer = player;}
 	void											LoadFaceASE				(std::string filease,std::string pathTextures);
+	void											LoadGUNASE				(CItem::ETYTE type,std::string filease,std::string pathTextures);
 	void											LoadTextureNumber	(int i,std::string filetexture);
 	bool											LoadXML						(std::string filexml);
 	bool											ReloadXML					();
@@ -33,6 +36,7 @@ private:
 	std::string																	m_sFileXML;
 	CPlayer*																		m_pPlayer;	
 	CASEObject																	m_FaceASE;
+	std::map<CItem::ETYTE,CASEObject *>					m_GunsASE;
 	float																				m_yawGun;
 	static const int														m_iWidthNumber;
 
@@ -40,6 +44,8 @@ private:
 	CTexture																		*m_TexturesNumbers[10];
 
 	void											Release						();
+	void											ReleaseGUN				();
+	void											LoadGUNNode				(CXMLTreeNode &node,CItem::ETYTE type);
 	inline int								RangTexturesNumbers() const { return sizeof(m_TexturesNumbers)/sizeof(*m_TexturesNumbers); }
 
 	// Funciones render2D

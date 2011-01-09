@@ -13,6 +13,12 @@ CItemModelASE::CItemModelASE(void)
 
 CItemModelASE::~CItemModelASE(void)
 {
+	Done();
+}
+
+void CItemModelASE::Release()
+{
+	CItemModel::Release();
 	m_ModelASE.CleanUp();
 }
 

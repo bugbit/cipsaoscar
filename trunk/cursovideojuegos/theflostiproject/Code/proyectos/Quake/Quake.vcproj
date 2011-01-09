@@ -241,6 +241,10 @@
 				<Filter
 					Name="Items"
 					>
+					<File
+						RelativePath="..\..\..\Run\Quake\Data\Models\Items\ItemsModels.xml"
+						>
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>
@@ -264,6 +268,14 @@
 				</File>
 				<File
 					RelativePath=".\Arena.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Gun.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Gun.h"
 					>
 				</File>
 				<File
@@ -310,6 +322,22 @@
 					RelativePath=".\Item.h"
 					>
 				</File>
+				<File
+					RelativePath=".\ItemGun.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ItemGun.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ItemLife.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ItemLife.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -334,6 +362,10 @@
 			<Filter
 				Name="ItemsModels"
 				>
+				<File
+					RelativePath=".\ItemModel.cpp"
+					>
+				</File>
 				<File
 					RelativePath=".\ItemModel.h"
 					>
@@ -368,14 +400,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\ItemLife.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\ItemLife.h"
-			>
-		</File>
 		<File
 			RelativePath=".\Quake.cpp"
 			>

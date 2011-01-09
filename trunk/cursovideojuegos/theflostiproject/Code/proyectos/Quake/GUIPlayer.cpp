@@ -53,6 +53,20 @@ void CGUIPlayer::Release()
 			m_TexturesNumbers[i]=NULL;
 		}
 	}
+	ReleaseGUN();
+}
+
+void CGUIPlayer::ReleaseGUN()
+{
+	std::map<CItem::ETYTE,CASEObject *>::iterator it=m_GunsASE.begin(),itend=m_GunsASE.end();
+
+	for (;it!=itend;it++)
+	{
+		CASEObject *ase=(*it).second;
+		if (ase!=NULL)
+			ase->CleanUp();
+	}
+	m_GunsASE.clear();
 }
 
 bool CGUIPlayer::Init()
@@ -68,6 +82,16 @@ void CGUIPlayer::LoadFaceASE(std::string filease,std::string pathTextures)
 	CASETextureManager::GetInstance()->SetTexturePath(pathTextures);
 	CRenderManager* rm = CORE->GetRenderManager();
 	m_FaceASE.Load(filease.c_str(),rm);
+}
+
+
+void CGUIPlayer::LoadGUNASE(CItem::ETYTE type,std::string filease,std::string pathTextures)
+{
+	CASETextureManager::GetInstance()->SetTexturePath(pathTextures);
+	CRenderManager* rm = CORE->GetRenderManager();
+	CASEObject *ase=new CASEObject();
+	ase->Load(filease.c_str(),rm);
+	m_GunsASE[type]=ase;
 }
 
 void CGUIPlayer::LoadTextureNumber(int i,std::string filetexture)
@@ -100,6 +124,9 @@ bool CGUIPlayer::LoadXML(std::string filexml)
 		std::string texture=face.GetPszProperty("texture");
 		LoadFaceASE(model,texture);
 		LOGGER->AddNewLog(ELL_INFORMATION, "CGUIPlayer::LoadXML: Cargado face, model : %s, pathtextures : %s",model.c_str(),texture.c_str());
+		LoadGUNNode(guiplayer,CItem::SHOTGUN);
+		LoadGUNNode(guiplayer,CItem::ROCKETL);
+		LoadGUNNode(guiplayer,CItem::MACHINEGUN);
 		m_bIsOk=true;
 		CXMLTreeNode numbers=guiplayer["numbers"];
 		int count=numbers.GetNumChildren();
@@ -114,6 +141,19 @@ bool CGUIPlayer::LoadXML(std::string filexml)
 	}
 
 	return m_bIsOk;
+}
+
+void CGUIPlayer::LoadGUNNode(CXMLTreeNode &node,CItem::ETYTE type)
+{
+	std::string name=CItemTypeManager::GetInstance().GetNameForType(type);
+	CXMLTreeNode node_type=node[name.c_str()];
+	if (node_type.Exists())
+	{
+		std::string model=node_type.GetPszProperty("model");
+		std::string texture=node_type.GetPszProperty("texture");
+		LoadGUNASE(type,model,texture);
+		LOGGER->AddNewLog(ELL_INFORMATION, "CGUIPlayer::LoadGUNNode: Cargado item %s, model : %s, pathtextures : %s",name.c_str(),model.c_str(),texture.c_str());
+	}
 }
 
 bool CGUIPlayer::ReloadXML()
@@ -207,7 +247,7 @@ void CGUIPlayer::RenderContador2D	(CRenderManager* renderManager, CFontManager* 
 	// maxbasecontador = 100, contador <1000
 	assert(contador<10*maxbasecontador);
 	Vect2i pos(x,y);
-	for (;maxbasecontador>=10;maxbasecontador /= 10,pos.x += m_iWidthNumber)
+	for (bool painting=false;maxbasecontador>0;maxbasecontador /= 10,pos.x += m_iWidthNumber)
 	{
 		/*
 				253
@@ -220,16 +260,18 @@ void CGUIPlayer::RenderContador2D	(CRenderManager* renderManager, CFontManager* 
 					203						203/100=2		203 % 100 =3											100
 					  3																													 10
 						3							3/1=3				3 % 1 =0													1
+				  100						100/100=1		100 % 100 =0
 		*/
-		if (contador>=maxbasecontador)
+		if (painting || contador>=maxbasecontador)
 		{
 			int digito=contador/maxbasecontador;
 			renderManager->DrawQuad2D(pos,m_iWidthNumber,32,UPPER_LEFT,m_TexturesNumbers[digito]);	
 			contador %= maxbasecontador;
+			painting=true;
 		}
 	}
-	if (contador>=0)
-		renderManager->DrawQuad2D(pos,m_iWidthNumber,32,UPPER_LEFT,m_TexturesNumbers[contador]);	
+	/*if (contador>=0)
+		renderManager->DrawQuad2D(pos,m_iWidthNumber,32,UPPER_LEFT,m_TexturesNumbers[contador]);	*/
 }
 
 void CGUIPlayer::Update(float elapsedTime)

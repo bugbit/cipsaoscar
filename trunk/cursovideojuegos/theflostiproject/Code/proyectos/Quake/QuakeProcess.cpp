@@ -8,6 +8,7 @@
 #include "PlayerRender.h"
 #include "ItemModelASE.h"
 #include "ItemLife.h"
+#include "ItemGun.h"
 
 //---Engine Includes----
 #include "Input/InputManager.h"
@@ -35,6 +36,7 @@
 //----------------------------------------------------------------------------
 bool CQuakeProcess::Init ()
 {
+	m_GameLogic.Init();
 	CArena &arena=m_GameLogic.GetArena();
 	arena.Init();
 	CPhysicsManager *pm=CORE->GetPhysicManager();
@@ -76,15 +78,29 @@ bool CQuakeProcess::Init ()
 					world->LoadModels();
 					world->AddActorInPhysxManager();
 					arena.SetWorld(world);
+					arena.GetItemManager().LoadModelsXml("./Data/Models/Items/ItemsModels.xml");
+					CItemModel *itemModel=arena.GetItemManager().GetModel(CItem::LIFE);
 					// Init items temporal
-					CItemModelASE *itemModel=new CItemModelASE();
+					/*CItemModelASE *itemModel=new CItemModelASE();
 					itemModel->LoadModelASE("./Data/Models/Items/Shared.ASE","./Data/Textures/First/");
-					itemModel->SetSize(Vect3f(1.f,1.f,1.f));
-					arena.GetItemManager().AddModel(CItemManager::LIFE,itemModel);
+					itemModel->SetSize(Vect3f(0.2f,0.3f,0.2f));
+					itemModel->SetScale(new Vect3f(0.35f,0.35f,0.35f));
+					itemModel->SetDesp(new Vect3f(0.f,-0.2f,0.f));
+					itemModel->SetFlagDespY(true);
+					itemModel->SetDebug(true);
+					arena.GetItemManager().AddModel(CItemManager::LIFE,itemModel);*/
 					CItemLife *item=new CItemLife();
 					item->SetModel(itemModel);
-					item->CreateActor(Vect3f(5.f,2.f,1.f));
+					item->CreateActor(Vect3f(5.f,2.f,1.f));	
+					item->SetAmountLife(20);
+					item->SetTimer(5.f);
 					arena.GetItemManager().AddItem(item);
+					itemModel=arena.GetItemManager().GetModel(CItem::SHOTGUN);
+					CItemGun *itemgun=new CItemGun();
+					itemgun->SetModel(itemModel);
+					itemgun->CreateActor(Vect3f(5.f,2.f,5.f));	
+					itemgun->SetTimer(20);
+					arena.GetItemManager().AddItem(itemgun);
 					CProcess::m_bIsOk = true;
 				}
 			}
@@ -313,7 +329,7 @@ void CQuakeProcess::UpdateCameraView(CInputManager* inputManager)
 	}
 }
 
-void  CQuakeProcess::UpdatePlayerInputs(float elapsedTime)
+void CQuakeProcess::UpdatePlayerInputs(float elapsedTime)
 {
 	std::vector<CPlayerInput *>::iterator it=m_PlayerInputs.begin(),
 		itend=m_PlayerInputs.end();
@@ -323,6 +339,11 @@ void  CQuakeProcess::UpdatePlayerInputs(float elapsedTime)
 		if (playerinput->IsOk())
 			playerinput->UpdateInputAction(elapsedTime);
 	}
+}
+
+void CQuakeProcess::ReloadItemModels()
+{
+	m_GameLogic.GetArena().GetItemManager().ReloadModelsXml();
 }
 
 //-----------------ScriptManager------------------------------
@@ -348,5 +369,9 @@ void CQuakeProcess::RegisterFunctions (CScriptManager* scriptManager)
 		.def(	CScriptRegister::PushFunctionName(HELP,"void","void",
 					"Muestra todas las funciones de esta clase"),
 					&CScriptRegister::Help)
+
+		.def(	CScriptRegister::PushFunctionName("reloadItemModels", "bool", "void", 
+		"Obtiene si actualmente esta activo o no la utilización de VC"),	
+		&CQuakeProcess::ReloadItemModels)
     ];
 }

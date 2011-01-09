@@ -16,4 +16,6 @@ public:
 	virtual void										RenderModel		(CRenderManager* renderManager, CFontManager* fontManager);
 private:
 	CASEObject											m_ModelASE;
+
+	virtual	void										Release						();
 };
