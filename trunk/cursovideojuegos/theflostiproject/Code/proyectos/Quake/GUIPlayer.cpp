@@ -4,6 +4,7 @@
 
 #include "GUIPlayer.h"
 #include "Player.h"
+#include "GUIPlayerFaceRender.h"
 
 //---Engine Includes----
 #include "Core/Core.h"
@@ -21,7 +22,9 @@ const int CGUIPlayer::m_iWidthNumber=40;
 
 CGUIPlayer::CGUIPlayer(void)
 :m_bIsOk(false)
-,m_yawGun(0)
+,m_fYawGun(0)
+,m_fPitchGun(0)
+,m_pFaceRender(NULL)
 {
 	for(int i=0;i<RangTexturesNumbers();i++)
 		m_TexturesNumbers[i]=NULL;
@@ -43,7 +46,7 @@ void CGUIPlayer::Done()
 
 void CGUIPlayer::Release()
 {
-	m_FaceASE.CleanUp();
+	CHECKED_DELETE(m_pFaceRender);
 	for(int i=0;i<RangTexturesNumbers();i++)
 	{
 		CTexture *texture=m_TexturesNumbers[i];
@@ -58,15 +61,14 @@ void CGUIPlayer::Release()
 
 void CGUIPlayer::ReleaseGUN()
 {
-	std::map<CItem::ETYTE,CASEObject *>::iterator it=m_GunsASE.begin(),itend=m_GunsASE.end();
+	std::map<CItem::ETYTE,CGUIPlayerObjectRender *>::iterator it=m_GunsRender.begin(),itend=m_GunsRender.end();
 
 	for (;it!=itend;it++)
 	{
-		CASEObject *ase=(*it).second;
-		if (ase!=NULL)
-			ase->CleanUp();
+		CGUIPlayerObjectRender *render=(*it).second;
+		CHECKED_DELETE(render);
 	}
-	m_GunsASE.clear();
+	m_GunsRender.clear();
 }
 
 bool CGUIPlayer::Init()
@@ -79,19 +81,24 @@ bool CGUIPlayer::Init()
 
 void CGUIPlayer::LoadFaceASE(std::string filease,std::string pathTextures)
 {
-	CASETextureManager::GetInstance()->SetTexturePath(pathTextures);
-	CRenderManager* rm = CORE->GetRenderManager();
-	m_FaceASE.Load(filease.c_str(),rm);
+	CGUIPlayerFaceRender *pFaceRender=new CGUIPlayerFaceRender();
+
+	pFaceRender->LoadObjectASE(filease,pathTextures);
+	m_pFaceRender=pFaceRender;
 }
 
-
-void CGUIPlayer::LoadGUNASE(CItem::ETYTE type,std::string filease,std::string pathTextures)
+void CGUIPlayer::LoadGUNNode(CXMLTreeNode &node,CItem::ETYTE type,CGUIPlayerObjectASERender *render)
 {
-	CASETextureManager::GetInstance()->SetTexturePath(pathTextures);
-	CRenderManager* rm = CORE->GetRenderManager();
-	CASEObject *ase=new CASEObject();
-	ase->Load(filease.c_str(),rm);
-	m_GunsASE[type]=ase;
+	std::string model=node.GetPszProperty("model");
+	std::string texture=node.GetPszProperty("texture");
+	render->LoadObjectASE(model,texture);
+	LoadGUNNode(type,(CGUIPlayerObjectRender*) render);
+	LOGGER->AddNewLog(ELL_INFORMATION, "CGUIPlayer::LoadGUNNode: Cargado model : %s, pathtextures : %s",model.c_str(),texture.c_str());
+}
+
+void CGUIPlayer::LoadGUNNode(CItem::ETYTE type,CGUIPlayerObjectRender *render)
+{
+	m_GunsRender[type]=render;
 }
 
 void CGUIPlayer::LoadTextureNumber(int i,std::string filetexture)
@@ -149,11 +156,33 @@ void CGUIPlayer::LoadGUNNode(CXMLTreeNode &node,CItem::ETYTE type)
 	CXMLTreeNode node_type=node[name.c_str()];
 	if (node_type.Exists())
 	{
-		std::string model=node_type.GetPszProperty("model");
-		std::string texture=node_type.GetPszProperty("texture");
-		LoadGUNASE(type,model,texture);
-		LOGGER->AddNewLog(ELL_INFORMATION, "CGUIPlayer::LoadGUNNode: Cargado item %s, model : %s, pathtextures : %s",name.c_str(),model.c_str(),texture.c_str());
+		switch(type)
+		{
+			case CItem::SHOTGUN:
+				LoadShotGUNNode(node_type);
+				break;
+			case CItem::ROCKETL:
+				LoadRocketlNode(node_type);
+				break;
+			case CItem::MACHINEGUN:
+				LoadMachinegunNode(node_type);
+				break;
+		}
 	}
+}
+
+void CGUIPlayer::LoadShotGUNNode(CXMLTreeNode &node)
+{
+	CGUIPlayerObjectASERender *render=new CGUIPlayerObjectASERender();
+	LoadGUNNode(node,CItem::SHOTGUN,render);
+}
+
+void CGUIPlayer::LoadRocketlNode(CXMLTreeNode &node)
+{
+}
+
+void CGUIPlayer::LoadMachinegunNode(CXMLTreeNode &node)
+{
 }
 
 bool CGUIPlayer::ReloadXML()
@@ -197,29 +226,7 @@ bool CGUIPlayer::ReloadXML()
 
 void CGUIPlayer::RenderScene(CRenderManager* renderManager, CFontManager* fontManager, CCamera *camera)
 {
-	D3DXMATRIX matrix;
-	D3DXMATRIX translation;
-	D3DXMATRIX translation2;
-	D3DXMATRIX rotation0;
-	D3DXMATRIX rotation;
-	D3DXMATRIX rotation2;
-	Vect3f position = camera->GetObject3D()->GetPosition();
-	float yaw =  camera->GetObject3D()->GetYaw();
-	float pitch =  camera->GetObject3D()->GetPitch();
-
-	D3DXMatrixRotationZ ( &rotation2,  pitch);
-
-	//--------------Paint the FACE------------------------------
-	D3DXMatrixTranslation( &translation, position.x,position.y ,position.z);
-	D3DXMatrixTranslation( &translation2, 0.6f, -0.28f , 0.25f);
-	
-	D3DXMatrixRotationY ( &rotation,  -yaw);
-	D3DXMatrixRotationY ( &rotation0,  ePIf+sin( -m_yawGun )*0.1f);
-	
-	matrix = rotation0 * translation2 * rotation2 * rotation * translation; 
-
-	renderManager->SetTransform(matrix);
-	m_FaceASE.Render(renderManager);
+	m_pFaceRender->RenderScene(renderManager,fontManager,camera,*this);
 }
 
 void CGUIPlayer::RenderScene2D(CRenderManager* renderManager, CFontManager* fm)
@@ -276,5 +283,6 @@ void CGUIPlayer::RenderContador2D	(CRenderManager* renderManager, CFontManager* 
 
 void CGUIPlayer::Update(float elapsedTime)
 {
-	m_yawGun += elapsedTime;
+	m_fYawGun += elapsedTime;
+	m_fPitchGun += elapsedTime;
 }
