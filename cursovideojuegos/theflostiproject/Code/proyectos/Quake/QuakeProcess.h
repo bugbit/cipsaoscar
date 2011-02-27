@@ -63,7 +63,7 @@ private:
 	CGameLogic															m_GameLogic;
 	std::vector<CPlayerInput *>							m_PlayerInputs;
 	std::vector<CPlayerRender *>						m_PlayerRenders;
-	CGUIPlayer												m_GUIPlayer;
+	CGUIPlayer															m_GUIPlayer;
 
 	void																		UpdateCameraView		(CInputManager* inputManager);
 	void																		RenderPlayers				(CRenderManager* renderManager, CFontManager* fontManager);

@@ -355,6 +355,38 @@
 					>
 				</File>
 				<File
+					RelativePath=".\GUIPlayerFaceRender.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GUIPlayerFaceRender.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GUIPlayerGunRender.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GUIPlayerGunRender.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GUIPlayerObjectASERender.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GUIPlayerObjectASERender.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GUIPlayerObjectRender.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GUIPlayerObjectRender.h"
+					>
+				</File>
+				<File
 					RelativePath=".\PlayerRender.h"
 					>
 				</File>
