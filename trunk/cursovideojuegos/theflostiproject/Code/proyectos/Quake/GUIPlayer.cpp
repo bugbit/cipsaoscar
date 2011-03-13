@@ -5,6 +5,7 @@
 #include "GUIPlayer.h"
 #include "Player.h"
 #include "GUIPlayerFaceRender.h"
+#include "GUIPlayerGunRender.h"
 
 //---Engine Includes----
 #include "Core/Core.h"
@@ -25,6 +26,8 @@ CGUIPlayer::CGUIPlayer(void)
 ,m_fYawGun(0)
 ,m_fPitchGun(0)
 ,m_pFaceRender(NULL)
+,m_TextureCrossHair(NULL)
+,m_bShot(false)
 {
 	for(int i=0;i<RangTexturesNumbers();i++)
 		m_TexturesNumbers[i]=NULL;
@@ -56,6 +59,11 @@ void CGUIPlayer::Release()
 			m_TexturesNumbers[i]=NULL;
 		}
 	}
+	if (m_TextureCrossHair!=NULL)
+	{
+		delete m_TextureCrossHair;
+		m_TextureCrossHair=NULL;
+	}
 	ReleaseGUN();
 }
 
@@ -74,7 +82,11 @@ void CGUIPlayer::ReleaseGUN()
 bool CGUIPlayer::Init()
 {
 	m_sFileXML="";
-	m_bIsOk=true;
+	m_bIsOk=true;	
+	m_fYawGun=0;
+	m_fPitchGun=0;
+	m_pFaceRender=NULL;
+	m_bShot=false;
 
 	return m_bIsOk;
 }
@@ -104,6 +116,11 @@ void CGUIPlayer::LoadGUNNode(CItem::ETYTE type,CGUIPlayerObjectRender *render)
 void CGUIPlayer::LoadTextureNumber(int i,std::string filetexture)
 {
 	m_TexturesNumbers[i]=CORE->GetTextureManager()->GetTexture(filetexture);
+}
+
+void CGUIPlayer::LoadTextureCrossHair(std::string filetexture)
+{
+	m_TextureCrossHair=CORE->GetTextureManager()->GetTexture(filetexture);
 }
 
 bool CGUIPlayer::LoadXML(std::string filexml)
@@ -145,6 +162,10 @@ bool CGUIPlayer::LoadXML(std::string filexml)
 			LoadTextureNumber(id,texture);
 			LOGGER->AddNewLog(ELL_INFORMATION, "CGUIPlayer::LoadXML: Number %d texture: %s", id,texture.c_str());
 		}
+		CXMLTreeNode crosshair=guiplayer["crosshair"];
+		texture=crosshair.GetPszProperty("texture");
+		LoadTextureCrossHair(texture);
+		LOGGER->AddNewLog(ELL_INFORMATION, "CGUIPlayer::LoadXML: texture: %s", texture.c_str());
 	}
 
 	return m_bIsOk;
@@ -154,35 +175,14 @@ void CGUIPlayer::LoadGUNNode(CXMLTreeNode &node,CItem::ETYTE type)
 {
 	std::string name=CItemTypeManager::GetInstance().GetNameForType(type);
 	CXMLTreeNode node_type=node[name.c_str()];
+
 	if (node_type.Exists())
 	{
-		switch(type)
-		{
-			case CItem::SHOTGUN:
-				LoadShotGUNNode(node_type);
-				break;
-			case CItem::ROCKETL:
-				LoadRocketlNode(node_type);
-				break;
-			case CItem::MACHINEGUN:
-				LoadMachinegunNode(node_type);
-				break;
-		}
+		bool bAnimatedShot=node_type.GetBoolProperty("animatedShot");
+		bool bAnimatedSetBack=node_type.GetBoolProperty("animatedsetback");
+		CGUIPlayerGunRender* render=new CGUIPlayerGunRender(bAnimatedShot,bAnimatedSetBack);
+		LoadGUNNode(node_type,type,render);
 	}
-}
-
-void CGUIPlayer::LoadShotGUNNode(CXMLTreeNode &node)
-{
-	CGUIPlayerObjectASERender *render=new CGUIPlayerObjectASERender();
-	LoadGUNNode(node,CItem::SHOTGUN,render);
-}
-
-void CGUIPlayer::LoadRocketlNode(CXMLTreeNode &node)
-{
-}
-
-void CGUIPlayer::LoadMachinegunNode(CXMLTreeNode &node)
-{
 }
 
 bool CGUIPlayer::ReloadXML()
@@ -227,6 +227,16 @@ bool CGUIPlayer::ReloadXML()
 void CGUIPlayer::RenderScene(CRenderManager* renderManager, CFontManager* fontManager, CCamera *camera)
 {
 	m_pFaceRender->RenderScene(renderManager,fontManager,camera,*this);
+	if (m_pPlayer!=NULL)
+	{
+		CItem::ETYTE type=m_pPlayer->GetTypeGun();
+		if (type!=CItem::NONE)
+		{
+			CGUIPlayerObjectRender *render=m_GunsRender[type];
+			if (render!=NULL)
+				render->RenderScene(renderManager,fontManager,camera,*this);
+		}
+	}
 }
 
 void CGUIPlayer::RenderScene2D(CRenderManager* renderManager, CFontManager* fm)
@@ -246,6 +256,7 @@ void CGUIPlayer::RenderScene2D(CRenderManager* renderManager, CFontManager* fm)
 		renderManager->DrawQuad2D(pos3,32,32,UPPER_LEFT,m_TexturesNumbers[0]);
 	}*/
 	RenderContador2D(renderManager,fm,(int) ((float)(w)*0.5f -20 -m_iWidthNumber*9),(h)-60-20,m_pPlayer->GetStatusPlayer(),100);
+	RenderCrossHair2D(renderManager,fm);
 }
 
 void CGUIPlayer::RenderContador2D	(CRenderManager* renderManager, CFontManager* fm,int x,int y,int contador,int maxbasecontador)
@@ -279,6 +290,14 @@ void CGUIPlayer::RenderContador2D	(CRenderManager* renderManager, CFontManager* 
 	}
 	/*if (contador>=0)
 		renderManager->DrawQuad2D(pos,m_iWidthNumber,32,UPPER_LEFT,m_TexturesNumbers[contador]);	*/
+}
+
+void CGUIPlayer::RenderCrossHair2D(CRenderManager* renderManager, CFontManager* fm)
+{
+	uint32 w,h;
+	renderManager->GetWidthAndHeight(w,h);
+	Vect2i pos(w/2-20,h/2-20);
+	renderManager->DrawQuad2D(pos,20,20,UPPER_LEFT,m_TextureCrossHair);	
 }
 
 void CGUIPlayer::Update(float elapsedTime)
