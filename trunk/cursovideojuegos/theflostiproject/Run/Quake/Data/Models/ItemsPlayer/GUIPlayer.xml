@@ -1,8 +1,8 @@
 <guiplayer>
   <face model="./Data/Models/ItemsPlayer/Head_Razor_Player.ASE" texture="./Data/Textures/First/" />
-  <shotgun model="./Data/Models/ItemsPlayer/ShotGun_Player.ASE" texture="./Data/Textures/First/" />
-  <rocketl model="./Data/Models/ItemsPlayer/Rocket_Player.ASE" texture="./Data/Textures/First/" />
-  <machinegun model="./Data/Models/ItemsPlayer/MachineGun_Player.ASE" texture="./Data/Textures/First/" />
+  <shotgun model="./Data/Models/ItemsPlayer/ShotGun_Player.ASE" texture="./Data/Textures/First/" animatedShot="true" animatedsetback="false" />
+  <rocketl model="./Data/Models/ItemsPlayer/Rocket_Player.ASE" texture="./Data/Textures/First/" animatedShot="false" animatedsetback="true" />
+  <machinegun model="./Data/Models/ItemsPlayer/MachineGun_Player.ASE" texture="./Data/Textures/First/" animatedShot="false" animatedsetback="true" />
   <numbers>
     <number id="0" texture="./Data/Textures/First/zero_32b.tga" />
     <number id="1" texture="./Data/Textures/First/one_32b.tga" />
@@ -15,4 +15,5 @@
     <number id="8" texture="./Data/Textures/First/eight_32b.tga" />
     <number id="9" texture="./Data/Textures/First/nine_32b.tga" />
   </numbers>
+  <crosshair texture="./Data/Textures/First/crosshaira.tga" />
 </guiplayer>
