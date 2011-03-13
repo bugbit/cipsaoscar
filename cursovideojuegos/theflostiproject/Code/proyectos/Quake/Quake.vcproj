@@ -271,14 +271,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Gun.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Gun.h"
-					>
-				</File>
-				<File
 					RelativePath=".\ItemManager.cpp"
 					>
 				</File>

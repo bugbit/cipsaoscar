@@ -3,7 +3,6 @@
 #include "ItemGun.h"
 
 CItemGun::CItemGun(void)
-:m_iGunState(0)
 {
 }
 
