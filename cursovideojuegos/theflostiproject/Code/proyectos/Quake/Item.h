@@ -43,6 +43,14 @@ protected:
 	void											ReleaseActor	();
 };
 
+struct GUN
+{
+	int gunState;
+	bool selected;
+	float timeShot;
+	CItem::ETYTE type;
+};
+
 class CItemTypeManager
 {
 public:
