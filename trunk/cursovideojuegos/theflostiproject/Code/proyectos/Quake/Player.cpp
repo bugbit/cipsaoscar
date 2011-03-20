@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "QuakePhysicsData.h"
 #include "ItemLife.h"
+#include "ItemGun.h"
+#include "ItemAmmo.h"
 
 //---Engine Includes--------
 #include "Core/Core.h"
@@ -17,7 +19,8 @@ CPlayer::CPlayer(float radius, float height, float slope, float skinwidth, float
 ,m_fSpeedForward(3.5f)
 ,m_fSpeed(7.f)
 ,m_life(50)
-,m_gunSelected(CItem::SHOTGUN)
+//,m_GunSelected((GUN *) &CItemTypeManager::GetMachineGun())
+,m_GunSelected(NULL)
 {
 	data->SetObject3D(this);
 }
@@ -40,6 +43,7 @@ void CPlayer::Release()
 {
 	CQuakePhysicsData *data=(CQuakePhysicsData *) GetUserData();
 	CHECKED_DELETE(data);
+	m_vecGuns.clear();
 }
 
 bool CPlayer::Init()
@@ -109,9 +113,80 @@ void CPlayer::Catch(CItem *item)
 
 	if (itemlife!=NULL)
 		Catch(itemlife);
+	else
+	{
+		CItemAmmo *itemammo=dynamic_cast<CItemAmmo *>(item);
+		if (itemammo!=NULL)
+			Catch(itemammo);
+		else
+		{
+			CItemGun *itemgun=dynamic_cast<CItemGun *>(item);
+			if (itemgun!=NULL)
+				Catch(itemgun);
+		}
+	}
 }
 
 void CPlayer::Catch(CItemLife *item)
 {
 	AddStatusPlayer(item->GetAmountLife());
+}
+
+void CPlayer::Catch(CItemGun *item)
+{
+	SetGunSelected(item->GetTypeGun());
+}
+
+void CPlayer::Catch(CItemAmmo *item)
+{
+	std::vector<GUN>::iterator it=m_vecGuns.begin(),itend=m_vecGuns.end();
+	CItem::ETYTE type=item->GetTypeGun();
+
+	for(;it!=itend;it++)
+	{
+		GUN &gun=*it;
+		if (gun.type==type)
+			gun.gunState += item->GetGunState();
+	}
+}
+
+CItem::ETYTE CPlayer::GetTypeGun()
+{
+	if (m_GunSelected==NULL)
+		return CItem::NONE;
+
+	return m_GunSelected->type;
+}
+
+
+int CPlayer::GetStatusGun()
+{
+	if (m_GunSelected==NULL)
+		return 0;
+
+	return m_GunSelected->gunState;
+}
+
+void CPlayer::SetGuns(std::vector<GUN> &guns)
+{
+	std::vector<GUN>::iterator it=guns.begin(),itend=guns.end();
+
+	m_vecGuns.clear();
+	for(;it!=itend;it++)
+		m_vecGuns.push_back(*it);
+}
+
+void CPlayer::SetGunSelected(CItem::ETYTE type)
+{
+	std::vector<GUN>::iterator it=m_vecGuns.begin(),itend=m_vecGuns.end();
+
+	for(;it!=itend;it++)
+	{
+		GUN &gun=*it;
+		if (gun.type==type)
+		{
+			gun.selected=true;
+			m_GunSelected=&gun;
+		}
+	}
 }

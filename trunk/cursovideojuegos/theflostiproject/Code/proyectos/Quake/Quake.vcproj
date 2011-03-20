@@ -315,6 +315,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ItemAmmo.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ItemAmmo.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ItemGun.cpp"
 					>
 				</File>
@@ -347,6 +355,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\GUIPlayerAmmoRender.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GUIPlayerAmmoRender.h"
+					>
+				</File>
+				<File
 					RelativePath=".\GUIPlayerFaceRender.cpp"
 					>
 				</File>
@@ -368,6 +384,14 @@
 				</File>
 				<File
 					RelativePath=".\GUIPlayerObjectASERender.h"
+					>
+				</File>
+				<File
+					RelativePath=".\GUIPlayerObjectOfCounterRender.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\GUIPlayerObjectOfCounterRender.h"
 					>
 				</File>
 				<File

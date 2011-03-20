@@ -1,12 +1,10 @@
 #pragma once
-#include "GUIPlayerObjectASERender.h"
+#include "GUIPlayerObjectOfCounterRender.h"
 
 class CGUIPlayerFaceRender :
-	public CGUIPlayerObjectASERender
+	public CGUIPlayerObjectOfCounterRender
 {
 public:
 	CGUIPlayerFaceRender																(void);
 	virtual ~CGUIPlayerFaceRender												(void);
-
-	virtual	void											RenderScene				(CRenderManager* renderManager, CFontManager* fm, CCamera *camera,CGUIPlayer &guiplayer);
 };
