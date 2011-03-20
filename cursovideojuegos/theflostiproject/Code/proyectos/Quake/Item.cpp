@@ -15,6 +15,11 @@ const std::string CItem::NameLife="life";
 const std::string CItem::NameShotGun="shotgun";
 const std::string CItem::NameRocketl="rocketl";
 const std::string CItem::NameMachineGun="machinegun";
+const std::string CItem::NameAmmoShotGun="ammoshotgun";
+const std::string CItem::NameAmmoRocketl="ammorocketl";
+const std::string CItem::NameAmmoMachineGun="ammomachinegun";
+
+const GUN CItemTypeManager::m_MachineGun = { 50,true,0.1f,CItem::MACHINEGUN };
 
 CItem::CItem()
 :m_pPhysxData(NULL)
@@ -100,10 +105,19 @@ CItemTypeManager::CItemTypeManager()
 	m_MapTypes[CItem::NameShotGun]=CItem::SHOTGUN;
 	m_MapTypes[CItem::NameRocketl]=CItem::ROCKETL;
 	m_MapTypes[CItem::NameMachineGun]=CItem::MACHINEGUN;
+	m_MapTypes[CItem::NameAmmoShotGun]=CItem::AMMOSHOTGUN;
+	m_MapTypes[CItem::NameAmmoRocketl]=CItem::AMMOROCKETL;
+	m_MapTypes[CItem::NameAmmoMachineGun]=CItem::AMMOMACHINEGUN;
 	m_MapTypesNameEtype[CItem::LIFE]=CItem::NameLife;
 	m_MapTypesNameEtype[CItem::SHOTGUN]=CItem::NameShotGun;
 	m_MapTypesNameEtype[CItem::ROCKETL]=CItem::NameRocketl;
 	m_MapTypesNameEtype[CItem::MACHINEGUN]=CItem::NameMachineGun;
+	m_MapTypesNameEtype[CItem::AMMOSHOTGUN]=CItem::NameAmmoShotGun;
+	m_MapTypesNameEtype[CItem::AMMOROCKETL]=CItem::NameAmmoRocketl;
+	m_MapTypesNameEtype[CItem::AMMOMACHINEGUN]=CItem::NameAmmoMachineGun;
+	m_MapGunAmmo[CItem::SHOTGUN]=CItem::AMMOSHOTGUN;
+	m_MapGunAmmo[CItem::ROCKETL]=CItem::AMMOROCKETL;
+	m_MapGunAmmo[CItem::MACHINEGUN]=CItem::AMMOMACHINEGUN;
 }
 
 CItemTypeManager & CItemTypeManager::GetInstance()
@@ -116,6 +130,7 @@ CItemTypeManager & CItemTypeManager::GetInstance()
 CItem::ETYTE CItemTypeManager::GetTypeForName(std::string name)
 {
 	std::map<std::string,CItem::ETYTE>::iterator it=m_MapTypes.find(name);
+
 	if (it==m_MapTypes.end())
 		return CItem::NONE;
 	return (*it).second;
@@ -124,7 +139,18 @@ CItem::ETYTE CItemTypeManager::GetTypeForName(std::string name)
 std::string CItemTypeManager::GetNameForType	(CItem::ETYTE type)
 {
 	std::map<CItem::ETYTE,std::string>::iterator it=m_MapTypesNameEtype.find(type);
+
 	if (it==m_MapTypesNameEtype.end())
 		return "";
+	return (*it).second;
+}
+
+CItem::ETYTE CItemTypeManager::GetAmmo(CItem::ETYTE gun)
+{
+	std::map<CItem::ETYTE,CItem::ETYTE>::iterator it=m_MapGunAmmo.find(gun);
+
+	if (it==m_MapGunAmmo.end())
+		return CItem::NONE;
+
 	return (*it).second;
 }

@@ -2,7 +2,8 @@
 
 #include "ItemGun.h"
 
-CItemGun::CItemGun(void)
+CItemGun::CItemGun(CItem::ETYTE type)
+:m_TypeGun(type)
 {
 }
 

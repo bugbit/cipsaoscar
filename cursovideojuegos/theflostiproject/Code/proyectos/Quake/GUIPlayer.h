@@ -28,7 +28,6 @@ public:
 	void											RenderScene2D					(CRenderManager* renderManager, CFontManager* fm);
 	void											Update								(float elapsedTime);
 	inline void								SetPlayer							(CPlayer * player) {m_pPlayer = player;}
-	void											LoadFaceASE						(std::string filease,std::string pathTextures);
 	void											LoadTextureNumber			(int i,std::string filetexture);
 	void											LoadTextureCrossHair	(std::string filetexture);
 	bool											LoadXML								(std::string filexml);
@@ -45,9 +44,7 @@ private:
 	bool																						m_bIsOk;			      // Initialization boolean control
 	std::string																			m_sFileXML;
 	CPlayer*																				m_pPlayer;
-	CGUIPlayerObjectRender*													m_pFaceRender;
-	/*CASEObject																	m_FaceASE;*/
-	std::map<CItem::ETYTE,CGUIPlayerObjectRender *>	m_GunsRender;
+	std::map<CItem::ETYTE,CGUIPlayerObjectRender *>	m_ItemsRender;
 	float																						m_fYawGun;
 	float																						m_fPitchGun;
 	static const int																m_iWidthNumber;
@@ -59,12 +56,16 @@ private:
 	CTexture																				*m_TextureCrossHair;
 
 	void											Release								();
-	void											ReleaseGUN						();
-	void											LoadGUNNode						(CItem::ETYTE type,CGUIPlayerObjectRender *render);
-	void											LoadGUNNode						(CXMLTreeNode &node,CItem::ETYTE type,CGUIPlayerObjectASERender *render);
+	void											ReleaseItemRender			();
+	void											LoadItemNode					(CItem::ETYTE type,CGUIPlayerObjectRender *render);
+	void											LoadItemNode					(CXMLTreeNode &node,CItem::ETYTE type,CGUIPlayerObjectASERender *render);
+	void											LoadFaceNode					(CXMLTreeNode &node);
 	void											LoadGUNNode						(CXMLTreeNode &node,CItem::ETYTE type);
+	void											LoadAmmoNode					(CXMLTreeNode &node,CItem::ETYTE type);
 	inline int								RangTexturesNumbers() const { return sizeof(m_TexturesNumbers)/sizeof(*m_TexturesNumbers); }
 
+	void											RenderItem						(CItem::ETYTE type,CRenderManager* renderManager, CFontManager* fontManager, CCamera *camera);
+	
 	// Funciones render2D
 
 	void											RenderContador2D			(CRenderManager* renderManager, CFontManager* fm,int x,int y,int contador,int maxbasecontador=100);

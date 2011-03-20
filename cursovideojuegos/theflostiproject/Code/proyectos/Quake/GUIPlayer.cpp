@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "GUIPlayerFaceRender.h"
 #include "GUIPlayerGunRender.h"
+#include "GUIPlayerAmmoRender.h"
 
 //---Engine Includes----
 #include "Core/Core.h"
@@ -25,7 +26,6 @@ CGUIPlayer::CGUIPlayer(void)
 :m_bIsOk(false)
 ,m_fYawGun(0)
 ,m_fPitchGun(0)
-,m_pFaceRender(NULL)
 ,m_TextureCrossHair(NULL)
 ,m_bShot(false)
 {
@@ -49,7 +49,6 @@ void CGUIPlayer::Done()
 
 void CGUIPlayer::Release()
 {
-	CHECKED_DELETE(m_pFaceRender);
 	for(int i=0;i<RangTexturesNumbers();i++)
 	{
 		CTexture *texture=m_TexturesNumbers[i];
@@ -64,19 +63,19 @@ void CGUIPlayer::Release()
 		delete m_TextureCrossHair;
 		m_TextureCrossHair=NULL;
 	}
-	ReleaseGUN();
+	ReleaseItemRender();
 }
 
-void CGUIPlayer::ReleaseGUN()
+void CGUIPlayer::ReleaseItemRender()
 {
-	std::map<CItem::ETYTE,CGUIPlayerObjectRender *>::iterator it=m_GunsRender.begin(),itend=m_GunsRender.end();
+	std::map<CItem::ETYTE,CGUIPlayerObjectRender *>::iterator it=m_ItemsRender.begin(),itend=m_ItemsRender.end();
 
 	for (;it!=itend;it++)
 	{
 		CGUIPlayerObjectRender *render=(*it).second;
 		CHECKED_DELETE(render);
 	}
-	m_GunsRender.clear();
+	m_ItemsRender.clear();
 }
 
 bool CGUIPlayer::Init()
@@ -85,32 +84,23 @@ bool CGUIPlayer::Init()
 	m_bIsOk=true;	
 	m_fYawGun=0;
 	m_fPitchGun=0;
-	m_pFaceRender=NULL;
 	m_bShot=false;
 
 	return m_bIsOk;
 }
 
-void CGUIPlayer::LoadFaceASE(std::string filease,std::string pathTextures)
-{
-	CGUIPlayerFaceRender *pFaceRender=new CGUIPlayerFaceRender();
-
-	pFaceRender->LoadObjectASE(filease,pathTextures);
-	m_pFaceRender=pFaceRender;
-}
-
-void CGUIPlayer::LoadGUNNode(CXMLTreeNode &node,CItem::ETYTE type,CGUIPlayerObjectASERender *render)
+void CGUIPlayer::LoadItemNode(CXMLTreeNode &node,CItem::ETYTE type,CGUIPlayerObjectASERender *render)
 {
 	std::string model=node.GetPszProperty("model");
 	std::string texture=node.GetPszProperty("texture");
 	render->LoadObjectASE(model,texture);
-	LoadGUNNode(type,(CGUIPlayerObjectRender*) render);
-	LOGGER->AddNewLog(ELL_INFORMATION, "CGUIPlayer::LoadGUNNode: Cargado model : %s, pathtextures : %s",model.c_str(),texture.c_str());
+	LoadItemNode(type,(CGUIPlayerObjectRender*) render);
+	LOGGER->AddNewLog(ELL_INFORMATION, "CGUIPlayer::LoadItemNode: Cargado model : %s, pathtextures : %s",model.c_str(),texture.c_str());
 }
 
-void CGUIPlayer::LoadGUNNode(CItem::ETYTE type,CGUIPlayerObjectRender *render)
+void CGUIPlayer::LoadItemNode(CItem::ETYTE type,CGUIPlayerObjectRender *render)
 {
-	m_GunsRender[type]=render;
+	m_ItemsRender[type]=render;
 }
 
 void CGUIPlayer::LoadTextureNumber(int i,std::string filetexture)
@@ -144,13 +134,14 @@ bool CGUIPlayer::LoadXML(std::string filexml)
 			LOGGER->AddNewLog(ELL_ERROR, "CGUIPlayer::LoadXML->Error al intentar leer el tag <face> del fichero ->%s", filexml.c_str());
 			return false;
 		}
-		std::string model=face.GetPszProperty("model");
-		std::string texture=face.GetPszProperty("texture");
-		LoadFaceASE(model,texture);
-		LOGGER->AddNewLog(ELL_INFORMATION, "CGUIPlayer::LoadXML: Cargado face, model : %s, pathtextures : %s",model.c_str(),texture.c_str());
+		std::string texture;
+		LoadFaceNode(face);
 		LoadGUNNode(guiplayer,CItem::SHOTGUN);
 		LoadGUNNode(guiplayer,CItem::ROCKETL);
 		LoadGUNNode(guiplayer,CItem::MACHINEGUN);
+		LoadAmmoNode(guiplayer,CItem::AMMOSHOTGUN);
+		LoadAmmoNode(guiplayer,CItem::AMMOROCKETL);
+		LoadAmmoNode(guiplayer,CItem::AMMOMACHINEGUN);
 		m_bIsOk=true;
 		CXMLTreeNode numbers=guiplayer["numbers"];
 		int count=numbers.GetNumChildren();
@@ -171,6 +162,13 @@ bool CGUIPlayer::LoadXML(std::string filexml)
 	return m_bIsOk;
 }
 
+void CGUIPlayer::LoadFaceNode(CXMLTreeNode &node)
+{
+	CGUIPlayerFaceRender *render=new CGUIPlayerFaceRender();
+
+	LoadItemNode(node,CItem::LIFE,render);
+}
+
 void CGUIPlayer::LoadGUNNode(CXMLTreeNode &node,CItem::ETYTE type)
 {
 	std::string name=CItemTypeManager::GetInstance().GetNameForType(type);
@@ -181,7 +179,19 @@ void CGUIPlayer::LoadGUNNode(CXMLTreeNode &node,CItem::ETYTE type)
 		bool bAnimatedShot=node_type.GetBoolProperty("animatedShot");
 		bool bAnimatedSetBack=node_type.GetBoolProperty("animatedsetback");
 		CGUIPlayerGunRender* render=new CGUIPlayerGunRender(bAnimatedShot,bAnimatedSetBack);
-		LoadGUNNode(node_type,type,render);
+		LoadItemNode(node_type,type,render);
+	}
+}
+
+void CGUIPlayer::LoadAmmoNode(CXMLTreeNode &node,CItem::ETYTE type)
+{
+	std::string name=CItemTypeManager::GetInstance().GetNameForType(type);
+	CXMLTreeNode node_type=node[name.c_str()];
+
+	if (node_type.Exists())
+	{
+		CGUIPlayerAmmoRender* render=new CGUIPlayerAmmoRender();
+		LoadItemNode(node_type,type,render);
 	}
 }
 
@@ -224,17 +234,25 @@ bool CGUIPlayer::ReloadXML()
 	//renderManager->DrawLine(PointC,PointD,colGREEN);
 	//renderManager->DrawLine(PointD,PointB,colGREEN);
 
+void CGUIPlayer::RenderItem(CItem::ETYTE type,CRenderManager* renderManager, CFontManager* fontManager, CCamera *camera)
+{
+	CGUIPlayerObjectRender *render=m_ItemsRender[type];
+	if (render!=NULL)
+		render->RenderScene(renderManager,fontManager,camera,*this);
+}
+
 void CGUIPlayer::RenderScene(CRenderManager* renderManager, CFontManager* fontManager, CCamera *camera)
 {
-	m_pFaceRender->RenderScene(renderManager,fontManager,camera,*this);
+	RenderItem(CItem::LIFE,renderManager,fontManager,camera);
 	if (m_pPlayer!=NULL)
 	{
 		CItem::ETYTE type=m_pPlayer->GetTypeGun();
 		if (type!=CItem::NONE)
 		{
-			CGUIPlayerObjectRender *render=m_GunsRender[type];
-			if (render!=NULL)
-				render->RenderScene(renderManager,fontManager,camera,*this);
+			RenderItem(type,renderManager,fontManager,camera);
+			CItem::ETYTE ammo=CItemTypeManager::GetInstance().GetAmmo(type);
+			if (ammo!=CItem::NONE)
+				RenderItem(ammo,renderManager,fontManager,camera);
 		}
 	}
 }
@@ -243,6 +261,7 @@ void CGUIPlayer::RenderScene2D(CRenderManager* renderManager, CFontManager* fm)
 {
 	uint32 w,h;
 	renderManager->GetWidthAndHeight(w,h);
+	int xcontadores=(int) ((float)(w)*0.5f -20 -m_iWidthNumber*9);
 	/*int mulU=7;
 	int mulD=8;
 	int mulC=9;
@@ -255,7 +274,8 @@ void CGUIPlayer::RenderScene2D(CRenderManager* renderManager, CFontManager* fm)
 		renderManager->DrawQuad2D(pos2,32,32,UPPER_LEFT,m_TexturesNumbers[0]);
 		renderManager->DrawQuad2D(pos3,32,32,UPPER_LEFT,m_TexturesNumbers[0]);
 	}*/
-	RenderContador2D(renderManager,fm,(int) ((float)(w)*0.5f -20 -m_iWidthNumber*9),(h)-60-20,m_pPlayer->GetStatusPlayer(),100);
+	RenderContador2D(renderManager,fm,xcontadores,(h)-60-20,m_pPlayer->GetStatusPlayer(),100);
+	RenderContador2D(renderManager,fm,xcontadores,(h)-150-20,m_pPlayer->GetStatusGun(),100);
 	RenderCrossHair2D(renderManager,fm);
 }
 

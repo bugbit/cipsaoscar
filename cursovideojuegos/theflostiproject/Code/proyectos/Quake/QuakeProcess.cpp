@@ -9,6 +9,7 @@
 #include "ItemModelASE.h"
 #include "ItemLife.h"
 #include "ItemGun.h"
+#include "ItemAmmo.h"
 
 //---Engine Includes----
 #include "Input/InputManager.h"
@@ -50,6 +51,30 @@ bool CQuakeProcess::Init ()
 	CQuakePhysicsData *playerdata=new CQuakePhysicsData("player");
 	CPlayer *player=new CPlayer(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,playerdata,Vect3f(0.f,2.f,0.f));
 	player->Init();
+	// Mochila player
+	std::vector<GUN> guns;
+	//SHOTGUN
+	GUN gun_shotgun;
+	gun_shotgun.gunState = 50;
+	gun_shotgun.timeShot = 0.8f;
+	gun_shotgun.selected = false;
+	gun_shotgun.type = CItem::SHOTGUN;
+	guns.push_back(gun_shotgun);
+	//ROCKET
+	GUN gun_rocket;
+	gun_rocket.timeShot = 1.f;
+	gun_rocket.gunState = 50;
+	gun_rocket.selected = false;
+	gun_rocket.type = CItem::ROCKETL;
+	guns.push_back(gun_rocket);
+	GUN gun_machinegun;
+	gun_machinegun.timeShot = 0.1f;
+	gun_machinegun.gunState = 50;
+	gun_machinegun.selected = false;
+	gun_machinegun.type = CItem::MACHINEGUN;
+	guns.push_back(gun_machinegun);
+	player->SetGuns(guns);
+	player->SetGunSelected(CItem::MACHINEGUN);
 	playerdata->SetPaint(true);
 	playerdata->SetObject3D(player);
 	arena.AddPlayer(player);
@@ -59,6 +84,10 @@ bool CQuakeProcess::Init ()
 	m_PlayerInputs.push_back(inputplayer);
 	m_GUIPlayer.Init();
 	m_GUIPlayer.SetPlayer(player);
+	// Bot
+	/*CPlayer *player2=new CPlayer(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,playerdata,Vect3f(0.f,2.f,10.f));
+	player2->Init();
+	arena.AddPlayer(player2);*/
 	if (m_GUIPlayer.LoadXML("./Data/Models/ItemsPlayer/GUIPlayer.xml"))
 	{
 		m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
@@ -96,11 +125,17 @@ bool CQuakeProcess::Init ()
 					item->SetTimer(5.f);
 					arena.GetItemManager().AddItem(item);
 					itemModel=arena.GetItemManager().GetModel(CItem::SHOTGUN);
-					CItemGun *itemgun=new CItemGun();
+					CItemGun *itemgun=new CItemGun(CItem::SHOTGUN);
 					itemgun->SetModel(itemModel);
 					itemgun->CreateActor(Vect3f(5.f,2.f,5.f));	
 					itemgun->SetTimer(20);
 					arena.GetItemManager().AddItem(itemgun);
+					itemModel=arena.GetItemManager().GetModel(CItem::AMMOSHOTGUN);
+					CItemAmmo *itemammo=new CItemAmmo(CItem::SHOTGUN);
+					itemammo->SetModel(itemModel);
+					itemammo->CreateActor(Vect3f(5.f,2.f,8.f));	
+					itemammo->SetTimer(20);
+					arena.GetItemManager().AddItem(itemammo);
 					CProcess::m_bIsOk = true;
 				}
 			}
