@@ -58,4 +58,12 @@ CActionToInput* input2Action = CORE->GetActionToInput();
 			m_pPlayer->SetMoveRight(speed,elapsedTime);
 	}
 	m_pPlayer->Move(elapsedTime);
+	if (input2Action->DoAction("changeGun"))
+	{
+			m_pPlayer->ChangeSelectedGun();
+	}
+	if (input2Action->DoAction("shoot"))
+	{
+			m_pPlayer->Shot();
+	}
 }

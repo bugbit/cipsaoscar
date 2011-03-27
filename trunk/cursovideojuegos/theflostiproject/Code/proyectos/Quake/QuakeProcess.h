@@ -65,12 +65,13 @@ private:
 	std::vector<CPlayerRender *>						m_PlayerRenders;
 	CGUIPlayer															m_GUIPlayer;
 
-	void																		UpdateCameraView		(CInputManager* inputManager);
-	void																		RenderPlayers				(CRenderManager* renderManager, CFontManager* fontManager);
-	void																		UpdateInputActions	(CInputManager* inputManager);
-	void																		UpdatePlayerInputs	(float elapsedTime);
-	void																		ReleasePlayerInputs	();
-	void																		ReleasePlayerRenders	();
+	void																		UpdateCameraView					(CInputManager* inputManager);
+	void																		RenderPlayers							(CRenderManager* renderManager, CFontManager* fontManager);
+	void																		UpdateInputActions				(CInputManager* inputManager);
+	void																		UpdatePlayerInputs				(float elapsedTime);
+	void																		UpdateVectDirPlayerCamera	(float elapsedTime);
+	void																		ReleasePlayerInputs				();
+	void																		ReleasePlayerRenders			();
 };
 
 static CQuakeProcess* GetGameQuake() {return static_cast<CQuakeProcess*>(CORE->GetProcess());}

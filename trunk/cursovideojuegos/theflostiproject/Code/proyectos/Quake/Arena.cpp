@@ -65,6 +65,18 @@ void CArena::Update(float elapsedTime)
 	if (m_pWorld!=NULL)
 		m_pWorld->Update(elapsedTime);
 	m_ItemManager.Update(elapsedTime);
+	UpdatePlayer(elapsedTime);
+}
+
+void CArena::UpdatePlayer(float elapsedTime)
+{
+	std::vector<CPlayer *>::iterator it=m_Players.begin(),itend=m_Players.end();
+	for(;it!=itend;it++)
+	{
+		CPlayer *player=*it;
+		if (player->IsOk())
+			player->Update(elapsedTime);
+	}
 }
 
 void CArena::RenderScene(CRenderManager* renderManager, CFontManager* fontManager)
