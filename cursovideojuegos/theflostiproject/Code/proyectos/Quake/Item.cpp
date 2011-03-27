@@ -19,8 +19,6 @@ const std::string CItem::NameAmmoShotGun="ammoshotgun";
 const std::string CItem::NameAmmoRocketl="ammorocketl";
 const std::string CItem::NameAmmoMachineGun="ammomachinegun";
 
-const GUN CItemTypeManager::m_MachineGun = { 50,true,0.1f,CItem::MACHINEGUN };
-
 CItem::CItem()
 :m_pPhysxData(NULL)
 ,m_pActor(NULL)

@@ -33,7 +33,8 @@ private:
 	IWorld *																						m_pWorld;
 	std::vector <CPlayer *>															m_Players;
 	CItemManager																				m_ItemManager;
-
+	
+	void																								UpdatePlayer				(float elapsedTime);
 	void																								Release             ();
-	void																								ReleasePlayers();
+	void																								ReleasePlayers			();
 };

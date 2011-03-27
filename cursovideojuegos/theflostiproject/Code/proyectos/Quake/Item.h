@@ -49,8 +49,8 @@ protected:
 struct GUN
 {
 	int gunState;
-	bool selected;
-	float timeShot;
+	bool selected,back;
+	float timeShot,distshot;
 	CItem::ETYTE type;
 };
 
@@ -60,13 +60,11 @@ public:
 	CItem::ETYTE																			GetTypeForName	(std::string name);
 	std::string																				GetNameForType	(CItem::ETYTE type);
 	static CItemTypeManager &													GetInstance			();
-	static inline const GUN &													GetMachineGun		() { return m_MachineGun; }
 	CItem::ETYTE																			GetAmmo					(CItem::ETYTE gun);
 private:
 	std::map<std::string,CItem::ETYTE>								m_MapTypes;
 	std::map<CItem::ETYTE,std::string>								m_MapTypesNameEtype;
 	std::map<CItem::ETYTE,CItem::ETYTE>								m_MapGunAmmo;
-	static const GUN																	m_MachineGun;
 
 	CItemTypeManager																									();
 	inline ~CItemTypeManager																					() {}

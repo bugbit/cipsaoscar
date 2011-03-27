@@ -59,19 +59,25 @@ bool CQuakeProcess::Init ()
 	gun_shotgun.timeShot = 0.8f;
 	gun_shotgun.selected = false;
 	gun_shotgun.type = CItem::SHOTGUN;
+	gun_shotgun.back=true;
+	gun_shotgun.distshot=20;
 	guns.push_back(gun_shotgun);
 	//ROCKET
 	GUN gun_rocket;
 	gun_rocket.timeShot = 1.f;
 	gun_rocket.gunState = 50;
 	gun_rocket.selected = false;
+	gun_rocket.back=true;
 	gun_rocket.type = CItem::ROCKETL;
+	gun_rocket.distshot=30;
 	guns.push_back(gun_rocket);
 	GUN gun_machinegun;
 	gun_machinegun.timeShot = 0.1f;
 	gun_machinegun.gunState = 50;
 	gun_machinegun.selected = false;
 	gun_machinegun.type = CItem::MACHINEGUN;
+	gun_machinegun.back=true;
+	gun_machinegun.distshot=10;
 	guns.push_back(gun_machinegun);
 	player->SetGuns(guns);
 	player->SetGunSelected(CItem::MACHINEGUN);
@@ -85,9 +91,14 @@ bool CQuakeProcess::Init ()
 	m_GUIPlayer.Init();
 	m_GUIPlayer.SetPlayer(player);
 	// Bot
-	/*CPlayer *player2=new CPlayer(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,playerdata,Vect3f(0.f,2.f,10.f));
-	player2->Init();
-	arena.AddPlayer(player2);*/
+	CQuakePhysicsData *botdata=new CQuakePhysicsData("bot");
+	botdata->SetPaint(true);
+	CPlayer *bot=new CPlayer(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,botdata,Vect3f(2.f,2.f,10.f));
+	bot->Init();
+	bot->SetGuns(guns);
+	bot->SetGunSelected(CItem::MACHINEGUN);
+	arena.AddPlayer(bot);
+	pm->AddPhysicController(bot);
 	if (m_GUIPlayer.LoadXML("./Data/Models/ItemsPlayer/GUIPlayer.xml"))
 	{
 		m_pCamera = new CFPSCamera(0.2f,500.f,mathUtils::Deg2Rad(60.f),aspect_ratio,player);
@@ -281,6 +292,7 @@ void CQuakeProcess::Update (float elapsedTime)
 	m_GameLogic.Update(elapsedTime);
 	m_GUIPlayer.Update(elapsedTime);
 	UpdatePlayerInputs(elapsedTime);
+	UpdateVectDirPlayerCamera(elapsedTime);
 }
 
 void CQuakeProcess::UpdateInputActions	(CInputManager* inputManager)
@@ -373,6 +385,16 @@ void CQuakeProcess::UpdatePlayerInputs(float elapsedTime)
 		CPlayerInput *playerinput=*it;
 		if (playerinput->IsOk())
 			playerinput->UpdateInputAction(elapsedTime);
+	}
+}
+
+void CQuakeProcess::UpdateVectDirPlayerCamera(float elapsedTime)
+{
+	if (m_pCamera!=NULL)
+	{
+		CPlayer *player=dynamic_cast<CPlayer *>(m_pCamera->GetObject3D());
+		if (player!=NULL)
+			player->SetVectDir(m_pCamera->GetDirection());
 	}
 }
 

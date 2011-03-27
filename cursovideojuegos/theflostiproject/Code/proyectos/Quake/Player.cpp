@@ -16,11 +16,13 @@ CPlayer::CPlayer(float radius, float height, float slope, float skinwidth, float
 								 const Vect3f& pos, float gravity)
 :CPhysicController(radius, height, slope, skinwidth, stepOffset, collisionGroups, data,pos,gravity)
 ,m_bIsOk(false)
+,m_bIsShot(false)
 ,m_fSpeedForward(3.5f)
 ,m_fSpeed(7.f)
 ,m_life(50)
 //,m_GunSelected((GUN *) &CItemTypeManager::GetMachineGun())
 ,m_GunSelected(NULL)
+,m_fTimerShotting(0.f)
 {
 	data->SetObject3D(this);
 }
@@ -51,6 +53,16 @@ bool CPlayer::Init()
 	m_bIsOk=true;
 
 	return m_bIsOk;
+}
+
+void CPlayer::Update(float elapsedTime)
+{
+	if (m_bIsShot)
+	{
+		m_fTimerShotting -= elapsedTime;
+		if (m_fTimerShotting<0)
+			m_bIsShot=false;
+	}
 }
 
 void CPlayer::SetCleanMove()
@@ -104,6 +116,42 @@ void CPlayer::AddStatusPlayer(int amount)
 	if( amount < 0 )
 	{
 		// Activar muerte del player
+	}
+}
+
+void CPlayer::ChangeSelectedGun()
+{
+	GUN *gun=NULL;
+
+	if (m_GunSelected!=NULL)
+	{
+		std::vector<GUN>::iterator it=m_vecGuns.begin(),itend=m_vecGuns.end();
+		for (;it!=itend;it++)
+		{
+			GUN *gun_i=&*it;
+			if (gun_i->type==m_GunSelected->type)
+			{
+				it++;
+				break;
+			}
+			else
+				if (gun_i->selected)
+				{
+					if (gun==NULL)
+						gun=gun_i;
+				}
+		}
+		for (;it!=itend;it++)
+		{
+			GUN *gun_i=&*it;
+			if (gun_i->selected)
+			{
+				gun=gun_i;
+				break;
+			}
+		}
+		if (gun!=NULL)
+			m_GunSelected=gun;
 	}
 }
 
@@ -187,6 +235,24 @@ void CPlayer::SetGunSelected(CItem::ETYTE type)
 		{
 			gun.selected=true;
 			m_GunSelected=&gun;
+		}
+	}
+}
+
+void CPlayer::SetVectDir(Vect3f &v)
+{
+	m_VectDir=v.Normalize();
+}
+
+void CPlayer::Shot()
+{
+	if (GetStatusGun()>0)
+	{
+		if (!m_bIsShot)
+		{
+			m_bIsShot=true;
+			m_GunSelected->gunState--;
+			m_fTimerShotting=m_GunSelected->timeShot;
 		}
 	}
 }
