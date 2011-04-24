@@ -2,8 +2,8 @@
   <face model="./Data/Models/ItemsPlayer/Head_Razor_Player.ASE" texture="./Data/Textures/First/" />
   <shotgun model="./Data/Models/ItemsPlayer/ShotGun_Player.ASE" texture="./Data/Textures/First/" animatedShot="false" animatedsetback="true" />
   <rocketl model="./Data/Models/ItemsPlayer/Rocket_Player.ASE" texture="./Data/Textures/First/" animatedShot="false" animatedsetback="true" />
-  <!--<machinegun model="./Data/Models/ItemsPlayer/MachineGun_Player.ASE" texture="./Data/Textures/First/" animatedShot="true" animatedsetback="true" />-->
-  <machinegun model="./Data/Models/ItemsPlayer/ShotGun_Player.ASE" texture="./Data/Textures/First/" animatedShot="true" animatedsetback="true" />
+  <machinegun model="./Data/Models/ItemsPlayer/MachineGun_Player.ASE" texture="./Data/Textures/First/" animatedShot="true" animatedsetback="true" />
+  <!--<machinegun model="./Data/Models/ItemsPlayer/ShotGun_Player.ASE" texture="./Data/Textures/First/" animatedShot="true" animatedsetback="true" />-->
   <ammoshotgun model="./Data/Models/ItemsPlayer/Ammo_ShotGun_Player.ASE" texture="./Data/Textures/First/" />
   <ammorocketl model="./Data/Models/ItemsPlayer/Ammo_Rocket_Player.ASE" texture="./Data/Textures/First/" />
   <ammomachinegun model="./Data/Models/ItemsPlayer/Ammo_MachineGun_Player.ASE" texture="./Data/Textures/First/" />
