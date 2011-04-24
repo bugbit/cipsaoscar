@@ -1,0 +1,1 @@
+sAqui metermos toda la documentación: principalmente diagramas UML de clases.

@@ -1,0 +1,39 @@
+1	[INFORMATION]	CApplication:: Iniciando la lectua del archivo de configuracion --> Data/Config/init_pokerTH.xml
+2	[INFORMATION]	CApplication:: Resolucion de la aplicacion(1024,768)
+3	[INFORMATION]	CApplication:: FullScreen Mode 
+4	[INFORMATION]	CApplication:: Consola desactivada
+5	[INFORMATION]	CApplication:: Logger activado
+6	[INFORMATION]	CApplication:: Exclusive mode in mouse
+7	[INFORMATION]	CApplication:: El fichero con la configuracion de la GUI es-->./Data/GUI/initGui_fpsGame.xml
+8	[INFORMATION]	CApplication:: El fichero con los sonidos a cargar es-->
+9	[INFORMATION]	CApplication:: El fichero con los avis a cargar es-->
+10	[INFORMATION]	CApplication:: La aplicacion inicializara physx
+11	[INFORMATION]	CApplication:: La aplicacion no inicializara computerVision
+12	[INFORMATION]	CApplication:: La aplicacion ejecutara el script de inicializacion: _core       = getCore();                 _inputM     = getCore():getInput();                 _renderM    = getCore():getRender();                 _physicM    = getCore():getPhysic();                 _textureM   = getCore():getTexture()                 _effectM    = getCore():getEffect();                 _guiM       = getCore():getGui();                 _soundM     = getCore():getSound();                 _aviPM      = getCore():getAviPlayer();                 _networkM   = getCore():getNetwork();                 _cvM        = getCore():getComputerVision();                 _game       = getPokerTHGame();
+13	[INFORMATION]	CApplication:: La aplicacion ejecutara por defecto el proceso: 
+14	[INFORMATION]	CApplication:: Finalizada la lectua del archivo de configuracion --> Data/Config/init_pokerTH.xml
+15	[INFORMATION]	ScriptManager:: Inicializando el manager de scripting
+16	[INFORMATION]	RenderManager:: Inicializando la libreria Direct3D
+17	[INFORMATION]	RenderManager:: La resolucion de pantalla es (1016x741)
+18	[INFORMATION]	InputManager:: calling initialization
+19	[INFORMATION]	Keyboard:: crancking up keyboard
+20	[INFORMATION]	Keyboard:: keyboard online
+21	[INFORMATION]	Mouse:: crancking up mouse
+22	[INFORMATION]	Mouse:: mouse online
+23	[INFORMATION]	PhysicsManager:: Inicializando la libreria PhysX
+24	[INFORMATION]	PhysicsManager:: Creado el PhysXSDK
+25	[INFORMATION]	PhysicsManager:: -------PhsX Settings---
+26	[INFORMATION]	PhysicsManager:: El valor del SkinWidth es: 0.001000
+27	[INFORMATION]	PhysicsManager:: El valor de la gravedad es: -98.100006
+28	[INFORMATION]	PhysicsManager:: Solo hay un material, con los siguientes params
+29	[INFORMATION]	PhysicsManager:: DefaultMaterial->Restitution 0.000000:
+30	[INFORMATION]	PhysicsManager:: DefaultMaterial->StaticFriction 0.500000:
+31	[INFORMATION]	PhysicsManager:: DefaultMaterial->DynamicFriction 0.500000:
+32	[INFORMATION]	PhysicsManager:: ----END PhsX Settings---
+33	[INFORMATION]	PhysicsManager:: Creado el controlador de caracteres
+34	[INFORMATION]	PhysicsManager:: Creado el CookingMesh
+35	[INFORMATION]	CSoundManager:: calling initialization
+36	[INFORMATION]	CSoundManager:: online (ok)
+37	[INFORMATION]	CAviPlayerManager::Init calling initialization
+38	[INFORMATION]	GUIManager:: calling initialization
+39	[___ERROR___]	CGUIManager::Init-> Error al leer el archivo de configuracion GUI: ./Data/GUI/initGui_fpsGame.xml

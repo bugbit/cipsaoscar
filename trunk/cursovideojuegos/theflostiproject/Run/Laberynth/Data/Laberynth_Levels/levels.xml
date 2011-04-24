@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<LEVELS boardBase_meshFileName="./Data/Laberynth_Levels/baseBoard.ASE"
+        boardBase_physxFileName="./Data/Laberynth_Levels/baseBoard.BIN"
+        ball_meshFileName="./Data/Laberynth_Levels/ball.ASE"
+        ball_physxFileName="./Data/Laberynth_Levels/ball.BIN"
+        ballRadius="3">
+  
+  <Level  levelName="level_1"
+          meshFileName="./Data/Laberynth_Levels/Level_1/board.ASE" 
+          physxFileName="./Data/Laberynth_Levels/Level_1/board.BIN" 
+          timeOut="100" posXGoal="40" posZGoal="40" posXStart="-55" posZStart="35" />
+
+  <Level  levelName="level_2"
+          meshFileName="./Data/Laberynth_Levels/Level_2/board.ASE" 
+          physxFileName="./Data/Laberynth_Levels/Level_2/board.BIN"
+          timeOut="200" posXGoal="40" posZGoal="40" posXStart="0" posZStart="0" />
+
+  <Level  levelName="level_3"
+          meshFileName="./Data/Laberynth_Levels/Level_3/board.ASE"
+          physxFileName="./Data/Laberynth_Levels/Level_3/board.BIN"
+          timeOut="300" posXGoal="-40" posZGoal="40" posXStart="0" posZStart="0" />
+
+  <Level  levelName="level_4"
+          meshFileName="./Data/Laberynth_Levels/Level_4/board.ASE"
+          physxFileName="./Data/Laberynth_Levels/Level_4/board.BIN"
+          timeOut="400" posXGoal="40" posZGoal="40" posXStart="0" posZStart="0" />
+
+</LEVELS>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Sounds>
+  <Sound soundId="help"     path="./Data/Sounds/help.wav"/>
+  <Sound soundId="guiNext"  path="./Data/Sounds/gui_next.wav"/>
+  <Sound soundId="guiOver"  path="./Data/Sounds/gui_over.wav"/>
+  <Sound soundId="guiBack"  path="./Data/Sounds/gui_back.wav"/>
+</Sounds>
