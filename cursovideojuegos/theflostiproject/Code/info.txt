@@ -1,0 +1,1 @@
+Aquí meteremos cada uno de los proyectos que creemos nuevos. Vereis que cuando abrís la solución los proyectos tienen nombres como "001 PepitoGame", "100 GameLogic". Esto es para organizarlos de mayor importancia a menor (es una parida pero si se añade un nuevo proyecto al organizarse siempre por alfabeto ya no se meterán por enmedio.cosa que puede llegar a tocar los cojones...).
