@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Config>
+  <ScreenResolution width="1024" height="768"/>
+  <WindowsPosition posX="100" posY="100"/>
+  <Rendermode fullscreenMode="false"/>
+  <Console_Logger activateConsole="false" Log_Level="INFORMATION" activateLogger="false"/>
+  <Mouse exclusiveModeinMouse="true"  drawPointerMouse="true" />
+  <GUI initGuiXML="./Data/GUI/initGui_viewer.xml"/>
+  <Sound soundXML=""/>
+  <Avi aviXML=""/>
+  <PhysX initPhysX="true"/>
+  <ComputerVision initComputerVision="false"/>
+  <Script init="_core       = getCore();
+                _inputM     = getCore():getInput();
+                _renderM    = getCore():getRender();
+                _physicM    = getCore():getPhysic();
+                _textureM   = getCore():getTexture()
+                _effectM    = getCore():getEffect();
+                _guiM       = getCore():getGui();
+                _soundM     = getCore():getSound();
+                _aviPM      = getCore():getAviPlayer();
+                _networkM   = getCore():getNetwork();
+                _cvM        = getCore():getComputerVision();
+                _viewer     = getViewer"/>
+  <Process initProcess=""/>
+</Config>

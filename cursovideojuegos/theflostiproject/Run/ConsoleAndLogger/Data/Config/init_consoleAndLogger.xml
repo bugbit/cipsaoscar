@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Config>
+  <ScreenResolution width="1024" height="768"/>
+  <Rendermode fullscreenMode="false"/>
+  <Console_Logger activateConsole="true" Log_Level="INFORMATION" activateLogger="true"/>
+  <Mouse exclusiveModeinMouse="false"  drawPointerMouse="false" />
+  <GUI initGuiXML=""/>
+  <Sound soundXML=""/>
+  <PhysX initPhysX="false"/>
+  <ComputerVision initComputerVision="false"/>
+</Config>

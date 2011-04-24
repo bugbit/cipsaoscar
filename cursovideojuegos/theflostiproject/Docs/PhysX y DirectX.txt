@@ -1,0 +1,26 @@
+---PHYSX-----
+-Directorios de inclusión:
+c:\Archivos de programa\NVIDIA Corporation\NVIDIA PhysX SDK\v2.8.1\SDKs\Foundation\include
+C:\Archivos de programa\NVIDIA Corporation\NVIDIA PhysX SDK\v2.8.1\SDKs\NxCharacter\include
+C:\Archivos de programa\NVIDIA Corporation\NVIDIA PhysX SDK\v2.8.1\SDKs\Physics\include
+C:\Archivos de programa\NVIDIA Corporation\NVIDIA PhysX SDK\v2.8.1\SDKs\PhysXLoader\include
+C:\Archivos de programa\NVIDIA Corporation\NVIDIA PhysX SDK\v2.8.1\SDKs\Cooking\include
+
+-Directorios de biblioteca:
+C:\Archivos de programa\NVIDIA Corporation\NVIDIA PhysX SDK\v2.8.1\SDKs\lib\Win32
+
+
+---DIRECTX---
+-Directorios de inclusión:
+c:\Archivos de programa\Microsoft DirectX SDK (April 2007)\Include
+
+-Directorios de biblioteca:
+c:\Archivos de programa\Microsoft DirectX SDK (April 2007)\Lib\x86
+
+
+> > Per el sdk de physx s'ha de baixar dos instalables:
+> > -http://developer.download.nvidia.com/PhysX/PhysX_8.04.25_SystemSoftware.exe 
+> > --> això és com un driver
+> > -http://developer.download.nvidia.com/PhysX/2.8.1/PhysX_2.8.1_SDK_Core.msi 
+> > --> el sdk de la llibreria.
+

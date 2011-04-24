@@ -1,0 +1,9 @@
+1	[INFORMATION]	CApplication:: Iniciando la lectua del archivo de configuracion --> Data/Config/init_airHockey.xml
+2	[INFORMATION]	CApplication:: Resolucion de la aplicacion(1024,768)
+3	[INFORMATION]	CApplication:: FullScreen Mode 
+4	[INFORMATION]	CApplication:: Consola activada
+5	[INFORMATION]	CApplication:: Logger activado
+6	[INFORMATION]	CApplication:: Exclusive mode in mouse
+7	[INFORMATION]	CApplication:: El fichero con la configuracion de la GUI es-->
+8	[INFORMATION]	CApplication:: El fichero con los sonidos a cargar es-->
+9	[___ERROR___]	CApplication::LoadInitParams-> Error al intentar leer el tag <Avi> del archivo de configuracion: Data/Config/init_airHockey.xml

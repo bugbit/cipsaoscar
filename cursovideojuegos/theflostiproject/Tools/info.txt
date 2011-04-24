@@ -1,0 +1,1 @@
+Aquí meteremos las posibles aplicacones de utilidad como por ejemplo la consola, logger, exportador, PhysX viewer, gui editor, etc

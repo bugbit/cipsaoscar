@@ -1,0 +1,13 @@
+1	[INFORMATION]	CApplication:: Iniciando la lectua del archivo de configuracion --> Data/Config/init_viewer.xml
+2	[INFORMATION]	CApplication:: Resolucion de la aplicacion(1024,768)
+3	[INFORMATION]	CApplication:: FullScreen Mode 
+4	[INFORMATION]	CApplication:: Consola desactivada
+5	[INFORMATION]	CApplication:: Logger desactivado
+6	[INFORMATION]	CApplication:: Exclusive mode in mouse
+7	[INFORMATION]	CApplication:: El fichero con la configuracion de la GUI es-->./Data/GUI/initGui_viewer.xml
+8	[INFORMATION]	CApplication:: El fichero con los sonidos a cargar es-->
+9	[INFORMATION]	CApplication:: El fichero con los avis a cargar es-->
+10	[INFORMATION]	CApplication:: La aplicacion inicializara physx
+11	[INFORMATION]	CApplication:: La aplicacion no inicializara computerVision
+12	[INFORMATION]	CApplication:: La aplicacion ejecutara el script de inicializacion: _core       = getCore();                 _inputM     = _core:getInput();                 _renderM    = _core:getRender();                 _physicM    = _core:getPhysic();                 _textureM   = _core:getTexture()                 _effectM    = _core:getEffect();                 _guiM       = _core:getGui();                 _soundM     = _core:getSound();                 _aviPM      = _core:getAviPlayer();                 _networkM   = _core:getNetwork();                 _cvM        = _core:getComputerVision();                 _viewer     = getViewer
+13	[___ERROR___]	CApplication::LoadInitParams-> Error al intentar leer el tag <Process> del archivo de configuracion: Data/Config/init_viewer.xml

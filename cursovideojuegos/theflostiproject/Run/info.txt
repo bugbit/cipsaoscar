@@ -1,0 +1,2 @@
+Aqui metermos todo los datos: texturas, modelos, sonidos, fuentes, etc
+También el exe y las dlls (glut, fmod, las que sean...) necesarias para ejecutar el juego.

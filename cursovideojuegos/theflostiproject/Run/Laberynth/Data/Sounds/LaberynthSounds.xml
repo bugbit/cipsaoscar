@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Sounds>
+  <Sound soundId="cash"     path="./Data/Sounds/Sounds_Laberynth/cash.wav"/>
+  <Sound soundId="loop"     path="./Data/Sounds/Sounds_Laberynth/loop-gen.wav"/>
+  <Sound soundId="help"     path="./Data/Sounds/Sounds_Laberynth/help.wav"/>
+  <Sound soundId="guiNext"  path="./Data/Sounds/Sounds_Laberynth/gui_next.wav"/>
+  <Sound soundId="guiOver"  path="./Data/Sounds/Sounds_Laberynth/gui_over.wav"/>
+  <Sound soundId="guiBack"  path="./Data/Sounds/Sounds_Laberynth/gui_back.wav"/>
+  <Sound soundId="win"      path="./Data/Sounds/Sounds_Laberynth/youwin.wav"/>
+  <Sound soundId="gameOver" path="./Data/Sounds/Sounds_Laberynth/gameOver.wav"/>
+  <Sound soundId="initGame" path="./Data/Sounds/Sounds_Laberynth/Init.wav"/>
+</Sounds>
