@@ -2,6 +2,9 @@
 
 #include "ActionsPlayerInput.h"
 #include "Player.h"
+#include "GameLogic.h"
+
+#include "assert.h"
 
 //---Engine Includes----
 #include "Core/Core.h"
@@ -17,9 +20,12 @@ CActionsPlayerInput::~CActionsPlayerInput(void)
 
 void CActionsPlayerInput::UpdateInputAction	(float elapsedTime)
 {
-CActionToInput* input2Action = CORE->GetActionToInput();
-
+	CActionToInput* input2Action = CORE->GetActionToInput();
 	float delta;
+	
+	assert(m_pPlayer!=NULL);
+	assert(m_pGameLogic!=NULL);
+
 	if (input2Action->DoAction("YawPlayer", delta))
 	{
 			delta = delta * 0.01f;
@@ -64,6 +70,6 @@ CActionToInput* input2Action = CORE->GetActionToInput();
 	}
 	if (input2Action->DoAction("shoot"))
 	{
-			m_pPlayer->Shot();
+			m_pGameLogic->Shot(*m_pPlayer);
 	}
 }

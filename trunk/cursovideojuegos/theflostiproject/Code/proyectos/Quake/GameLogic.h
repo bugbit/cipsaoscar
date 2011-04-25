@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Arena.h"
+#include "Item.h"
 
 //---Engine Includes---
 #include "PhysX/PhysicTriggerReport.h"
@@ -9,6 +10,7 @@
 //Engine:
 class CRenderManager;
 class CFontManager;
+class CPlayer;
 
 class CGameLogic : public CPhysicTriggerReport
 {
@@ -19,6 +21,8 @@ public:
 	bool																							Init	              ();
 	void																							Done	              ();
 	inline bool																				IsOk	              () const { return m_bIsOk; }
+
+	void																							Shot								(CPlayer &player);
 
 	//---Update and Render function
 	void																							Update	            (float elapsedTime);
@@ -34,4 +38,6 @@ private:
 	CArena																						m_Arena;
 
 	void																							Release             ();
+	void																							ShotRay							(CItem::ETYTE argType,CPlayer &player);
+	void																							ShotOverlapSphere		(CItem::ETYTE argType,CPlayer &player);
 };

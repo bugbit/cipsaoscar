@@ -42,7 +42,8 @@ public:
 	void											SetGunSelected			(CItem::ETYTE type);
 	inline const Vect3f &			GetVectDir					() const { return m_VectDir; }
 	void											SetVectDir					(Vect3f &v);
-	void											Shot								();
+	inline bool               IsGunReady          () const { return !m_bIsShot; }
+	bool											Shot								();
 private:
 	bool											m_bIsOk;			      // Initialization boolean control
 	bool											m_bIsShot;

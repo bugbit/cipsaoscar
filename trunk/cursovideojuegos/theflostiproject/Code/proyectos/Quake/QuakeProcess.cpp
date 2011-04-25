@@ -87,6 +87,7 @@ bool CQuakeProcess::Init ()
 	pm->AddPhysicController(player);
 	CActionsPlayerInput *inputplayer=new CActionsPlayerInput();
 	inputplayer->SetPlayer(player);
+	inputplayer->SetGameLogic(&m_GameLogic);
 	m_PlayerInputs.push_back(inputplayer);
 	m_GUIPlayer.Init();
 	m_GUIPlayer.SetPlayer(player);
