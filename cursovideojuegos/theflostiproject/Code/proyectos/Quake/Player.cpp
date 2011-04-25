@@ -244,15 +244,13 @@ void CPlayer::SetVectDir(Vect3f &v)
 	m_VectDir=v.Normalize();
 }
 
-void CPlayer::Shot()
+bool CPlayer::Shot()
 {
-	if (GetStatusGun()>0)
-	{
-		if (!m_bIsShot)
-		{
-			m_bIsShot=true;
-			m_GunSelected->gunState--;
-			m_fTimerShotting=m_GunSelected->timeShot;
-		}
-	}
+	if (GetStatusGun()<=0)
+		return false;
+	m_bIsShot=true;
+	m_GunSelected->gunState--;
+	m_fTimerShotting=m_GunSelected->timeShot;
+
+	return true;
 }
