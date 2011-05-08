@@ -215,6 +215,10 @@
 				RelativePath="..\..\..\Run\Quake\Data\Config\init_Quake.xml"
 				>
 			</File>
+			<File
+				RelativePath="..\..\..\Run\Quake\Data\Sounds\sounds.xml"
+				>
+			</File>
 			<Filter
 				Name="Models"
 				>

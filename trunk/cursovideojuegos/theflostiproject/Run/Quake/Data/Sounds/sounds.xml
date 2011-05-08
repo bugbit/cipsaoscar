@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Sounds>
+  <Sound soundId="noAmmo" path="./Data/Sounds/Weapons/noammo.wav" />
+  <Sound soundId="changeGun" path="./Data/Sounds/Weapons/changegun.wav" />
+  <Sound soundId="machineGun" path="./Data/Sounds/Weapons/MachineGun/machgf1b.wav" />
+  <Sound soundId="rocketFly" path="./Data/Sounds/Weapons/Rocket/rocklf1a.wav" />
+  <Sound soundId="rocketImpact" path="./Data/Sounds/Weapons/Rocket/rocklx1a.wav" />
+  <Sound soundId="shotGun" path="./Data/Sounds/Weapons/ShotGun/sshotf1b.wav" />
+  <Sound soundId="toFallDown" path="./Data/Sounds/Player/fall1.wav" />
+  <Sound soundId="getLife" path="./Data/Sounds/Items/ar1_pkup.wav" />
+  <Sound soundId="respawnItem" path="./Data/Sounds/Items/respawn1.wav" />
+  <Sound soundId="getGun" path="./Data/Sounds/Items/w_pkup.wav" />
+  <Sound soundId="fire" path="./Data/Sounds/Ambient/fireloud.wav" />
+  <Sound soundId="pain25" path="./Data/Sounds/Player/pain25_1.wav" />
+  <Sound soundId="pain50" path="./Data/Sounds/Player/pain50_1.wav" />
+  <Sound soundId="pain75" path="./Data/Sounds/Player/pain75_1.wav" />
+  <Sound soundId="pain100" path="./Data/Sounds/Player/pain100_1.wav" />
+  <Sound soundId="intro" path="./Data/Sounds/Intro/fla22k_01_intro.wav" />
+</Sounds>
