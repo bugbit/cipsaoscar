@@ -44,6 +44,8 @@ void CGUIPlayerGunRender::RenderScene(CRenderManager* renderManager, CFontManage
 	}
 	// Realizar el movimiento de la shotgun y rocket cuando han disparado
 	float amountSetBack = 0.f;
+	if (m_bAnimatedSetBack && guiplayer.IsSetBack())
+		amountSetBack = 0.4f*sin(guiplayer.GetAmountSetBack());
 	D3DXMatrixTranslation( &translation2, 0.2f - amountSetBack, -0.2f , -0.1f);
 	D3DXMatrixTranslation( &translation, position.x ,position.y + 0.005f*sin(guiplayer.GetPitchGun()),position.z );
 	

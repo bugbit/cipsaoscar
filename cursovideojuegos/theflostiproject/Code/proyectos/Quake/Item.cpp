@@ -116,6 +116,9 @@ CItemTypeManager::CItemTypeManager()
 	m_MapGunAmmo[CItem::SHOTGUN]=CItem::AMMOSHOTGUN;
 	m_MapGunAmmo[CItem::ROCKETL]=CItem::AMMOROCKETL;
 	m_MapGunAmmo[CItem::MACHINEGUN]=CItem::AMMOMACHINEGUN;
+	m_MapSoundGun[CItem::SHOTGUN]="shotGun";
+	m_MapSoundGun[CItem::ROCKETL]="rocketFly";
+	m_MapSoundGun[CItem::MACHINEGUN]="machineGun";
 }
 
 CItemTypeManager & CItemTypeManager::GetInstance()
@@ -140,6 +143,7 @@ std::string CItemTypeManager::GetNameForType	(CItem::ETYTE type)
 
 	if (it==m_MapTypesNameEtype.end())
 		return "";
+
 	return (*it).second;
 }
 
@@ -149,6 +153,16 @@ CItem::ETYTE CItemTypeManager::GetAmmo(CItem::ETYTE gun)
 
 	if (it==m_MapGunAmmo.end())
 		return CItem::NONE;
+
+	return (*it).second;
+}
+
+std::string CItemTypeManager::GetSound(CItem::ETYTE gun)
+{
+	std::map<CItem::ETYTE,std::string>::iterator it=m_MapSoundGun.find(gun);
+
+	if (it==m_MapSoundGun.end())
+		return "";
 
 	return (*it).second;
 }

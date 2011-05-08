@@ -61,10 +61,12 @@ public:
 	std::string																				GetNameForType	(CItem::ETYTE type);
 	static CItemTypeManager &													GetInstance			();
 	CItem::ETYTE																			GetAmmo					(CItem::ETYTE gun);
+	std::string																				GetSound				(CItem::ETYTE gun);
 private:
 	std::map<std::string,CItem::ETYTE>								m_MapTypes;
 	std::map<CItem::ETYTE,std::string>								m_MapTypesNameEtype;
 	std::map<CItem::ETYTE,CItem::ETYTE>								m_MapGunAmmo;
+	std::map<CItem::ETYTE,std::string>								m_MapSoundGun;
 
 	CItemTypeManager																									();
 	inline ~CItemTypeManager																					() {}

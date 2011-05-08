@@ -28,6 +28,8 @@ CGUIPlayer::CGUIPlayer(void)
 ,m_fPitchGun(0)
 ,m_TextureCrossHair(NULL)
 ,m_bShot(false)
+,m_bSetBack(false)
+,m_fAmountSetBack(0.f)
 {
 	for(int i=0;i<RangTexturesNumbers();i++)
 		m_TexturesNumbers[i]=NULL;
@@ -85,6 +87,8 @@ bool CGUIPlayer::Init()
 	m_fYawGun=0;
 	m_fPitchGun=0;
 	m_bShot=false;
+	m_bSetBack=false;
+	m_fAmountSetBack=0.f;
 
 	return m_bIsOk;
 }
@@ -322,6 +326,36 @@ void CGUIPlayer::RenderCrossHair2D(CRenderManager* renderManager, CFontManager* 
 
 void CGUIPlayer::Update(float elapsedTime)
 {
+	GUN *gun;
+
 	m_fYawGun += elapsedTime;
 	m_fPitchGun += elapsedTime;
+	if (m_bSetBack)
+	{
+		m_fAmountSetBack += 4*elapsedTime;
+		if( m_fAmountSetBack > D3DX_PI)
+		{
+			m_bSetBack = false;
+			m_fAmountSetBack = 0.f;
+		}
+	}
+	if (m_pPlayer!=NULL)
+	{
+		gun=m_pPlayer->GetGunSelected();
+		if (m_pPlayer->IsShot())
+		{
+			m_bShot=true;
+			if (gun!=NULL)
+			{
+				if (gun->back)
+					if (!m_bSetBack)
+						m_bSetBack=true;
+			}
+		}
+		else
+		{
+			if (m_bShot)
+				m_bShot=false;
+		}
+	}
 }

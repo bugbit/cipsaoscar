@@ -51,6 +51,7 @@ bool CQuakeProcess::Init ()
 	CQuakePhysicsData *playerdata=new CQuakePhysicsData("player");
 	CPlayer *player=new CPlayer(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,playerdata,Vect3f(0.f,2.f,0.f));
 	player->Init();
+	player->SetName("the player");
 	// Mochila player
 	std::vector<GUN> guns;
 	//SHOTGUN
@@ -95,6 +96,7 @@ bool CQuakeProcess::Init ()
 	CQuakePhysicsData *botdata=new CQuakePhysicsData("bot");
 	botdata->SetPaint(true);
 	CPlayer *bot=new CPlayer(.5f,3.f,45.f,0.1f,.5f,IMPACT_MASK_1,botdata,Vect3f(2.f,2.f,10.f));
+	bot->SetName("bot1");
 	bot->Init();
 	bot->SetGuns(guns);
 	bot->SetGunSelected(CItem::MACHINEGUN);
@@ -279,6 +281,13 @@ uint32 CQuakeProcess::RenderDebugInfo(CRenderManager* renderManager, CFontManage
 		posY += fm->DrawDefaultText(posX,posY,colWHITE,"Camara: %s",(m_IsCameraView) ? "View" : "FPS");
 		if (pm->GetDebugRenderMode())
 			posY += fm->DrawDefaultText(posX,posY,colWHITE,"Modo Debug Render in PhysicsManager");
+		std::vector<CPlayer*> players=m_GameLogic.GetArena().GetPlayers();
+		std::vector<CPlayer*>::iterator it=players.begin(),itend=players.end();
+		for (;it!=itend;it++)
+		{
+			const Vect3f &pos=(*it)->GetPosition();
+			posY += fm->DrawDefaultText(posX,posY,colWHITE,"%s: (%f,%f,%f)",(*it)->GetName().c_str(),pos.x,pos.y,pos.z);
+		}
 	}
 	return posY;
 }

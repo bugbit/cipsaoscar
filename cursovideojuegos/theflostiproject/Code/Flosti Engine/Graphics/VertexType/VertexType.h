@@ -9,6 +9,7 @@
 #ifndef VERTEX_TYPE_H
 #define VERTEX_TYPE_H
 
+#include <d3dx9.h>
 #include "Base.h"
 
 void CalcTangentsAndBinormals(	void *VtxsData, unsigned short *IdxsData, size_t VtxCount, size_t IdxCount,
@@ -102,6 +103,38 @@ struct SCREEN_TEXTURE_VERTEX
 	static unsigned int getFlags()
 	{
 		return D3DFVF_SCREEN_TEXTURE_VERTEX;
+	}
+};
+
+struct TTEXTURE_VERTEX
+{
+	float x, y, z;	
+	float u,v;
+	static inline unsigned short GetVertexType()
+	{
+		return VERTEX_TYPE_GEOMETRY|VERTEX_TYPE_TEXTURE1;
+	}
+	static inline unsigned int GetFVF()
+	{
+		return D3DFVF_XYZ|D3DFVF_TEX1;
+	}
+  static LPDIRECT3DVERTEXDECLARATION9 s_VertexDeclaration;
+	static LPDIRECT3DVERTEXDECLARATION9 & GetVertexDeclaration();
+	static void ReleaseVertexDeclaration()
+	{
+		CHECKED_RELEASE(s_VertexDeclaration);
+	}
+};
+
+struct COLOR_VERTEX
+{
+	float x,y,z;
+	DWORD color;
+	float u,v;
+	
+	static unsigned int getFlags()
+	{
+		return(D3DFVF_XYZ|D3DFVF_DIFFUSE|D3DFVF_TEX1);
 	}
 };
 

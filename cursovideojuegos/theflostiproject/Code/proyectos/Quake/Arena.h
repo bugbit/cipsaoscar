@@ -23,10 +23,11 @@ public:
 	void																								Update	            (float elapsedTime);
 	void																								RenderScene					(CRenderManager* renderManager, CFontManager* fontManager);
 
-	inline IWorld &																			GetWorld() const  { return *m_pWorld; }
-	inline void																					SetWorld(IWorld *world) { m_pWorld=world; }
-	inline CItemManager &																GetItemManager() { return m_ItemManager; }
-	inline void																					AddPlayer(CPlayer *player) { m_Players.push_back(player); }
+	inline IWorld &																			GetWorld						() const  { return *m_pWorld; }
+	inline void																					SetWorld						(IWorld *world) { m_pWorld=world; }
+	inline CItemManager &																GetItemManager			() { return m_ItemManager; }
+	inline const std::vector<CPlayer *>	&								GetPlayers					() const { return m_Players; }
+	inline void																					AddPlayer						(CPlayer *player) { m_Players.push_back(player); }
 
 private:
 	bool																								m_bIsOk;			      // Initialization boolean control

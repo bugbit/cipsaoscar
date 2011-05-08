@@ -119,7 +119,7 @@ void CPlayer::AddStatusPlayer(int amount)
 	}
 }
 
-void CPlayer::ChangeSelectedGun()
+GUN *CPlayer::ChangeSelectedGun()
 {
 	GUN *gun=NULL;
 
@@ -153,26 +153,8 @@ void CPlayer::ChangeSelectedGun()
 		if (gun!=NULL)
 			m_GunSelected=gun;
 	}
-}
 
-void CPlayer::Catch(CItem *item)
-{
-	CItemLife *itemlife=dynamic_cast<CItemLife *>(item);
-
-	if (itemlife!=NULL)
-		Catch(itemlife);
-	else
-	{
-		CItemAmmo *itemammo=dynamic_cast<CItemAmmo *>(item);
-		if (itemammo!=NULL)
-			Catch(itemammo);
-		else
-		{
-			CItemGun *itemgun=dynamic_cast<CItemGun *>(item);
-			if (itemgun!=NULL)
-				Catch(itemgun);
-		}
-	}
+	return gun;
 }
 
 void CPlayer::Catch(CItemLife *item)

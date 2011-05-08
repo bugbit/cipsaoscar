@@ -4,10 +4,14 @@
 #include "QuakePhysicsData.h"
 #include "Player.h"
 #include "Item.h"
-#include "Logger/Logger.h"
+#include "ItemLife.h"
+#include "ItemGun.h"
+#include "ItemAmmo.h"
 
 //----Engine Includes-------------
 #include "Core/Core.h"
+#include "Logger/Logger.h"
+#include "Sound/SoundManager.h"
 //Includes para el test de físicas:
 #include "PhysX/PhysicsManager.h"
 
@@ -69,7 +73,7 @@ void CGameLogic::OnEnter(CPhysicUserData* trigger1, CPhysicUserData* other_shape
 		if (!item->GetSelected())
 		{
 			item->SetSelected(true);
-			player->Catch(item);
+			Catch(item,*player);
 		}
 	}
 }
@@ -78,28 +82,74 @@ void CGameLogic::OnLeave(CPhysicUserData* trigger1, CPhysicUserData* other_shape
 {
 }
 
-void CGameLogic::Shot(CPlayer &player)
+void CGameLogic::Catch(CItem *item,CPlayer &player)
 {
-	if (player.IsGunReady())
+	CItemLife *itemlife=dynamic_cast<CItemLife *>(item);
+
+	if (itemlife!=NULL)
 	{
-		if (player.Shot())
+		player.Catch(itemlife);
+		CORE->GetSoundManager()->PlayAction2D("getLife");
+	}
+	else
+	{
+		CItemAmmo *itemammo=dynamic_cast<CItemAmmo *>(item);
+		if (itemammo!=NULL)
 		{
-			CItem::ETYTE type=player.GetTypeGun();
-			switch (type)
+			player.Catch(itemammo);
+			CORE->GetSoundManager()->PlayAction2D("getGun");
+		}
+		else
+		{
+			CItemGun *itemgun=dynamic_cast<CItemGun *>(item);
+			if (itemgun!=NULL)
 			{
-				case CItem::MACHINEGUN:
-				case CItem::SHOTGUN:
-					ShotRay(type,player);
-					break;
-				case CItem::ROCKETL:
-					ShotOverlapSphere(type,player);
-					break;
+				player.Catch(itemgun);
+				CORE->GetSoundManager()->PlayAction2D("getGun");
 			}
 		}
 	}
 }
 
-void CGameLogic::ShotRay(CItem::ETYTE argType,CPlayer &player)
+void CGameLogic::Shot(CPlayer &player)
+{
+	GUN *gun=player.GetGunSelected();
+	std::string sound;
+	
+	if (gun==NULL)
+		CORE->GetSoundManager()->PlayAction2D("noAmmo");
+	else if (player.IsGunReady())
+	{
+		if (player.Shot())
+		{			
+			switch (gun->type)
+			{
+				case CItem::MACHINEGUN:
+				case CItem::SHOTGUN:
+					ShotRay(*gun,player);
+					break;
+				case CItem::ROCKETL:
+					//ShotOverlapSphere(gun,player);
+					break;
+			}
+			sound=CItemTypeManager::GetInstance().GetSound(gun->type);
+			if (!sound.empty())
+				CORE->GetSoundManager()->PlayAction2D(sound);
+		}
+		else
+			CORE->GetSoundManager()->PlayAction2D("noAmmo");
+	}
+}
+
+void CGameLogic::ChangeSelectedGun(CPlayer &player)
+{
+	GUN *gun=player.ChangeSelectedGun();
+
+	if (gun!=NULL)
+		CORE->GetSoundManager()->PlayAction2D("changeGun");
+}
+
+void CGameLogic::ShotRay(GUN &gun,CPlayer &player)
 {
 	SCollisionInfo info;
 	Vect3f dir=player.GetVectDir();
@@ -107,7 +157,8 @@ void CGameLogic::ShotRay(CItem::ETYTE argType,CPlayer &player)
 	CQuakePhysicsData *data=(CQuakePhysicsData *) CORE->GetPhysicManager()->RaycastClosestActor(pos,dir,IMPACT_MASK_1,NULL,info);
 	if (data!=NULL)
 	{
-		LOGGER->AddNewLog(ELL_INFORMATION, "CGameLogic::ShotRay: Impacto en %s", data->GetName().c_str());
+		if(info.m_fDistance<=gun.distshot)
+			LOGGER->AddNewLog(ELL_INFORMATION, "CGameLogic::ShotRay: Impacto en %s dist: %f", data->GetName().c_str(),info.m_fDistance);
 	}
 }
 
