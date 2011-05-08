@@ -11,7 +11,7 @@
     <Language languageXML="./Data/Language/spanish.xml"/>
   </Languages>
   <GUI initGuiXML=""/>
-  <Sound soundXML=""/>
+  <Sound soundXML="./Data/Sounds/Sounds.xml"/>
   <Avi aviXML=""/>
   <PhysX initPhysX="true"/>
   <ComputerVision initComputerVision="false"/>
