@@ -26,28 +26,34 @@ public:
 	void											Done	              ();
 	inline bool								IsOk	              () const { return m_bIsOk; }
 
+	std::string								GetName							() const { return m_sName; }
+	void											SetName							(const std::string name) { m_sName=name; }
 	void											SetCleanMove				();
 	void											SetMoveUp						(bool speed,float elapsedTime);
 	void											SetMoveDown					(bool speed,float elapsedTime);
 	void											SetMoveLeft					(bool speed,float elapsedTime);
 	void											SetMoveRight				(bool speed,float elapsedTime);
 	void											Move								(float elapsedTime);
+	inline GUN *							GetGunSelected			() const { return m_GunSelected; }
 	inline int								GetStatusPlayer			() const { return m_life; }
 	void											AddStatusPlayer			(int amount);
 	CItem::ETYTE							GetTypeGun					();
 	int												GetStatusGun				();
-	void											ChangeSelectedGun		();
-	void											Catch								(CItem *item);
+	GUN *											ChangeSelectedGun		();
 	void											SetGuns							(std::vector<GUN> &guns);
 	void											SetGunSelected			(CItem::ETYTE type);
 	inline const Vect3f &			GetVectDir					() const { return m_VectDir; }
 	void											SetVectDir					(Vect3f &v);
+	inline bool								IsShot							() const { return m_bIsShot; }
 	inline bool               IsGunReady          () const { return !m_bIsShot; }
 	bool											Shot								();
 private:
+	friend										class CGameLogic;
+
 	bool											m_bIsOk;			      // Initialization boolean control
+	std::string								m_sName;
 	bool											m_bIsShot;
-	float											m_fSpeedForward;
+	float											m_fSpeedForward; 
 	float											m_fSpeed;
 	Vect3f										m_MoveDirection,m_VectDir;
 	int												m_life;

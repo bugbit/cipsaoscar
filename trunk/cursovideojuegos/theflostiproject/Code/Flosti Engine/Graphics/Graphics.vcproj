@@ -405,6 +405,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="BillBoards"
+			>
+			<File
+				RelativePath=".\BillBoards\BillBoard.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BillBoards\BillBoard.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\RenderManager.cpp"
 			>

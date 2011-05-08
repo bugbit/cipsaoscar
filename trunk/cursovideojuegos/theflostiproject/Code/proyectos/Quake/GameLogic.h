@@ -22,7 +22,9 @@ public:
 	void																							Done	              ();
 	inline bool																				IsOk	              () const { return m_bIsOk; }
 
+	void																							Catch								(CItem *item,CPlayer &player);
 	void																							Shot								(CPlayer &player);
+	void																							ChangeSelectedGun		(CPlayer &player);
 
 	//---Update and Render function
 	void																							Update	            (float elapsedTime);
@@ -38,6 +40,6 @@ private:
 	CArena																						m_Arena;
 
 	void																							Release             ();
-	void																							ShotRay							(CItem::ETYTE argType,CPlayer &player);
+	void																							ShotRay							(GUN &gun,CPlayer &player);
 	void																							ShotOverlapSphere		(CItem::ETYTE argType,CPlayer &player);
 };

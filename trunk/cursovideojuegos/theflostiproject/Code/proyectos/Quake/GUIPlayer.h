@@ -40,6 +40,7 @@ public:
 	inline void								ChangeShot						(bool bshot) { m_bShot=bshot; }
 	inline bool								IsSetBack							() const { return m_bSetBack; }
 	inline void								ChangeSetBack					(bool bsetback){ m_bSetBack=bsetback; }
+	inline float							GetAmountSetBack			() const { return m_fAmountSetBack; }
 private:
 	bool																						m_bIsOk;			      // Initialization boolean control
 	std::string																			m_sFileXML;
@@ -47,6 +48,7 @@ private:
 	std::map<CItem::ETYTE,CGUIPlayerObjectRender *>	m_ItemsRender;
 	float																						m_fYawGun;
 	float																						m_fPitchGun;
+	float																						m_fAmountSetBack;
 	static const int																m_iWidthNumber;
 	bool																						m_bShot;
 	bool																						m_bSetBack;

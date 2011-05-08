@@ -66,7 +66,7 @@ void CActionsPlayerInput::UpdateInputAction	(float elapsedTime)
 	m_pPlayer->Move(elapsedTime);
 	if (input2Action->DoAction("changeGun"))
 	{
-			m_pPlayer->ChangeSelectedGun();
+			m_pGameLogic->ChangeSelectedGun(*m_pPlayer);
 	}
 	if (input2Action->DoAction("shoot"))
 	{
