@@ -212,6 +212,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\..\Run\Quake\Data\Fonts\fonts.xml"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\Run\Quake\Data\Config\init_Quake.xml"
 				>
 			</File>
